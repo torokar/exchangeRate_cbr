@@ -6,9 +6,12 @@ API центробанка https://cbr.ru/scripts/XML_daily.asp?date_req=02/03/2
 
 */
 
-#include <iostream>
-#include <string>
 #include <curl/curl.h>
+#include "Сurrency_Сontainer.h"
+#include "mistake.h"
+#include "config_parser.h"
+
+
 
 static size_t WriteCallback(void* contents, size_t size, size_t nmeb, void* userp)
 {
@@ -29,23 +32,26 @@ static size_t WriteCallback(void* contents, size_t size, size_t nmeb, void* user
 	size * nmeb - сколько байт нужно добавить
 */
 
-
-std::string encode_date(const std::string& date) {
+std::string encode_date(const std::string& date) 
+{
 	std::string encoded = date;
 	// Заменяем / на %2F
 	size_t pos = 0;
-	while ((pos = encoded.find('/', pos)) != std::string::npos) {
+	while ((pos = encoded.find('/', pos)) != std::string::npos) 
+	{
 		encoded.replace(pos, 1, "%2F");
 		pos += 3;
 	}
 	return encoded;
 }
 
+
+
 int main()
 {
 	setlocale(LC_ALL, "ru");
 
-	std::string date, readBuffer;
+	std::string date, XmlData;
 	const std::string base_url = "https://www.cbr.ru/scripts/XML_daily.asp?date_req=";
 
 	CURL* curl;
@@ -75,7 +81,7 @@ int main()
 		//Говорит libcurl использовать функцию для сохранения данных
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
 
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &XmlData);
 
 		resultat = curl_easy_perform(curl);
 
@@ -89,12 +95,9 @@ int main()
 	}
 
 
-	std::cout << readBuffer << std::endl << std::endl;
-	//size_t pos = readBuffer.find("Доллар");
-	//if (pos != std::string::npos)
-	//{
-	//	std::string usd_part = readBuffer.substr(pos, length);
-	//}
+	//std::cout << XmlData << std::endl << std::endl;
+	Choice_Name_Value();
+	
 
 	return 0;
 }
