@@ -4,7 +4,8 @@
 #include <vector>
 #include "Сurrency_Сontainer.h"
 
-void SubstrCurrensiFromXML(/*const std::string nameValue,*/ const std::string XMLdata)
+void SubstrCurrensiFromXML(/*const std::string nameValue,*/ const std::string XMLdata
+	, std::vector<Currence>&conclusion)
 {
 	/*
 		Парсинг валюты значения и его сокращенного названия и запись его в структуру
@@ -32,8 +33,7 @@ void SubstrCurrensiFromXML(/*const std::string nameValue,*/ const std::string XM
 		сразу на 0 позиции и получается что в расчетах Пример: size_t end_pos_cur = Value_end - Value_Start. Значение Value_end принимало 0 а Value_Start = 141(случайное значение)
 		Решение: 1.1 я просто взял и прибавил к значению размер значения </Value>. Надеюсь объяснения получилось нормальным =)
 	*/
-
-	std::vector<Currence> DataVector;
+	
 	std::string name_curr, exchange_rate, CharCode;
 	std::string subNameCurrencsi = XMLdata;
 	
@@ -81,15 +81,17 @@ void SubstrCurrensiFromXML(/*const std::string nameValue,*/ const std::string XM
 		//Обрезка обработаную часть 
 		subNameCurrencsi = subNameCurrencsi.substr(Value_end + 7); //Решение 1.1
 		
-		DataVector.push_back(curr);
+		conclusion.push_back(curr);
 
-		if (subNameCurrencsi.find("</Value>") && subNameCurrencsi.size() < 10) //Решение 1.0
+		if (subNameCurrencsi.find("</Value>") == std::string::npos || subNameCurrencsi.size() < 10) //Решение 1.0
 		{
 			break;
 		}
 
 	}
 }
+
+
 void Choice_Name_Currencsi()
 {
 	int number_currenci;
@@ -108,3 +110,69 @@ void Choice_Name_Currencsi()
 
 
 }
+
+
+/*
+while (true)
+{
+	Currence curr;
+
+	bool hasName = false, hasValue = false, hasCharCode = false;
+
+	// Название валюты
+	size_t Value_Start = subNameCurrencsi.find("<Name>");
+	size_t Value_end = subNameCurrencsi.find("</Name>");
+	if (Value_Start != std::string::npos && Value_end != std::string::npos)
+	{
+		size_t end_pos = Value_end - Value_Start;
+		name_curr = subNameCurrencsi.substr(Value_Start + 6, end_pos - 6);
+		curr.Name_currence = name_curr;
+		hasName = true;
+		std::cout << name_curr;
+	}
+
+	// Значение валюты
+	Value_Start = subNameCurrencsi.find("<Value>");
+	Value_end = subNameCurrencsi.find("</Value>");
+	if (Value_Start != std::string::npos && Value_end != std::string::npos)
+	{
+		size_t end_pos_cur = Value_end - Value_Start;
+		exchange_rate = subNameCurrencsi.substr(Value_Start + 7, end_pos_cur - 7);
+		curr.Value = exchange_rate;
+		hasValue = true;
+		std::cout << " " << exchange_rate << " ";
+	}
+
+	// Код валюты
+	Value_Start = subNameCurrencsi.find("<CharCode>");
+	Value_end = subNameCurrencsi.find("</CharCode>");
+	if (Value_Start != std::string::npos && Value_end != std::string::npos)
+	{
+		size_t end_pos_charCode = Value_end - Value_Start;
+		CharCode = subNameCurrencsi.substr(Value_Start + 10, end_pos_charCode - 10);
+		curr.CharCode = CharCode;
+		hasCharCode = true;
+		std::cout << CharCode << std::endl << std::endl;
+	}
+
+	// Добавляем только если нашли всё
+	if (hasName && hasValue && hasCharCode)
+	{
+		conclusion.push_back(curr);
+		// обрезаем только после успешной обработки
+		subNameCurrencsi = subNameCurrencsi.substr(Value_end + 7);
+	}
+	else
+	{
+		break; // если какой-то из тегов не найден — значит конец данных
+	}
+
+	if (subNameCurrencsi.find("</Value>") == std::string::npos || subNameCurrencsi.size() < 10)
+	{
+		break;
+	}
+}
+
+
+
+*/

@@ -52,6 +52,7 @@ int main()
 	setlocale(LC_ALL, "ru");
 
 	std::string date, XmlData;
+	std::vector<Currence> DataCurr;
 	const std::string base_url = "https://www.cbr.ru/scripts/XML_daily.asp?date_req=";
 
 	CURL* curl;
@@ -95,8 +96,7 @@ int main()
 	}
 
 
-	//std::cout << XmlData << std::endl << std::endl;
-	SubstrCurrensiFromXML(XmlData);
+	SubstrCurrensiFromXML(XmlData, DataCurr);
 	//Choice_Name_Currencsi();
 	
 
