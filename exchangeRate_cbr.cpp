@@ -96,7 +96,8 @@ int main()
 
 
 	//std::cout << XmlData << std::endl << std::endl;
-	Choice_Name_Value();
+	SubstrCurrensiFromXML(XmlData);
+	//Choice_Name_Currencsi();
 	
 
 	return 0;
