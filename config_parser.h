@@ -7,11 +7,11 @@
 
 //Проверка на дубликаты
 bool CheckForDuplicates(const std::vector<Currence>& data, const std::string& name,
-	const std::string& value/*, const std::string& charcode*/)
+	const std::string& value, const std::string& charcode)
 {
 	for (int i = 0; i < data.size() ;++i)
 	{
-		if (data[i].Name_currence == name || data[i].Value == value/* || data[i].CharCode == charcode*/)
+		if (data[i].Name_currence == name || data[i].Value == value || data[i].CharCode == charcode)
 		{
 			return true;
 		}
@@ -52,9 +52,8 @@ void SubstrCurrensiFromXML(/*const std::string nameValue,*/ const std::string XM
 		*/
 	}
 	
-	std::string name_curr, exchange_rate /*CharCode*/;
+	std::string name_curr, exchange_rate, CharCode;
 	std::string subNameCurrencsi = XMLdata;
-	std::vector<Currence> TimeVector;
 	
 	size_t pos = 0;
 	size_t end_cycle = subNameCurrencsi.find("</ValCurs>");
@@ -62,9 +61,22 @@ void SubstrCurrensiFromXML(/*const std::string nameValue,*/ const std::string XM
 	{
 		Currence curr;
 
+
+		//Извлечения краткого названия валюты
+		
+		size_t Value_Start = subNameCurrencsi.find("<CharCode>");
+		size_t Value_end = subNameCurrencsi.find("</CharCode>");
+		if (Value_Start != std::string::npos && Value_end != std::string::npos)
+		{
+			size_t end_pos_charCode = Value_end - Value_Start;
+			CharCode = subNameCurrencsi.substr(Value_Start + 10, end_pos_charCode - 10);
+			curr.CharCode = CharCode;
+		}
+		
+
 		//Извлечения названия валюты
-		size_t Value_Start = subNameCurrencsi.find("<Name>");
-		size_t Value_end = subNameCurrencsi.find("</Name>");
+		Value_Start = subNameCurrencsi.find("<Name>");
+		Value_end = subNameCurrencsi.find("</Name>");
 		if (Value_Start != std::string::npos && Value_end != std::string::npos)
 		{
 			size_t end_pos = Value_end - Value_Start;
@@ -81,35 +93,18 @@ void SubstrCurrensiFromXML(/*const std::string nameValue,*/ const std::string XM
 			exchange_rate = subNameCurrencsi.substr(Value_Start + 7, end_pos_cur - 7);
 			curr.Value = exchange_rate;
 		}
-
-		{
-			//Извлечения краткого названия валюты
-			//Value_Start = subNameCurrencsi.find("<CharCode>");
-			//Value_end = subNameCurrencsi.find("</CharCode>");
-			//if (Value_Start != std::string::npos && Value_end != std::string::npos)
-			//{
-			//	size_t end_pos_charCode = Value_end - Value_Start;
-			//	CharCode = subNameCurrencsi.substr(Value_Start + 10, end_pos_charCode - 10);
-			//	curr.CharCode = CharCode;
-			//}
-
-			//std::cout << curr.Name_currence << " " << curr.CharCode << " " << curr.Value;
-			//TimeVector.push_back(curr);
-		}
 		
-		if (CheckForDuplicates(TimeVector, name_curr, exchange_rate/*, CharCode*/) == false)
+		if (CheckForDuplicates(conclusion, name_curr, exchange_rate, CharCode) == false)
 		{
-			TimeVector.push_back(curr);
 			conclusion.push_back(curr);
 		}
 
 		//Обрезка обработаную часть 
-		subNameCurrencsi = subNameCurrencsi.substr(Value_end + 7); //Решение 1.1
+		subNameCurrencsi = subNameCurrencsi.substr(Value_end + 10); //Решение 1.1
 
 		if (subNameCurrencsi.find("</Value>") == std::string::npos || subNameCurrencsi.size() < 10) //Решение 1.0
 		{
 			break;
-			TimeVector.clear();
 		}
 
 	}
