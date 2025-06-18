@@ -100,6 +100,11 @@ int main()
 	//Choice_Name_Currencsi();
 	
 
+	for (int i = 0; i < DataCurr.size(); i++)
+	{
+		std::cout << DataCurr[i].CharCode << " " << DataCurr[i].Name_currence << " " << DataCurr[i].Value << "\n";
+	}
+
 	return 0;
 }
 
