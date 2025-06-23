@@ -29,5 +29,8 @@
     <ClInclude Include="config_parser.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="DATABASE.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

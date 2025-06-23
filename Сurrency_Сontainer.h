@@ -6,6 +6,7 @@
 struct Currence
 {
 	std::string Name_currence;
-	std::string Value;
+	double Value;
 	std::string CharCode;
+	std::string Date;
 };

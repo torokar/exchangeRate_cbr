@@ -7,11 +7,11 @@ API центробанка https://cbr.ru/scripts/XML_daily.asp?date_req=02/03/2
 */
 
 #include <curl/curl.h>
+#include <pqxx/pqxx>
 #include "Сurrency_Сontainer.h"
 #include "mistake.h"
 #include "config_parser.h"
-
-
+#include "DATABASE.h"
 
 static size_t WriteCallback(void* contents, size_t size, size_t nmeb, void* userp)
 {
@@ -97,14 +97,16 @@ int main()
 
 
 	SubstrCurrensiFromXML(XmlData, DataCurr);
-	//Choice_Name_Currencsi();
-	
+	//ConnectDB();
 
+
+	std::cout << DataCurr[0].Date << std::endl;
 	for (int i = 0; i < DataCurr.size(); i++)
 	{
 		std::cout << DataCurr[i].CharCode << " " << DataCurr[i].Name_currence << " " << DataCurr[i].Value << "\n";
 	}
 
+	ConnectDB(DataCurr);
+
 	return 0;
 }
-

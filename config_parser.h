@@ -7,7 +7,7 @@
 
 //Проверка на дубликаты
 bool CheckForDuplicates(const std::vector<Currence>& data, const std::string& name,
-	const std::string& value, const std::string& charcode)
+	const double& value, const std::string& charcode)
 {
 	for (int i = 0; i < data.size() ;++i)
 	{
@@ -20,7 +20,7 @@ bool CheckForDuplicates(const std::vector<Currence>& data, const std::string& na
 }
 
 
-void SubstrCurrensiFromXML(/*const std::string nameValue,*/ const std::string XMLdata
+void SubstrCurrensiFromXML( const std::string XMLdata
 	, std::vector<Currence>&conclusion)
 {
 	{
@@ -52,34 +52,43 @@ void SubstrCurrensiFromXML(/*const std::string nameValue,*/ const std::string XM
 		*/
 	}
 	
-	std::string name_curr, exchange_rate, CharCode;
+	Currence curr;
+	double exchange_double;
+	std::string name_curr, exchange_rate, CharCode, Date;
 	std::string subNameCurrencsi = XMLdata;
-	
+
+	size_t end_pos;
 	size_t pos = 0;
 	size_t end_cycle = subNameCurrencsi.find("</ValCurs>");
+
+	//Извлечения даты
+	size_t Value_Start = subNameCurrencsi.find("Date=");
+	size_t Value_end = subNameCurrencsi.find("name=");
+	if (Value_Start != std::string::npos && Value_end != std::string::npos)
+	{
+		end_pos = Value_end - Value_Start;
+		Date = subNameCurrencsi.substr(Value_Start + 5, end_pos - 5);
+		curr.Date = Date;
+	}
+
 	while (true)
 	{
-		Currence curr;
-
-
-		//Извлечения краткого названия валюты
-		
-		size_t Value_Start = subNameCurrencsi.find("<CharCode>");
-		size_t Value_end = subNameCurrencsi.find("</CharCode>");
+		//Извлечения краткого названия валюты		
+		Value_Start = subNameCurrencsi.find("<CharCode>");
+		Value_end = subNameCurrencsi.find("</CharCode>");
 		if (Value_Start != std::string::npos && Value_end != std::string::npos)
 		{
-			size_t end_pos_charCode = Value_end - Value_Start;
-			CharCode = subNameCurrencsi.substr(Value_Start + 10, end_pos_charCode - 10);
+			end_pos = Value_end - Value_Start;
+			CharCode = subNameCurrencsi.substr(Value_Start + 10, end_pos - 10);
 			curr.CharCode = CharCode;
 		}
 		
-
 		//Извлечения названия валюты
 		Value_Start = subNameCurrencsi.find("<Name>");
 		Value_end = subNameCurrencsi.find("</Name>");
 		if (Value_Start != std::string::npos && Value_end != std::string::npos)
 		{
-			size_t end_pos = Value_end - Value_Start;
+			end_pos = Value_end - Value_Start;
 			name_curr = subNameCurrencsi.substr(Value_Start + 6, end_pos - 6);
 			curr.Name_currence = name_curr;
 		}
@@ -89,12 +98,13 @@ void SubstrCurrensiFromXML(/*const std::string nameValue,*/ const std::string XM
 		Value_end = subNameCurrencsi.find("</Value>");
 		if (Value_Start != std::string::npos && Value_end != std::string::npos)
 		{
-			size_t end_pos_cur = Value_end - Value_Start;
-			exchange_rate = subNameCurrencsi.substr(Value_Start + 7, end_pos_cur - 7);
-			curr.Value = exchange_rate;
+			end_pos = Value_end - Value_Start;
+			exchange_rate = subNameCurrencsi.substr(Value_Start + 7, end_pos - 7);
+			exchange_double = std::stod(exchange_rate);
+			curr.Value = exchange_double;
 		}
 		
-		if (CheckForDuplicates(conclusion, name_curr, exchange_rate, CharCode) == false)
+		if (CheckForDuplicates(conclusion, name_curr, exchange_double, CharCode) == false)
 		{
 			conclusion.push_back(curr);
 		}
@@ -109,89 +119,3 @@ void SubstrCurrensiFromXML(/*const std::string nameValue,*/ const std::string XM
 
 	}
 }
-
-
-void Choice_Name_Currencsi()
-{
-	int number_currenci;
-	std::cout << "Выберите валюту: ";
-	std::cin >> number_currenci;
-
-	switch (number_currenci)
-	{
-	case 1:
-
-
-	default:
-		break;
-	}
-
-
-
-}
-
-
-/*
-while (true)
-{
-	Currence curr;
-
-	bool hasName = false, hasValue = false, hasCharCode = false;
-
-	// Название валюты
-	size_t Value_Start = subNameCurrencsi.find("<Name>");
-	size_t Value_end = subNameCurrencsi.find("</Name>");
-	if (Value_Start != std::string::npos && Value_end != std::string::npos)
-	{
-		size_t end_pos = Value_end - Value_Start;
-		name_curr = subNameCurrencsi.substr(Value_Start + 6, end_pos - 6);
-		curr.Name_currence = name_curr;
-		hasName = true;
-		std::cout << name_curr;
-	}
-
-	// Значение валюты
-	Value_Start = subNameCurrencsi.find("<Value>");
-	Value_end = subNameCurrencsi.find("</Value>");
-	if (Value_Start != std::string::npos && Value_end != std::string::npos)
-	{
-		size_t end_pos_cur = Value_end - Value_Start;
-		exchange_rate = subNameCurrencsi.substr(Value_Start + 7, end_pos_cur - 7);
-		curr.Value = exchange_rate;
-		hasValue = true;
-		std::cout << " " << exchange_rate << " ";
-	}
-
-	// Код валюты
-	Value_Start = subNameCurrencsi.find("<CharCode>");
-	Value_end = subNameCurrencsi.find("</CharCode>");
-	if (Value_Start != std::string::npos && Value_end != std::string::npos)
-	{
-		size_t end_pos_charCode = Value_end - Value_Start;
-		CharCode = subNameCurrencsi.substr(Value_Start + 10, end_pos_charCode - 10);
-		curr.CharCode = CharCode;
-		hasCharCode = true;
-		std::cout << CharCode << std::endl << std::endl;
-	}
-
-	// Добавляем только если нашли всё
-	if (hasName && hasValue && hasCharCode)
-	{
-		conclusion.push_back(curr);
-		// обрезаем только после успешной обработки
-		subNameCurrencsi = subNameCurrencsi.substr(Value_end + 7);
-	}
-	else
-	{
-		break; // если какой-то из тегов не найден — значит конец данных
-	}
-
-	if (subNameCurrencsi.find("</Value>") == std::string::npos || subNameCurrencsi.size() < 10)
-	{
-		break;
-	}
-}
-
-
-
-*/
