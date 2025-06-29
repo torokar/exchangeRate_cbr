@@ -12,6 +12,7 @@ API центробанка https://cbr.ru/scripts/XML_daily.asp?date_req=02/03/2
 #include "mistake.h"
 #include "config_parser.h"
 #include "DATABASE.h"
+#include "Write_to_file.h"
 
 static size_t WriteCallback(void* contents, size_t size, size_t nmeb, void* userp)
 {
@@ -32,12 +33,12 @@ static size_t WriteCallback(void* contents, size_t size, size_t nmeb, void* user
 	size * nmeb - сколько байт нужно добавить
 */
 
-std::string encode_date(const std::string& date) 
+std::string encode_date(const std::string& date)
 {
 	std::string encoded = date;
 	// Заменяем / на %2F
 	size_t pos = 0;
-	while ((pos = encoded.find('/', pos)) != std::string::npos) 
+	while ((pos = encoded.find('/', pos)) != std::string::npos)
 	{
 		encoded.replace(pos, 1, "%2F");
 		pos += 3;
@@ -106,7 +107,8 @@ int main()
 		std::cout << DataCurr[i].CharCode << " " << DataCurr[i].Name_currence << " " << DataCurr[i].Value << "\n";
 	}
 
-	ConnectDB(DataCurr);
+	WriteFile(DataCurr);
+	ConnectedBD(DataCurr);
 
 	return 0;
 }

@@ -32,5 +32,8 @@
     <ClInclude Include="DATABASE.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="Write_to_file.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

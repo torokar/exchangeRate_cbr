@@ -7,9 +7,9 @@
 
 //Проверка на дубликаты
 bool CheckForDuplicates(const std::vector<Currence>& data, const std::string& name,
-	const double& value, const std::string& charcode)
+	const std::string& value, const std::string& charcode)
 {
-	for (int i = 0; i < data.size() ;++i)
+	for (int i = 0; i < data.size(); ++i)
 	{
 		if (data[i].Name_currence == name || data[i].Value == value || data[i].CharCode == charcode)
 		{
@@ -20,8 +20,8 @@ bool CheckForDuplicates(const std::vector<Currence>& data, const std::string& na
 }
 
 
-void SubstrCurrensiFromXML( const std::string XMLdata
-	, std::vector<Currence>&conclusion)
+void SubstrCurrensiFromXML(const std::string XMLdata
+	, std::vector<Currence>& conclusion)
 {
 	{
 		/*
@@ -51,9 +51,8 @@ void SubstrCurrensiFromXML( const std::string XMLdata
 			Решение: 1.1 я просто взял и прибавил к значению размер значения </Value>. Надеюсь объяснения получилось нормальным =)
 		*/
 	}
-	
+
 	Currence curr;
-	double exchange_double;
 	std::string name_curr, exchange_rate, CharCode, Date;
 	std::string subNameCurrencsi = XMLdata;
 
@@ -82,7 +81,7 @@ void SubstrCurrensiFromXML( const std::string XMLdata
 			CharCode = subNameCurrencsi.substr(Value_Start + 10, end_pos - 10);
 			curr.CharCode = CharCode;
 		}
-		
+
 		//Извлечения названия валюты
 		Value_Start = subNameCurrencsi.find("<Name>");
 		Value_end = subNameCurrencsi.find("</Name>");
@@ -100,11 +99,10 @@ void SubstrCurrensiFromXML( const std::string XMLdata
 		{
 			end_pos = Value_end - Value_Start;
 			exchange_rate = subNameCurrencsi.substr(Value_Start + 7, end_pos - 7);
-			exchange_double = std::stod(exchange_rate);
-			curr.Value = exchange_double;
+			curr.Value = exchange_rate;
 		}
-		
-		if (CheckForDuplicates(conclusion, name_curr, exchange_double, CharCode) == false)
+
+		if (CheckForDuplicates(conclusion, name_curr, exchange_rate, CharCode) == false)
 		{
 			conclusion.push_back(curr);
 		}
