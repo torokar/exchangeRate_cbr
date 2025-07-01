@@ -29,10 +29,8 @@ jobs:
     - name: Create test database
       run: |
         sudo -u postgres psql -c "CREATE DATABASE mydb;"
-        sudo -u postgres psql -c "CREATE USER postgres WITH PASSWORD '20ufodop1';"
-        sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mydb TO postgres;"
-        sudo -u postgres psql -c "ALTER USER postgres CREATEDB;"
-
+        sudo -u postgres psql -c "CREATE USER service WITH PASSWORD '20ufodop1';"
+        sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mydb TO service;"
     - name: Build
       run: |
         mkdir build
