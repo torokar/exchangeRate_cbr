@@ -2,7 +2,7 @@
 #include <pqxx/pqxx>
 #include <iostream>
 #include <fstream>
-#include "Curr_Con.h"
+#include "Currency_Container.h"
 #include <Windows.h>
 
 // Функция преобразования CP1251 -> UTF-8
