@@ -1,22 +1,19 @@
 cmake_minimum_required(VERSION 3.10)
 
-# название проекта
+# Укажите название проекта
 project(ExchangeRateCbr)
 
-# Стандарт C++
+# Укажите стандарт C++
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# директория для исходных файлов
-include_directories(src)
+# Укажите исходные файлы
+file(GLOB SOURCES "*.cpp")  # Находит все .cpp файлы в корне проекта
 
-# исходные файлы
-file(GLOB SOURCES "src/*.cpp")
-
-# исполняемый файл
+# Создайте исполняемый файл
 add_executable(ExchangeRateCbr ${SOURCES})
 
-# Зависимости, добавьте их здесь
+# Если у вас есть зависимости, добавьте их здесь
 # Например, если вы используете cURL:
 find_package(CURL REQUIRED)
 target_link_libraries(ExchangeRateCbr PRIVATE CURL::libcurl)
