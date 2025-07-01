@@ -10,10 +10,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Укажите исходные файлы
 file(GLOB SOURCES "*.cpp")  # Находит все .cpp файлы в корне проекта
 
+# Найдите библиотеку cURL
+find_package(CURL REQUIRED)
+
 # Создайте исполняемый файл
 add_executable(ExchangeRateCbr ${SOURCES})
 
-# Если у вас есть зависимости, добавьте их здесь
-# Например, если вы используете cURL:
-find_package(CURL REQUIRED)
+# Свяжите исполняемый файл с библиотекой cURL
 target_link_libraries(ExchangeRateCbr PRIVATE CURL::libcurl)
