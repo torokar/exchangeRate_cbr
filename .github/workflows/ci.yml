@@ -31,6 +31,7 @@ jobs:
         sudo -u postgres psql -c "CREATE DATABASE mydb;"
         sudo -u postgres psql -c "CREATE USER service WITH PASSWORD '20ufodop1';"
         sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mydb TO service;"
+        sudo -u postgres psql -c "ALTER SCHEMA public OWNER TO service;"
     - name: Build
       run: |
         mkdir build
