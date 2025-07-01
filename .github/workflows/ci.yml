@@ -15,16 +15,23 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y g++ libcurl4-openssl-dev libpqxx-dev pkg-config postgresql
 
-    - name: Start PostgreSQL service
+    - name: Configure PostgreSQL
       run: |
-        sudo systemctl start postgresql
-        sleep 5 # Ждем немного, чтобы сервис успел запуститься
+        # Allow connections from localhost
+        echo "host all all 127.0.0.1/32 trust" | sudo tee -a /etc/postgresql/*/main/pg_hba.conf
+        
+        # Enable TCP/IP connections
+        echo "listen_addresses = '*'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
+        
+        # Restart PostgreSQL to apply changes
+        sudo systemctl restart postgresql
 
     - name: Create test database
       run: |
-        sudo su - postgres -c "psql -c 'CREATE DATABASE mydb;' || echo 'Database already exists.'"
-        sudo su - postgres -c "psql -c 'DO \$\$ BEGIN IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = ''postgres'') THEN CREATE USER postgres WITH PASSWORD ''20ufodop1''; END IF; END \$\$;'"
-        sudo su - postgres -c "psql -c 'GRANT ALL PRIVILEGES ON DATABASE mydb TO postgres;'"
+        sudo -u postgres psql -c "CREATE DATABASE mydb;"
+        sudo -u postgres psql -c "CREATE USER postgres WITH PASSWORD '20ufodop1';"
+        sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mydb TO postgres;"
+        sudo -u postgres psql -c "ALTER USER postgres CREATEDB;"
 
     - name: Build
       run: |
