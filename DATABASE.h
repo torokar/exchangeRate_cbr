@@ -6,7 +6,7 @@
 
 void ConnectedBD(const std::vector<Currence>& data)
 {
-    pqxx::connection conn("dbname=mydb user=postgres password=20ufodop1 host=127.0.0.1 port=5432");
+    pqxx::connection conn("dbname=mydb user=service password=20ufodop1 host=127.0.0.1 port=5432");
     try {
         if (conn.is_open()) {
             std::cout << "Óñïåøíîå ïîäêëþ÷åíèå ê áàçå: " << conn.dbname() << std::endl;
