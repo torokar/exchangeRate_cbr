@@ -7,6 +7,9 @@ project(ExchangeRateCbr)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# Укажите путь к библиотеке pqxx
+set(CMAKE_PREFIX_PATH "/usr/lib/x86_64-linux-gnu/cmake/pqxx")
+
 # Укажите исходные файлы
 file(GLOB SOURCES "*.cpp")  # Находит все .cpp файлы в корне проекта
 
