@@ -24,7 +24,7 @@ jobs:
         sudo su - postgres <<EOF
           psql -c "CREATE DATABASE mydb;"
           psql -c "CREATE USER postgres WITH PASSWORD '20ufodop1';"
-          psql -c "GRANT ALL PRIVILEGES ON DATABASE test_utf TO postgres;"
+          psql -c "GRANT ALL PRIVILEGES ON DATABASE mydb TO postgres;"
         EOF
 
     - name: Build
