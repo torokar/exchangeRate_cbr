@@ -22,7 +22,7 @@ jobs:
     - name: Create test database
       run: |
         sudo su - postgres <<EOF
-          psql -c "CREATE DATABASE test_utf;"
+          psql -c "CREATE DATABASE mydb;"
           psql -c "CREATE USER postgres WITH PASSWORD '20ufodop1';"
           psql -c "GRANT ALL PRIVILEGES ON DATABASE test_utf TO postgres;"
         EOF
@@ -38,3 +38,18 @@ jobs:
       run: |
         cd build
         ./ExchangeRateCbr
+        
+    #services:
+    #  postgres:
+    #    image: postgres:17
+    #    env:
+    #      POSTGRES_USER: postgres
+    #      POSTGRES_PASSWORD: 20ufodop1
+    #      POSTGRES_DB: mydb
+    #    ports:
+    #      - 5432:5432
+    #    options: >-
+    #      --health-cmd pg_isready
+    #      --health-interval 10s
+    #      --health-timeout 5s
+    #      --health-retries 5
