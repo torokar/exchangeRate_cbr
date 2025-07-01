@@ -1,0 +1,28 @@
+name: C++ CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up C++
+      uses: actions/setup-cpp@v1
+      with:
+        gcc-version: '11'  #версия компилятора
+
+    - name: Build
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        make
+
+    - name: Run tests
+      run: |
+        cd build
+        ./test_executable  # имя исполняемого файла с тестами
