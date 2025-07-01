@@ -52,3 +52,18 @@ jobs:
       run: |
         cd build
         ./ExchangeRateCbr
+
+    - name: Inspect database content
+      if: always()  # Run even if previous step fails
+      run: |
+        echo "Database structure:"
+        sudo -u postgres psql -d mydb -c "\d"
+        
+        echo "Table structure (exdc):"
+        sudo -u postgres psql -d mydb -c "\d exdc"
+        
+        echo "Data in exdc table:"
+        sudo -u postgres psql -d mydb -c "SELECT * FROM exdc;"
+        
+        echo "Application logs:"
+        cat ExchangeRateCbr.log  # Assuming your app creates logs
