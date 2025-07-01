@@ -14,7 +14,7 @@ jobs:
       run: sudo apt-get install g++ libcurl4-openssl-dev
     
     - name: Install libpqxx
-      run: sudo apt-get install libpqxx-dev
+      run: sudo apt-get install libpqxx-dev && export CMAKE_PREFIX_PATH="/usr/lib/x86_64-linux-gnu/cmake/pqxx"
   
     - name: Build 
       run: |
