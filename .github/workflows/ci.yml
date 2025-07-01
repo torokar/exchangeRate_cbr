@@ -10,10 +10,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install g++
-      run: sudo apt-get install g++
+    - name: Install g++ and  libcur
+      run: sudo apt-get install g++ libcurl4-openssl-dev
 
-    - name: Build
+    - name: Build 
       run: |
         mkdir build
         cd build
