@@ -13,7 +13,19 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y g++ libcurl4-openssl-dev libpqxx-dev pkg-config
+        sudo apt-get install -y g++ libcurl4-openssl-dev libpqxx-dev pkg-config postgresql
+
+    - name: Start PostgreSQL service
+      run: |
+        sudo systemctl start postgresql
+
+    - name: Create test database
+      run: |
+        sudo su - postgres <<EOF
+          psql -c "CREATE DATABASE test_utf;"
+          psql -c "CREATE USER postgres WITH PASSWORD '20ufodop1';"
+          psql -c "GRANT ALL PRIVILEGES ON DATABASE test_utf TO postgres;"
+        EOF
 
     - name: Build
       run: |
