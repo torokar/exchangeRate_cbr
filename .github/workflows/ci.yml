@@ -5,6 +5,9 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PG_LOCALE: en_US.UTF-8  # Set UTF-8 locale for PostgreSQL
+      LC_ALL: C.UTF-8         # Set UTF-8 locale for application
 
     steps:
     - name: Checkout code
@@ -13,30 +16,36 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y g++ libcurl4-openssl-dev libpqxx-dev pkg-config postgresql
+        sudo apt-get install -y g++ libcurl4-openssl-dev libpqxx-dev pkg-config postgresql locales
+        sudo locale-gen en_US.UTF-8  # Generate UTF-8 locale
 
     - name: Configure PostgreSQL
       run: |
-        # Allow connections from localhost
-        echo "host all all 127.0.0.1/32 trust" | sudo tee -a /etc/postgresql/*/main/pg_hba.conf
+        # Configure UTF-8 encoding
+        echo "lc_messages = 'en_US.UTF-8'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
+        echo "lc_monetary = 'en_US.UTF-8'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
+        echo "lc_numeric = 'en_US.UTF-8'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
+        echo "lc_time = 'en_US.UTF-8'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
         
-        # Enable TCP/IP connections
+        # Allow all connections
+        echo "host all all 0.0.0.0/0 trust" | sudo tee -a /etc/postgresql/*/main/pg_hba.conf
         echo "listen_addresses = '*'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
         
-        # Restart PostgreSQL to apply changes
         sudo systemctl restart postgresql
 
-    - name: Create test database
+    - name: Create and configure database
       run: |
-        sudo -u postgres psql -c "CREATE DATABASE mydb;"
+        sudo -u postgres psql -c "CREATE DATABASE mydb WITH ENCODING 'UTF8' TEMPLATE template0;"
         sudo -u postgres psql -c "CREATE USER service WITH PASSWORD '20ufodop1';"
         sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mydb TO service;"
-        sudo -u postgres psql -c "ALTER SCHEMA public OWNER TO service;"
+        sudo -u postgres psql -d mydb -c "GRANT ALL ON SCHEMA public TO service;"
+        sudo -u postgres psql -d mydb -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO service;"
+
     - name: Build
       run: |
         mkdir build
         cd build
-        cmake ..
+        cmake -DCMAKE_BUILD_TYPE=Release ..
         make
 
     - name: Run executable
