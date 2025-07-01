@@ -1,5 +1,5 @@
 #pragma once
-#include "Сurrency_Сontainer.h"
+#include "Currency_Container.h"
 #include <pqxx/pqxx>
 #include <iostream>
 #include <fstream>
@@ -9,14 +9,14 @@ void ConnectedBD(const std::vector<Currence>& data)
     pqxx::connection conn("dbname= mydb user=postgres password=20ufodop1 host=127.0.0.1 port=5432");
     try {
         if (conn.is_open()) {
-            std::cout << "Успешное подключение к базе: " << conn.dbname() << std::endl;
+            std::cout << "Г“Г±ГЇГҐГёГ­Г®ГҐ ГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГҐ ГЄ ГЎГ Г§ГҐ: " << conn.dbname() << std::endl;
         }
         else {
-            std::cout << "Ошибка подключения." << std::endl;
+            std::cout << "ГЋГёГЁГЎГЄГ  ГЇГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГї." << std::endl;
         }
     }
     catch (const std::exception& e) {
-        std::cerr << "Ошибка: " << e.what() << std::endl;
+        std::cerr << "ГЋГёГЁГЎГЄГ : " << e.what() << std::endl;
     }
 
 
@@ -29,20 +29,20 @@ void ConnectedBD(const std::vector<Currence>& data)
             "NameCurrency VARCHAR(50) NOT NULL, "
             "Value VARCHAR(12) NOT NULL)");
 
-        std::cout << "Таблица создана\n";
+        std::cout << "Г’Г ГЎГ«ГЁГ¶Г  Г±Г®Г§Г¤Г Г­Г \n";
     }
     catch (const std::exception& ex)
     {
-        std::cout << "Ошибка " << ex.what() << std::endl;
+        std::cout << "ГЋГёГЁГЎГЄГ  " << ex.what() << std::endl;
     }
 
 
-    txn.exec("insert into exdc (CharCode, NameCurrency, Value) values ('RUS', 'вызаебалименя', '213');");
+    txn.exec("insert into exdc (CharCode, NameCurrency, Value) values ('RUS', 'ГўГ»Г§Г ГҐГЎГ Г«ГЁГ¬ГҐГ­Гї', '213');");
 
     //std::ifstream file("data_file/data.txt");
     //if (!file.is_open())
     //{
-    //    std::cerr << "Не удалось открыть файл" << std::endl;
+    //    std::cerr << "ГЌГҐ ГіГ¤Г Г«Г®Г±Гј Г®ГІГЄГ°Г»ГІГј ГґГ Г©Г«" << std::endl;
     //    return;
     //}
 
@@ -67,44 +67,44 @@ void ConnectedBD(const std::vector<Currence>& data)
 //
 //void Con(const std::vector<Currence>& data) {
 //    try {
-//        // Устанавливаем локаль для консоли и программы
+//        // Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ Г«Г®ГЄГ Г«Гј Г¤Г«Гї ГЄГ®Г­Г±Г®Г«ГЁ ГЁ ГЇГ°Г®ГЈГ°Г Г¬Г¬Г»
 //        std::setlocale(LC_ALL, "ru_RU.UTF-8");
 //        std::locale::global(std::locale("ru_RU.UTF-8"));
 //        std::cout.imbue(std::locale());
 //
-//        // Подключаемся к БД
+//        // ГЏГ®Г¤ГЄГ«ГѕГ·Г ГҐГ¬Г±Гї ГЄ ГЃГ„
 //        pqxx::connection conn("dbname=your_database_name user=postgres password=20ufodop1 host=127.0.0.1 port=5432");
 //
-//        // Проверяем соединение
+//        // ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГҐ
 //        if (!conn.is_open()) {
-//            throw std::runtime_error("Не удалось подключиться к базе данных");
+//            throw std::runtime_error("ГЌГҐ ГіГ¤Г Г«Г®Г±Гј ГЇГ®Г¤ГЄГ«ГѕГ·ГЁГІГјГ±Гї ГЄ ГЎГ Г§ГҐ Г¤Г Г­Г­Г»Гµ");
 //        }
 //
-//        // Устанавливаем кодировку соединения
+//        // Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ ГЄГ®Г¤ГЁГ°Г®ГўГЄГі Г±Г®ГҐГ¤ГЁГ­ГҐГ­ГЁГї
 //        pqxx::nontransaction set_enc(conn);
 //        set_enc.exec("SET client_encoding TO 'UTF-8'");
 //        set_enc.commit();
 //
 //        pqxx::work txn(conn);
 //
-//        // Создаём таблицу (полную версию)
+//        // Г‘Г®Г§Г¤Г ВёГ¬ ГІГ ГЎГ«ГЁГ¶Гі (ГЇГ®Г«Г­ГіГѕ ГўГҐГ°Г±ГЁГѕ)
 //        txn.exec(
 //            "CREATE TABLE IF NOT EXISTS exc("
 //            "CharCode VARCHAR(3) NOT NULL, "
 //            "NameCurrency VARCHAR(50) NOT NULL, "
 //            "Value VARCHAR(12) NOT NULL)");
 //
-//        // Вставляем данные - 3 разных способа:
+//        // Г‚Г±ГІГ ГўГ«ГїГҐГ¬ Г¤Г Г­Г­Г»ГҐ - 3 Г°Г Г§Г­Г»Гµ Г±ГЇГ®Г±Г®ГЎГ :
 //
-//        // 1. Прямой SQL с русским текстом
-//        txn.exec("INSERT INTO exc (CharCode, NameCurrency, Value) VALUES ('RUR', 'Рубль', '1.00')");
+//        // 1. ГЏГ°ГїГ¬Г®Г© SQL Г± Г°ГіГ±Г±ГЄГЁГ¬ ГІГҐГЄГ±ГІГ®Г¬
+//        txn.exec("INSERT INTO exc (CharCode, NameCurrency, Value) VALUES ('RUR', 'ГђГіГЎГ«Гј', '1.00')");
 //
 //        txn.commit();
-//        std::cout << "Данные добавлены!\n";
+//        std::cout << "Г„Г Г­Г­Г»ГҐ Г¤Г®ГЎГ ГўГ«ГҐГ­Г»!\n";
 //
 //    }
 //    catch (const std::exception& e)
 //    {
-//        std::cerr << "Ошибка " << e.what() << std::endl;
+//        std::cerr << "ГЋГёГЁГЎГЄГ  " << e.what() << std::endl;
 //    }
 //}
