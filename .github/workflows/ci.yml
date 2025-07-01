@@ -12,7 +12,10 @@ jobs:
 
     - name: Install g++ and  libcur
       run: sudo apt-get install g++ libcurl4-openssl-dev
-
+    
+    - name: Install libpqxx
+      run: sudo apt-get install libpqxx-dev
+  
     - name: Build 
       run: |
         mkdir build
