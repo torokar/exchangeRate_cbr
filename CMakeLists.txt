@@ -1,24 +1,34 @@
 cmake_minimum_required(VERSION 3.10)
-
-# Укажите название проекта
 project(ExchangeRateCbr)
 
-# Укажите стандарт C++
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Укажите путь к библиотеке pqxx
-set(CMAKE_PREFIX_PATH "/usr/lib/x86_64-linux-gnu/cmake/pqxx")
+# Используем pkg-config для поиска libpqxx
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(PQXX REQUIRED libpqxx)
 
-# Укажите исходные файлы
-file(GLOB SOURCES "*.cpp")  # Находит все .cpp файлы в корне проекта
-
-# Найдите библиотеки cURL и libpqxx
+# Поиск CURL
 find_package(CURL REQUIRED)
-find_package(PQXX REQUIRED)
 
-# Создайте исполняемый файл
+# Исходные файлы
+file(GLOB SOURCES "*.cpp")
+
+# Создание исполняемого файла
 add_executable(ExchangeRateCbr ${SOURCES})
 
-# Свяжите исполняемый файл с библиотеками cURL и libpqxx
-target_link_libraries(ExchangeRateCbr PRIVATE CURL::libcurl pqxx)
+# Подключение библиотек
+target_link_libraries(ExchangeRateCbr PRIVATE 
+    CURL::libcurl 
+    ${PQXX_LIBRARIES}
+)
+
+# Добавляем пути к заголовкам
+target_include_directories(ExchangeRateCbr PRIVATE 
+    ${PQXX_INCLUDE_DIRS}
+)
+
+# Добавляем флаги компиляции
+target_compile_options(ExchangeRateCbr PRIVATE 
+    ${PQXX_CFLAGS_OTHER}
+)
