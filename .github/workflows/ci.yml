@@ -10,23 +10,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install g++ and libcurl
-      run: sudo apt-get install -y g++ libcurl4-openssl-dev
-    
-    - name: Install libpqxx
-      run: sudo apt-get install -y libpqxx-dev
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y g++ libcurl4-openssl-dev libpqxx-dev pkg-config
 
-    - name: Set CMAKE_PREFIX_PATH
-      run: echo "CMAKE_PREFIX_PATH=/usr/lib/x86_64-linux-gnu/cmake" >> $GITHUB_ENV
-  
-    - name: Build 
+    - name: Build
       run: |
         mkdir build
         cd build
         cmake ..
         make
 
-    - name: Run tests
+    - name: Run executable
       run: |
         cd build
-        ./test_executable
+        ./ExchangeRateCbr
