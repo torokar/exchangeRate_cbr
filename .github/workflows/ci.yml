@@ -14,11 +14,10 @@ jobs:
       run: sudo apt-get install -y g++ libcurl4-openssl-dev
     
     - name: Install libpqxx
-      run: |
-        sudo apt-get install -y libpqxx-dev
-        echo "/usr/lib/x86_64-linux-gnu/cmake/pqxx" >> $GITHUB_ENV
-        # Установите CMAKE_PREFIX_PATH для последующих шагов
-        echo "CMAKE_PREFIX_PATH=/usr/lib/x86_64-linux-gnu/cmake/pqxx" >> $GITHUB_ENV
+      run: sudo apt-get install -y libpqxx-dev
+  
+    - name: Set CMAKE_PREFIX_PATH
+      run: echo "CMAKE_PREFIX_PATH=/usr/lib/x86_64-linux-gnu/cmake/pqxx" >> $GITHUB_ENV
   
     - name: Build 
       run: |
