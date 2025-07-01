@@ -1,7 +1,7 @@
 #pragma once
 #include <curl/curl.h>
 #include <pqxx/pqxx>
-#include "Ñurrency_Ñontainer.h"
+#include "Ð¡urrency_Ð¡ontainer.h"
 #include "mistake.h"
 #include "config_parser.h"
 #include "DATABASE.h"
@@ -29,11 +29,11 @@ void WriteFile(const std::vector<Currence>& data)
 
             out << request << std::endl;
         }
-        std::cout << "Ôàéë çàïèñàí!" << std::endl;
+        std::cout << "Ã”Ã Ã©Ã« Ã§Ã Ã¯Ã¨Ã±Ã Ã­!" << std::endl;
     }
     else
     {
-        std::cerr << "Ôàéë íå áûë îòêðûò äëÿ çàïèñè!\n";
+        std::cerr << "Ã”Ã Ã©Ã« Ã­Ã¥ Ã¡Ã»Ã« Ã®Ã²ÃªÃ°Ã»Ã² Ã¤Ã«Ã¿ Ã§Ã Ã¯Ã¨Ã±Ã¨!\n";
     }
 
     out.close();
