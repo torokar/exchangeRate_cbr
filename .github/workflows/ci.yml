@@ -50,7 +50,7 @@ jobs:
 
     # Сохраняем артефакт сборки
     - name: Upload application artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ExchangeRateCbr-app
         path: build/ExchangeRateCbr
