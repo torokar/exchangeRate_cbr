@@ -63,8 +63,9 @@ int main()
 
 
 	std::cout << "Формат ввода даты **02/03/2002**";
-	std::cout << "\nВведите дата: ";
-	std::getline(std::cin, date);
+	data = "02/03/2002";
+	//std::cout << "\nВведите дата: ";
+	//std::getline(std::cin, date);
 
 	std::string encoded_date = encode_date(date);
 	std::string full_url = base_url + encoded_date;
@@ -98,8 +99,6 @@ int main()
 
 
 	SubstrCurrensiFromXML(XmlData, DataCurr);
-	//ConnectDB();
-
 
 	std::cout << DataCurr[0].Date << std::endl;
 	for (int i = 0; i < DataCurr.size(); i++)
