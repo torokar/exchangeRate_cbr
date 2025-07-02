@@ -7,7 +7,7 @@
 #include "DATABASE.h"
 #include <fstream>
 
-
+//recording data into a file received from the website of the Central Bank of Russia
 void WriteFile(const std::vector<Currence>& data)
 {
     std::ofstream out("data_file/data.txt", std::ios::out | std::ios::binary);
@@ -29,11 +29,11 @@ void WriteFile(const std::vector<Currence>& data)
 
             out << request << std::endl;
         }
-        std::cout << "Ôàéë çàïèñàí!" << std::endl;
+        std::cout << "The data has been written to the file.!" << std::endl;
     }
     else
     {
-        std::cerr << "Ôàéë íå áûë îòêðûò äëÿ çàïèñè!\n";
+        std::cerr << "Data was not written to the file.!\n";
     }
 
     out.close();
