@@ -39,11 +39,9 @@ int main()
 	//Выполняем запрос
 	CURLcode resultat; /*Объект куда будет записанны данные*/
 	curl = curl_easy_init();
-
-
-	std::cout << "Формат ввода даты **02/03/2002**";
+	
 	date = "02/03/2002";
-
+	
 	std::string encoded_date = encode_date(date);
 	std::string full_url = base_url + encoded_date;
 
