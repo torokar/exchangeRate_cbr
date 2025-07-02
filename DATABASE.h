@@ -5,7 +5,7 @@
 #include "Сurrency_Сontainer.h"
 
 // Функция преобразования CP1251 -> UTF-8
-std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
+/*std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
     int wsize = MultiByteToWideChar(1251, 0, cp1251Str.c_str(), -1, NULL, 0);
     std::wstring wstr(wsize, 0);
     MultiByteToWideChar(1251, 0, cp1251Str.c_str(), -1, &wstr[0], wsize);
@@ -17,22 +17,16 @@ std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
     // Убираем нулевые байты в конце
     utf8str.resize(utf8str.size() - 1);
     return utf8str;
-}
+}*/
 
 void ConnectedBD(const std::vector<Currence>& data) {
-    std::vector<std::string> curr = { "AUD", "GBP", "BYR", "DKK", "USD" };
-    std::vector<std::string> curr2 = { 
-        ConvertCP1251ToUTF8("Австралийский доллар"),
-        ConvertCP1251ToUTF8("Фунт стерлингов"),
-        ConvertCP1251ToUTF8("Белорусских рублей"),
-        ConvertCP1251ToUTF8("Датских крон"),
-        ConvertCP1251ToUTF8("Доллар США")
-    };
-    std::vector<std::string> curr3 = { "16,0102", "43,8254", "18,4290", "36,1010", "30,9436" };
+    std::vector<std::string> curr;
+    std::vector<std::string> curr2;
+    std::vector<std::string> curr3;
 
     for (const auto& currency : data) {
         curr.push_back(currency.CharCode);
-        curr2.push_back(ConvertCP1251ToUTF8(currency.Name_currence));
+        curr2.push_back(currency.Name_currence);
         curr3.push_back(currency.Value);
     }
 
