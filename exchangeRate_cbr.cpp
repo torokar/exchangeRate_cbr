@@ -1,11 +1,3 @@
-﻿/*
-Цель: Получить курс доллара с публичного API и вывести его в консоль.
-
-
-API центробанка https://cbr.ru/scripts/XML_daily.asp?date_req=02/03/2002
-
-*/
-
 #include <curl/curl.h>
 #include <pqxx/pqxx>
 #include "Сurrency_Сontainer.h"
@@ -19,19 +11,6 @@ static size_t WriteCallback(void* contents, size_t size, size_t nmeb, void* user
 	((std::string*)userp)->append((char*)contents, size * nmeb);
 	return size * nmeb;
 }
-/*
-	void*contents - это пачка данных от сервера. Сервер присылает данные не целмком
-	а отдельными кусочками
-	size_t size и size_t nmeb - размер одного данных (в байтах 1)
-	nmeb - сколько таких кусочков пришло
-	Вместе size * nmemb - это общий размер данных в этой "пачке"
-
-	void* userp - это коробка для писем в нашем случае std::string куда мы будем складывать данные
-
-	((std::string*)userp)->append - append добавляет новые данные в конец строки (char*)contents
-	преобразует данные в текст
-	size * nmeb - сколько байт нужно добавить
-*/
 
 std::string encode_date(const std::string& date)
 {
@@ -64,15 +43,13 @@ int main()
 
 	std::cout << "Формат ввода даты **02/03/2002**";
 	date = "02/03/2002";
-	//std::cout << "\nВведите дата: ";
-	//std::getline(std::cin, date);
 
 	std::string encoded_date = encode_date(date);
 	std::string full_url = base_url + encoded_date;
 
 	if (!curl)
 	{
-		std::cerr << "Ошибка CURL!\n";
+		std::cerr << "Error CURL!\n";
 		return 1;
 	}
 
@@ -90,7 +67,7 @@ int main()
 
 		if (resultat != CURLE_OK)
 		{
-			std::cerr << "Ошибка CURL " << curl_easy_strerror(resultat) << std::endl;
+			std::cerr << "Error CURL " << curl_easy_strerror(resultat) << std::endl;
 		}
 
 		//Закрываем дескриптор
@@ -99,13 +76,6 @@ int main()
 
 
 	SubstrCurrensiFromXML(XmlData, DataCurr);
-
-	std::cout << DataCurr[0].Date << std::endl;
-	for (int i = 0; i < DataCurr.size(); i++)
-	{
-		std::cout << DataCurr[i].CharCode << " " << DataCurr[i].Name_currence << " " << DataCurr[i].Value << "\n";
-	}
-
 	WriteFile(DataCurr);
 	ConnectedBD(DataCurr);
 
