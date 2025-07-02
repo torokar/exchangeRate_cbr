@@ -3,7 +3,6 @@
 #include <iostream>
 #include <fstream>
 #include "Сurrency_Сontainer.h"
-#include <Windows.h>
 
 // Функция преобразования CP1251 -> UTF-8
 std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
@@ -41,8 +40,8 @@ void ConnectedBD(const std::vector<Currence>& data) {
         pqxx::connection conn(
             "host=localhost "
             "port=5432 "
-            "dbname=test_utf "
-            "user=postgres "
+            "dbname=mydb "
+            "user=service "
             "password=20ufodop1 "
             "options='-c client_encoding=UTF8'"
         );
