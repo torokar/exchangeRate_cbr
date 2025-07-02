@@ -3,21 +3,34 @@
 #include <iostream>
 #include <fstream>
 #include "Сurrency_Сontainer.h"
+#include <iconv.h>
+#include <cerrno>
+#include <cstring>
 
-// Функция преобразования CP1251 -> UTF-8
-/*std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
-    int wsize = MultiByteToWideChar(1251, 0, cp1251Str.c_str(), -1, NULL, 0);
-    std::wstring wstr(wsize, 0);
-    MultiByteToWideChar(1251, 0, cp1251Str.c_str(), -1, &wstr[0], wsize);
+// Функция преобразования CP1251 -> UTF-8 (iconv implementation)
+std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
+    iconv_t cd = iconv_open("UTF-8", "CP1251");
+    if (cd == (iconv_t)-1) {
+        std::cerr << "Error opening iconv: " << strerror(errno) << std::endl;
+        return cp1251Str;
+    }
 
-    int utf8size = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, NULL, 0, NULL, NULL);
-    std::string utf8str(utf8size, 0);
-    WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), -1, &utf8str[0], utf8size, NULL, NULL);
+    size_t inbytesleft = cp1251Str.size();
+    char* inbuf = const_cast<char*>(cp1251Str.data());
+    size_t outbytesleft = inbytesleft * 4; // UTF-8 max size
+    std::string out(outbytesleft, '\0');
+    char* outbuf = &out[0];
 
-    // Убираем нулевые байты в конце
-    utf8str.resize(utf8str.size() - 1);
-    return utf8str;
-}*/
+    if (iconv(cd, &inbuf, &inbytesleft, &outbuf, &outbytesleft) == (size_t)-1) {
+        std::cerr << "Conversion error: " << strerror(errno) << std::endl;
+        iconv_close(cd);
+        return cp1251Str;
+    }
+
+    iconv_close(cd);
+    out.resize(out.size() - outbytesleft); // Trim to actual size
+    return out;
+}
 
 void ConnectedBD(const std::vector<Currence>& data) {
     std::vector<std::string> curr;
@@ -26,7 +39,7 @@ void ConnectedBD(const std::vector<Currence>& data) {
 
     for (const auto& currency : data) {
         curr.push_back(currency.CharCode);
-        curr2.push_back(currency.Name_currence);
+        curr2.push_back(ConvertCP1251ToUTF8(currency.Name_currence));
         curr3.push_back(currency.Value);
     }
 
