@@ -63,7 +63,7 @@ int main()
 
 
 	std::cout << "Формат ввода даты **02/03/2002**";
-	data = "02/03/2002";
+	date = "02/03/2002";
 	//std::cout << "\nВведите дата: ";
 	//std::getline(std::cin, date);
 
