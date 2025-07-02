@@ -48,6 +48,14 @@ jobs:
         cmake -DCMAKE_BUILD_TYPE=Release ..
         make
 
+    # Сохраняем артефакт сборки
+    - name: Upload application artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ExchangeRateCbr-app
+        path: build/ExchangeRateCbr
+        if-no-files-found: error
+
     - name: Run executable
       run: |
         cd build
