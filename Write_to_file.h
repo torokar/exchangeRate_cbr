@@ -2,7 +2,6 @@
 #include <curl/curl.h>
 #include <pqxx/pqxx>
 #include "Сurrency_Сontainer.h"
-#include "mistake.h"
 #include "config_parser.h"
 #include "DATABASE.h"
 #include <fstream>
