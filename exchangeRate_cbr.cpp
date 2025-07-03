@@ -9,7 +9,6 @@ API центробанка https://cbr.ru/scripts/XML_daily.asp?date_req=02/03/2
 #include <curl/curl.h>
 #include <pqxx/pqxx>
 #include "Сurrency_Сontainer.h"
-#include "mistake.h"
 #include "config_parser.h"
 #include "DATABASE.h"
 #include "Write_to_file.h"
