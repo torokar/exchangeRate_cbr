@@ -1,11 +1,3 @@
-﻿/*
-Цель: Получить курс доллара с публичного API и вывести его в консоль.
-
-
-API центробанка https://cbr.ru/scripts/XML_daily.asp?date_req=02/03/2002
-
-*/
-
 #include <curl/curl.h>
 #include <pqxx/pqxx>
 #include "Сurrency_Сontainer.h"
@@ -48,15 +40,13 @@ int main()
 	curl = curl_easy_init();
 	
 	date = "02/03/2002";
-	//std::cout << "\nВведите дата: ";
-	//std::getline(std::cin, date);
-
+	
 	std::string encoded_date = encode_date(date);
 	std::string full_url = base_url + encoded_date;
 
 	if (!curl)
 	{
-		std::cerr << "Ошибка CURL!\n";
+		std::cerr << "Error CURL!\n";
 		return 1;
 	}
 
@@ -74,7 +64,7 @@ int main()
 
 		if (resultat != CURLE_OK)
 		{
-			std::cerr << "Ошибка CURL " << curl_easy_strerror(resultat) << std::endl;
+			std::cerr << "Error CURL " << curl_easy_strerror(resultat) << std::endl;
 		}
 
 		//Закрываем дескриптор

@@ -49,7 +49,7 @@ void ConnectedBD(const std::vector<Currence>& data) {
             "port=5432 "
             "dbname=mydb "
             "user=service "
-            "password=20ufodop1 "
+            "password=11111111 "
             "options='-c client_encoding=UTF8'"
         );
         

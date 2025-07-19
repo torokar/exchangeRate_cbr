@@ -36,7 +36,7 @@ jobs:
     - name: Create and configure database
       run: |
         sudo -u postgres psql -c "CREATE DATABASE mydb WITH ENCODING 'UTF8' TEMPLATE template0;"
-        sudo -u postgres psql -c "CREATE USER service WITH PASSWORD '20ufodop1';"
+        sudo -u postgres psql -c "CREATE USER service WITH PASSWORD '11111111';"
         sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mydb TO service;"
         sudo -u postgres psql -d mydb -c "GRANT ALL ON SCHEMA public TO service;"
         sudo -u postgres psql -d mydb -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO service;"
