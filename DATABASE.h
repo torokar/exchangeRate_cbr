@@ -1,7 +1,6 @@
 #pragma once
 #include <pqxx/pqxx>
 #include <iostream>
-#include <fstream>
 #include "Сurrency_Сontainer.h"
 #include <iconv.h>
 #include <cerrno>
