@@ -1,8 +1,5 @@
 #pragma once
 #include <string>
-#include <iostream>
-#include <vector>
-
 struct Currence
 {
 	std::string CharCode;
