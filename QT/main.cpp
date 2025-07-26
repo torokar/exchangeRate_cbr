@@ -17,7 +17,7 @@ void testPostgreSQLConnection() {
             pqxx::connection conn("dbname=mydb user=postgres password=20ufodop host=localhost");
 
             if (conn.is_open()) {
-                qDebug() << "Successfully connected to PostgreSQL!";
+                qDebug() << "111Successfully connected to PostgreSQL!";
                 qDebug() << "Database:" << conn.dbname();
 
                 // Простой запрос для проверки
@@ -65,8 +65,8 @@ int main(int argc, char *argv[]) {
     //qDebug() << "=== Starting application tests ===";
 
     // Тестируем подключения
-    //testPostgreSQLConnection();
-    //testCurlFunctionality();
+    testPostgreSQLConnection();
+    testCurlFunctionality();
 
     // Запускаем главное окно
     MainWindow w;

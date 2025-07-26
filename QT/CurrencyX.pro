@@ -21,7 +21,7 @@ unix {
 # CURL
 #--------------------------------------------------
 
-CURL_INSTALL_DIR = /media/andreyonkhonov/DATA/lib/curl-8.8.0/installCurl
+CURL_INSTALL_DIR = /home/andreyonkhonov/clone/exchangeRate_cbr/lib
 
 INCLUDEPATH += $$CURL_INSTALL_DIR/include
 
@@ -32,7 +32,7 @@ LIBS += -L$$CURL_INSTALL_DIR/lib -lcurl
 #--------------------------------------------------
 
 # Пути к libpqxx
-LIBPQXX_INSTALL_DIR =  /media/andreyonkhonov/DATA/Development/libs/libpqxx-install/
+LIBPQXX_INSTALL_DIR =  /home/andreyonkhonov/clone/exchangeRate_cbr/lib
 exists($$LIBPQXX_INSTALL_DIR) {
     INCLUDEPATH += $$LIBPQXX_INSTALL_DIR/include
     LIBS += -L$$LIBPQXX_INSTALL_DIR/lib -lpqxx
@@ -68,9 +68,12 @@ unix:!android {
     }
 }
 
+#--------------------------------------------------
+# iconv
+#--------------------------------------------------
 unix {
     # Проверяем существование библиотеки
-    !exists(/usr/local/lib/libiconv.so) {
+    !exists(/home/andreyonkhonov/clone/exchangeRate_cbr/lib) {
         warning("libiconv не найден в /usr/local/lib!")
     }
 
