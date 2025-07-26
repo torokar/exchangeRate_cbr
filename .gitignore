@@ -1,0 +1,3 @@
+echo "QT/build/" >> .gitignore
+echo "*.o" >> .gitignore
+echo "*.idx" >> .gitignore

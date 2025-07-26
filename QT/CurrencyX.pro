@@ -32,8 +32,8 @@ LIBS += -L$$CURL_INSTALL_DIR/lib -lcurl
 #--------------------------------------------------
 
 # Пути к libpqxx
-LIBPQXX_INSTALL_DIR =  /home/andreyonkhonov/clone/exchangeRate_cbr/lib
-exists($$LIBPQXX_INSTALL_DIR) {
+LIBPQXX_INSTALL_DIR =  /home/andreyonkhonov/clone/exchangeRate_cbr/lib/libpqxx-install
+exists($$LIBPQXX_INSTALL_DIR) {`
     INCLUDEPATH += $$LIBPQXX_INSTALL_DIR/include
     LIBS += -L$$LIBPQXX_INSTALL_DIR/lib -lpqxx
     message("Подключен libpqxx из: $$LIBPQXX_INSTALL_DIR")
