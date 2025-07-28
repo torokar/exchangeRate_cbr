@@ -71,30 +71,39 @@ unix:!android {
 #--------------------------------------------------
 # iconv
 #--------------------------------------------------
-unix {
-    # Проверяем существование библиотеки
-    !exists(/home/andreyonkhonov/clone/exchangeRate_cbr/lib) {
-        warning("libiconv не найден в /usr/local/lib!")
-    }
 
-    # Проверяем заголовочный файл
-    !exists(/usr/local/include/iconv.h) {
-        warning("iconv.h не найден в /usr/local/include!")
+unix {
+    # Проверяем наличие системной библиотеки
+    exists(/usr/local/lib/libiconv.so) {
+        message("Используем системную libiconv из /usr/local/lib")
+        LIBS += -L/usr/local/lib -liconv
+        INCLUDEPATH += /usr/local/include
+    }
+    else:exists(/usr/lib/x86_64-linux-gnu/libiconv.so) {
+        message("Используем системную libiconv из /usr/lib")
+        LIBS += -L/usr/lib/x86_64-linux-gnu -liconv
+        INCLUDEPATH += /usr/include
     }
 }
 
+
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    second_window.cpp
 
 HEADERS += \
     DATABASE.h \
+    config_parser.h \
+    connection_cb.h \
     container.h \
     mainwindow.h \
+    second_window.h \
     write_to_file.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    second_window.ui
 
 target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target

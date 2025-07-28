@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>image/Без названия.png</file>
+        <file>image/icons8-обмен-валюты-48.ico</file>
     </qresource>
 </RCC>

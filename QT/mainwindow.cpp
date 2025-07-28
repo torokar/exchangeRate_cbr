@@ -4,15 +4,18 @@
 #include <QApplication>
 #include <pqxx/pqxx>
 #include <QDebug>
-#include <curl/curl.h>  // Для работы с libcurl
+#include <curl/curl.h>
 #include <QString>
 #include <QMessageBox>
+#include <second_window.h>
+#include <connection_cb.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setFixedSize(this->size());
 }
 
 MainWindow::~MainWindow()
@@ -127,9 +130,12 @@ void MainWindow::on_pushButton_clicked()
 
     QString date = forDay + "/" + forMont + "/" + forYear;
 
-    QMessageBox::information(this, "Выполнено", "Дата введена корректна!");
+    conn_cbRussian(date);
 
-    qDebug() << "Дата:" << date;
+
+    second_window window;
+    window.setModal(true);
+    window.exec();
 
 }
 
