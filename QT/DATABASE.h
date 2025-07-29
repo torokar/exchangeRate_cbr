@@ -35,15 +35,18 @@ std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
 }
 
 void ConnectedBD(const std::vector<Currence>& data) {
-    std::vector<std::string> curr;
-    std::vector<std::string> curr2;
-    std::vector<std::string> curr3;
+    // std::vector<std::string> currCharCode;
+    // std::vector<std::string> currName;
+    // std::vector<std::string> currValue;
+    // std::vector<std::string> currDate;
 
-    for (const auto& currency : data) {
-        curr.push_back(currency.CharCode);
-        curr2.push_back(ConvertCP1251ToUTF8(currency.Name_currence));
-        curr3.push_back(currency.Value);
-    }
+    // for (const auto& currency : data)
+    // {
+    //     currDate.push_back(currency.Date);
+    //     currCharCode.push_back(currency.CharCode);
+    //     currName.push_back(ConvertCP1251ToUTF8(currency.Name_currence));
+    //     currValue.push_back(currency.Value);
+    // }
 
     try {
         pqxx::connection conn(
@@ -65,19 +68,40 @@ void ConnectedBD(const std::vector<Currence>& data) {
         pqxx::work txn(conn);
         txn.exec("SET client_encoding TO 'UTF8'");
 
-        txn.exec(
-            "CREATE TABLE IF NOT EXISTS exdc ("
-            "CharCode VARCHAR(10) NOT NULL, "
-            "NameCurrency VARCHAR(50) NOT NULL, "
-            "Value VARCHAR(50) NOT NULL)"
-            );
 
-        for (size_t i = 0; i < curr.size(); ++i) {
+        try {
+            txn.exec(
+                "CREATE TABLE exdc ("
+                "CharCode VARCHAR(10) NOT NULL, "
+                "NameCurrency VARCHAR(50) NOT NULL, "
+                "Value VARCHAR(50) NOT NULL, "
+                "Date DATE NOT NULL, "
+                "UNIQUE(Date, CharCode)"
+                ")"
+                );
+        }
+        catch (const pqxx::sql_error&e) {
+            if(std::string(e.what()).find("already exists") != std::string::npos)
+            {
+                std::cout << "Table already exists " << std::endl;
+                txn.abort();
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+
+
+        for (const auto& currency : data) {
             txn.exec_params(
-                "INSERT INTO exdc (CharCode, NameCurrency, Value) VALUES ($1, $2, $3)",
-                curr[i],
-                curr2[i],  // добавляем название в UTF-8
-                curr3[i]
+                "INSERT INTO exdc (CharCode, NameCurrency, Value, Date) "
+                "VALUES ($1, $2, $3, $4)",
+                currency.CharCode,
+                ConvertCP1251ToUTF8(currency.Name_currence),
+                currency.Value,
+                currency.Date
                 );
         }
 

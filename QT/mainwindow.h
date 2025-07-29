@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtConcurrent/QtConcurrent>
+#include <QThread>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,8 +21,10 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+    void handData();
 
 private:
     Ui::MainWindow *ui;
+    QThread *workerTread;
 };
 #endif // MAINWINDOW_H
