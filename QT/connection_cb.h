@@ -1,6 +1,5 @@
 #ifndef CONNECTION_CB_H
 #define CONNECTION_CB_H
-
 #include <curl/curl.h>
 #include <pqxx/pqxx>
 #include "container.h"
@@ -12,6 +11,8 @@
 #include <container.h>
 #include <write_to_file.h>
 #include <QtConcurrent/QtConcurrent>
+
+//Подключение к сайты ЦБ
 
 static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* output) {
     size_t total_size = size * nmemb;
@@ -68,19 +69,6 @@ void conn_cbRussian(const QString& dateUser)
 
     curl_easy_cleanup(curl);
     curl_global_cleanup();
-
-
-    //Пока тестовая проверка, что записано в структуру
-    // for (int i = 0; i < DataCurr.size(); ++i)
-    // {
-    //     std::cout << DataCurr[i].Name_currence << "  ";
-    //     std::cout << DataCurr[i].CharCode << "  ";
-    //     std::cout << DataCurr[i].Value << std::endl;
-    // }
-
 }
-
-
-
 
 #endif // CONNECTION_CB_H

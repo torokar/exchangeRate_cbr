@@ -16,7 +16,7 @@
 #include <DATABASE.h>
 #include <write_to_file.h>
 #include <QThread>
-
+#include <getFromPostgres.h>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -96,15 +96,19 @@ void MainWindow::on_pushButton_clicked()
     msgBox.setWindowTitle("Информация");
     msgBox.setText("Идет загрузка данных...");
     msgBox.setIcon(QMessageBox::Information);
-    QTimer::singleShot(2000, &msgBox, &QMessageBox::accept);
+    QTimer::singleShot(3000, &msgBox, &QMessageBox::accept);
     msgBox.exec();
 
     QtConcurrent::run([this, date]()
-    {
-        // qDebug() << "ID Thread: " << QThread::currentThreadId();
-        conn_cbRussian(date);
-        QMetaObject::invokeMethod(this, "handData", Qt::QueuedConnection);
-    });
+                      {
+                          conn_cbRussian(date);
+                          QMetaObject::invokeMethod(this, "handData", Qt::QueuedConnection);
+                          readDataTable();
+                      });
+
+
+
+
 
 }
 

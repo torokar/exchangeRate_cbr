@@ -15,8 +15,13 @@ public:
     explicit second_window(QWidget *parent = nullptr);
     ~second_window();
 
+
+private slots:
+    void on_loadTable_clicked();
+
 private:
     Ui::second_window *ui;
+
 };
 
 #endif // SECOND_WINDOW_H

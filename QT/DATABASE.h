@@ -1,6 +1,5 @@
 #ifndef DATABASE_H
 #define DATABASE_H
-
 #pragma once
 #include <pqxx/pqxx>
 #include <iostream>
@@ -9,8 +8,8 @@
 #include <cerrno>
 #include <cstring>
 
-// Функция преобразования CP1251 -> UTF-8 (iconv implementation)
-std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
+// Функция преобразования CP1251 -> UTF-8
+inline std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
     iconv_t cd = iconv_open("UTF-8", "CP1251");
     if (cd == (iconv_t)-1) {
         std::cerr << "Error opening iconv: " << strerror(errno) << std::endl;
@@ -30,25 +29,13 @@ std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
     }
 
     iconv_close(cd);
-    out.resize(out.size() - outbytesleft); // Trim to actual size
+    out.resize(out.size() - outbytesleft);
     return out;
 }
 
-void ConnectedBD(const std::vector<Currence>& data) {
-    // std::vector<std::string> currCharCode;
-    // std::vector<std::string> currName;
-    // std::vector<std::string> currValue;
-    // std::vector<std::string> currDate;
-
-    // for (const auto& currency : data)
-    // {
-    //     currDate.push_back(currency.Date);
-    //     currCharCode.push_back(currency.CharCode);
-    //     currName.push_back(ConvertCP1251ToUTF8(currency.Name_currence));
-    //     currValue.push_back(currency.Value);
-    // }
-
+inline void ConnectedBD(const std::vector<Currence>& data) {
     try {
+        //Подключение к базе
         pqxx::connection conn(
             "host=localhost "
             "port=5432 "
@@ -70,8 +57,9 @@ void ConnectedBD(const std::vector<Currence>& data) {
 
 
         try {
+            //Создания табли если она не существует
             txn.exec(
-                "CREATE TABLE exdc ("
+                "CREATE TABLE IF NOT EXISTS exdc ("
                 "CharCode VARCHAR(10) NOT NULL, "
                 "NameCurrency VARCHAR(50) NOT NULL, "
                 "Value VARCHAR(50) NOT NULL, "
@@ -97,7 +85,8 @@ void ConnectedBD(const std::vector<Currence>& data) {
         for (const auto& currency : data) {
             txn.exec_params(
                 "INSERT INTO exdc (CharCode, NameCurrency, Value, Date) "
-                "VALUES ($1, $2, $3, $4)",
+                "VALUES ($1, $2, $3, $4)"
+                "ON CONFLICT (Date, CharCode) DO NOTHING",
                 currency.CharCode,
                 ConvertCP1251ToUTF8(currency.Name_currence),
                 currency.Value,
