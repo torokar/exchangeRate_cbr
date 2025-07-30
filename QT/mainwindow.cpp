@@ -8,7 +8,16 @@
 #include <QString>
 #include <QMessageBox>
 #include <second_window.h>
+#include <QtConcurrent/QtConcurrent>
 #include <connection_cb.h>
+#include <QTime>
+#include <connection_cb.h>
+#include <config_parser.h>
+#include <DATABASE.h>
+#include <write_to_file.h>
+#include <QThread>
+#include <getFromPostgres.h>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -16,6 +25,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->setFixedSize(this->size());
+
+
+
 }
 
 MainWindow::~MainWindow()
@@ -23,59 +35,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-// void MainWindow::on_x_clicked()
-// {
-//     QString input;
-//     QString inputUsers = MainWindow::ui->InputUser->text();
-//     QString inputDB;
-//     QString password;
-//     QString Host;
-//     //"dbname=mydb user=postgres password=20ufodop host=localhost"
-
-//     qDebug() << "=== Testing PostgreSQL connectivity ===";
-
-//     try {
-//         // 1. Проверка версии libpqxx
-//         qDebug() << "Libpqxx version:" << PQXX_VERSION;
-
-//         // 2. Попытка подключения к базе данных
-//         try {
-//             pqxx::connection conn(inputUsers.toStdString());
-
-//             if (conn.is_open()) {
-//                 qDebug() << "Successfully connected to PostgreSQL!";
-//                 qDebug() << "Database:" << conn.dbname();
-
-//                 // Простой запрос для проверки
-//                 pqxx::work txn(conn);
-//                 pqxx::result res = txn.exec("SELECT version()");
-//                 input += "PostgreSQL version:";
-//                 input += res[0][0].c_str();
-//                 txn.commit();
-//             } else {
-//                 qDebug() << "Connection failed!";
-//             }
-//         } catch (const pqxx::broken_connection &e) {
-//             qDebug() << "Connection error:" << e.what();
-//             qDebug() << "Please check:";
-//             qDebug() << "1. Is PostgreSQL running? (sudo systemctl status postgresql)";
-//             qDebug() << "2. Are credentials correct?";
-//             qDebug() << "3. Check pg_hba.conf for connection permissions";
-//         }
-//     } catch (const std::exception &e) {
-//         qDebug() << "General error:" << e.what();
-//     }
-
-//     MainWindow::ui->label->setText(input);
-// }
-
-
-
-
 void MainWindow::on_pushButton_clicked()
 {
+    // qDebug() << "ID Thread: " << QThread::currentThreadId();
     int month = ui->spinMonth->value();
-    qDebug() << month;
     int day = ui->spinDay->value();
     QString year = ui->InputYear->text();
     int yearInt = year.toInt();
@@ -114,8 +77,6 @@ void MainWindow::on_pushButton_clicked()
         }
     }
 
-
-
     //Проверка года
     if(yearInt < 1994 || yearInt > 2025)
     {
@@ -130,47 +91,33 @@ void MainWindow::on_pushButton_clicked()
 
     QString date = forDay + "/" + forMont + "/" + forYear;
 
-    conn_cbRussian(date);
+    //Имитация загрузки данных)
+    QMessageBox msgBox;
+    msgBox.setWindowTitle("Информация");
+    msgBox.setText("Идет загрузка данных...");
+    msgBox.setIcon(QMessageBox::Information);
+    QTimer::singleShot(3000, &msgBox, &QMessageBox::accept);
+    msgBox.exec();
+
+    QtConcurrent::run([this, date]()
+                      {
+                          conn_cbRussian(date);
+                          QMetaObject::invokeMethod(this, "handData", Qt::QueuedConnection);
+                          readDataTable();
+                      });
 
 
-    second_window window;
-    window.setModal(true);
-    window.exec();
+
+
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void MainWindow::handData()
+{
+    second_window window;
+    window.setModal(true);
+    window.exec();
+}
 
 
 

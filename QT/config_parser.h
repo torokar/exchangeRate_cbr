@@ -6,6 +6,7 @@
 #include "container.h""
 
 
+//Парсинг данных с сайта
 //Проверка на дубликаты
 bool CheckForDuplicates(const std::vector<Currence>& data, const std::string& name,
                         const std::string& value, const std::string& charcode)
