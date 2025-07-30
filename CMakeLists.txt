@@ -13,7 +13,7 @@ find_package(CURL REQUIRED)
 find_package(Iconv REQUIRED)
 
 # Исходные файлы
-file(GLOB SOURCES "back/*.cpp")
+file(GLOB SOURCES "QT/*.cpp")
 
 # Создание исполняемого файла
 add_executable(ExchangeRateCbr ${SOURCES})
