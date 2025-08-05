@@ -6,6 +6,7 @@
 #include "container.h""
 
 
+//Парсинг данных с сайта
 //Проверка на дубликаты
 bool CheckForDuplicates(const std::vector<Currence>& data, const std::string& name,
                         const std::string& value, const std::string& charcode)
@@ -66,7 +67,7 @@ void SubstrCurrensiFromXML(const std::string XMLdata
             curr.Name_currence = name_curr;
         }
 
-        //Извлечения значения валюты
+        //Извлечения значения валютыa
         Value_Start = subNameCurrencsi.find("<Value>");
         Value_end = subNameCurrencsi.find("</Value>");
         if (Value_Start != std::string::npos && Value_end != std::string::npos)

@@ -10,9 +10,4 @@ struct Currence
     std::string Value;
     std::string Date;
 };
-
-
-//проверка работы на разных компьютерах
-
-
 #endif // CONTAINER_H

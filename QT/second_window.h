@@ -2,6 +2,7 @@
 #define SECOND_WINDOW_H
 
 #include <QDialog>
+#include <QStandardItem>
 
 namespace Ui {
 class second_window;
@@ -17,6 +18,8 @@ public:
 
 private:
     Ui::second_window *ui;
+    QStandardItemModel *model;
+    void loadDataFromDatabase();
 };
 
 #endif // SECOND_WINDOW_H

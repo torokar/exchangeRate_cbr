@@ -1,6 +1,5 @@
 #ifndef DATABASE_H
 #define DATABASE_H
-
 #pragma once
 #include <pqxx/pqxx>
 #include <iostream>
@@ -9,8 +8,8 @@
 #include <cerrno>
 #include <cstring>
 
-// Функция преобразования CP1251 -> UTF-8 (iconv implementation)
-std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
+// Функция преобразования CP1251 -> UTF-8
+inline std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
     iconv_t cd = iconv_open("UTF-8", "CP1251");
     if (cd == (iconv_t)-1) {
         std::cerr << "Error opening iconv: " << strerror(errno) << std::endl;
@@ -30,22 +29,13 @@ std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
     }
 
     iconv_close(cd);
-    out.resize(out.size() - outbytesleft); // Trim to actual size
+    out.resize(out.size() - outbytesleft);
     return out;
 }
 
-void ConnectedBD(const std::vector<Currence>& data) {
-    std::vector<std::string> curr;
-    std::vector<std::string> curr2;
-    std::vector<std::string> curr3;
-
-    for (const auto& currency : data) {
-        curr.push_back(currency.CharCode);
-        curr2.push_back(ConvertCP1251ToUTF8(currency.Name_currence));
-        curr3.push_back(currency.Value);
-    }
-
+inline void ConnectedBD(const std::vector<Currence>& data) {
     try {
+        //Подключение к базе
         pqxx::connection conn(
             "host=localhost "
             "port=5432 "
@@ -65,19 +55,40 @@ void ConnectedBD(const std::vector<Currence>& data) {
         pqxx::work txn(conn);
         txn.exec("SET client_encoding TO 'UTF8'");
 
-        txn.exec(
-            "CREATE TABLE IF NOT EXISTS exdc ("
-            "CharCode VARCHAR(10) NOT NULL, "
-            "NameCurrency VARCHAR(50) NOT NULL, "
-            "Value VARCHAR(50) NOT NULL)"
-            );
 
-        for (size_t i = 0; i < curr.size(); ++i) {
+        try {
+            //Создания табли если она не существует
+            txn.exec(
+                "CREATE TABLE IF NOT EXISTS exdc ("
+                "CharCode VARCHAR(10) NOT NULL, "
+                "NameCurrency VARCHAR(50) NOT NULL, "
+                "Value VARCHAR(50) NOT NULL, "
+                "Date DATE NOT NULL, "
+                "UNIQUE(Date, CharCode)"
+                ")"
+                );
+        }
+        catch (const pqxx::sql_error&e) {
+            if(std::string(e.what()).find("already exists") != std::string::npos)
+            {
+                std::cout << "Table already exists " << std::endl;
+                txn.abort();
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        for (const auto& currency : data) {
             txn.exec_params(
-                "INSERT INTO exdc (CharCode, NameCurrency, Value) VALUES ($1, $2, $3)",
-                curr[i],
-                curr2[i],  // добавляем название в UTF-8
-                curr3[i]
+                "INSERT INTO exdc (CharCode, NameCurrency, Value, Date) "
+                "VALUES ($1, $2, $3, $4)"
+                "ON CONFLICT (Date, CharCode) DO NOTHING",
+                currency.CharCode,
+                ConvertCP1251ToUTF8(currency.Name_currence),
+                currency.Value,
+                currency.Date
                 );
         }
 
