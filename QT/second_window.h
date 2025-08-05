@@ -19,6 +19,7 @@ public:
 private:
     Ui::second_window *ui;
     QStandardItemModel *model;
+    void loadDataFromDatabase();
 };
 
 #endif // SECOND_WINDOW_H

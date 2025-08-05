@@ -88,7 +88,6 @@ unix {
 
 
 SOURCES += \
-    getFromPostgres.cpp \
     main.cpp \
     mainwindow.cpp \
     second_window.cpp
@@ -98,7 +97,6 @@ HEADERS += \
     config_parser.h \
     connection_cb.h \
     container.h \
-    getFromPostgres.h \
     mainwindow.h \
     second_window.h \
     write_to_file.h

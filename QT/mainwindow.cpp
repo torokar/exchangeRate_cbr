@@ -85,7 +85,6 @@ void MainWindow::on_pushButton_clicked()
                       {
                         conn_cbRussian(date);
                         QMetaObject::invokeMethod(this, "handData", Qt::QueuedConnection);
-                        readDataTable();
                       });
 }
 

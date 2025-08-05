@@ -80,8 +80,6 @@ inline void ConnectedBD(const std::vector<Currence>& data) {
             }
         }
 
-
-
         for (const auto& currency : data) {
             txn.exec_params(
                 "INSERT INTO exdc (CharCode, NameCurrency, Value, Date) "
