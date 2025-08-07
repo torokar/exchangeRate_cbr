@@ -81,16 +81,14 @@ void MainWindow::on_pushButton_clicked()
     QTimer::singleShot(3000, &msgBox, &QMessageBox::accept);
     msgBox.exec();
 
+    //Фоновый вызов с передачей даты в поток
     QtConcurrent::run([this, date]()
-                      {
-                        conn_cbRussian(date);
-                        QMetaObject::invokeMethod(this, "handData", Qt::QueuedConnection);
-                      });
+                      { QMetaObject::invokeMethod(this, "handData", Qt::QueuedConnection, Q_ARG(QString, date)); });
 }
 
-void MainWindow::handData()
+void MainWindow::handData(const QString &date)
 {
-    second_window window;
+    second_window window(nullptr, date);
     window.setModal(true);
     window.exec();
 }

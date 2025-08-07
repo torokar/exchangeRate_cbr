@@ -8,7 +8,7 @@
 
 //Парсинг данных с сайта
 //Проверка на дубликаты
-bool CheckForDuplicates(const std::vector<Currence>& data, const std::string& name,
+inline bool CheckForDuplicates(const std::vector<Currence>& data, const std::string& name,
                         const std::string& value, const std::string& charcode)
 {
     for (int i = 0; i < data.size(); ++i)
@@ -23,7 +23,7 @@ bool CheckForDuplicates(const std::vector<Currence>& data, const std::string& na
 
 
 //Вытягивание данных с сайта ЦБ России
-void SubstrCurrensiFromXML(const std::string XMLdata
+inline void SubstrCurrensiFromXML(const std::string XMLdata
                            , std::vector<Currence>& conclusion)
 {
 

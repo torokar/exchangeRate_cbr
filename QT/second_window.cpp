@@ -3,11 +3,15 @@
 #include <QStandardItemModel>
 #include <pqxx/pqxx>
 #include <QDebug>
+#include "connection_cb.h"
+#include <QTextCodec>
+#include <convertCP1251.h>
 
-second_window::second_window(QWidget *parent) :
+second_window::second_window(QWidget *parent, const QString &date) :
     QDialog(parent),
     ui(new Ui::second_window),
-    model(new QStandardItemModel(this))
+    model(new QStandardItemModel(this)),
+    date(date)
 {
     ui->setupUi(this);
     this->setFixedSize(this->size());
@@ -25,52 +29,49 @@ second_window::second_window(QWidget *parent) :
     loadDataFromDatabase();
 }
 
+void second_window::setDate(const QString &newDate)
+{
+    date = newDate;
+}
+
+
+//Вставка данных в таблицу
 void second_window::loadDataFromDatabase()
 {
-    try {
+    std::vector<Currence> dataCurr;
+    dataCurr = conn_cbRussian(date);
+    std::string convert;
 
-        pqxx::connection conn(
-            "host=localhost "
-            "port=5432 "
-            "dbname=mydb "
-            "user=service "
-            "password=11111111 "
-            "options='-c client_encoding=UTF8'"
-            );
+    // for (int i = 0; i < dataCurr.size(); ++i) {
 
-        if (conn.is_open()) {
-            pqxx::work txn(conn);
+    //     convert = dataCurr[i].Name_currence;
+    //     ConvertCP1251ToUTF8(convert);
 
-            pqxx::result res = txn.exec("SELECT CharCode, NameCurrency, Value,"
-                                        " Date FROM exdc ORDER BY Date DESC");
+    //     dataCurr[i].Name_currence = convert;
+    // }
 
-            // Очищаем модель перед загрузкой новых данных
-            model->removeRows(0, model->rowCount());
+    QTextCodec *codec = QTextCodec::codecForName("Windows-1251");
 
-            //Загрузка данных в таблицу из БД
-            for (const auto& row : res) {
-                QList<QStandardItem*> items;
-                items << new QStandardItem(QString::fromStdString(row["CharCode"].as<std::string>()));
-                items << new QStandardItem(QString::fromStdString(row["NameCurrency"].as<std::string>()));
-                items << new QStandardItem(QString::fromStdString(row["Value"].as<std::string>()));
-                items << new QStandardItem(QString::fromStdString(row["Date"].as<std::string>()));
-                model->appendRow(items);
-            }
 
-            txn.commit();
-            //Если нет данных
-        } else {
-            qDebug() << "Не удалось подключиться к базе данных";
-            QList<QStandardItem*> rowItems;
-            rowItems << new QStandardItem("Нет данных");
-            rowItems << new QStandardItem("");
-            rowItems << new QStandardItem("");
-            rowItems << new QStandardItem("");
-            model->appendRow(rowItems);
-        }
-    } catch (const std::exception& e) {
-        qDebug() << "Ошибка при загрузке данных:" << e.what();
+    model->removeRows(0, model->rowCount());
+
+    for(const auto& cur : dataCurr )
+    {
+        QList<QStandardItem*> rowItems;
+
+        QString name = codec->toUnicode(cur.Name_currence.c_str());
+
+       rowItems << new QStandardItem(QString::fromStdString(cur.CharCode));
+       rowItems << new QStandardItem(QString::fromStdString(cur.Name_currence));
+       rowItems << new QStandardItem(QString::fromStdString(cur.Value));
+       rowItems << new QStandardItem(QString::fromStdString(cur.Date));
+
+       model->appendRow(rowItems);
     }
+
+    // model->sort(3, Qt::DescendingOrder);
+
+
 }
 
 second_window::~second_window()

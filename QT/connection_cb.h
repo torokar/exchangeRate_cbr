@@ -20,7 +20,7 @@ static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::stri
     return total_size;
 }
 
-void conn_cbRussian(const QString& dateUser)
+inline std::vector<Currence> conn_cbRussian(const QString& dateUser)
 {
     setlocale(LC_ALL, "ru");
 
@@ -37,7 +37,7 @@ void conn_cbRussian(const QString& dateUser)
     if (!curl)
     {
         std::cerr << "Error initializing CURL!" << std::endl;
-        return;
+        return {};
     }
 
     // полный URL
@@ -69,6 +69,8 @@ void conn_cbRussian(const QString& dateUser)
 
     curl_easy_cleanup(curl);
     curl_global_cleanup();
+
+    return DataCurr;
 }
 
 #endif // CONNECTION_CB_H

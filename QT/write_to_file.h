@@ -8,7 +8,7 @@
 #include <fstream>
 
 //recording data into a file received from the website of the Central Bank of Russia
-void WriteFile(const std::vector<Currence>& data)
+inline void WriteFile(const std::vector<Currence>& data)
 {
     std::ofstream out("data_file/data.txt", std::ios::out | std::ios::binary);
 

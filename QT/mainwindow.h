@@ -22,7 +22,7 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    void handData();
+    void handData(const QString &date);
 
 private:
     Ui::MainWindow *ui;
