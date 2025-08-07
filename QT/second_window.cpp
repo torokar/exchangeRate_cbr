@@ -40,18 +40,6 @@ void second_window::loadDataFromDatabase()
 {
     std::vector<Currence> dataCurr;
     dataCurr = conn_cbRussian(date);
-    std::string convert;
-
-    // for (int i = 0; i < dataCurr.size(); ++i) {
-
-    //     convert = dataCurr[i].Name_currence;
-    //     ConvertCP1251ToUTF8(convert);
-
-    //     dataCurr[i].Name_currence = convert;
-    // }
-
-    QTextCodec *codec = QTextCodec::codecForName("Windows-1251");
-
 
     model->removeRows(0, model->rowCount());
 
@@ -59,10 +47,11 @@ void second_window::loadDataFromDatabase()
     {
         QList<QStandardItem*> rowItems;
 
-        QString name = codec->toUnicode(cur.Name_currence.c_str());
+        //Перекодировка из 1251 в UTF-8
+        std::string nameUTF = ConvertCP1251ToUTF8(cur.Name_currence);
 
        rowItems << new QStandardItem(QString::fromStdString(cur.CharCode));
-       rowItems << new QStandardItem(QString::fromStdString(cur.Name_currence));
+       rowItems << new QStandardItem(QString::fromStdString(nameUTF));
        rowItems << new QStandardItem(QString::fromStdString(cur.Value));
        rowItems << new QStandardItem(QString::fromStdString(cur.Date));
 

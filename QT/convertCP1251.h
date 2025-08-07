@@ -16,18 +16,18 @@ inline std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
 
     size_t inbytesleft = cp1251Str.size();
     char* inbuf = const_cast<char*>(cp1251Str.data());
-    size_t outbytesleft = inbytesleft * 4; // UTF-8 max size
-    std::string out(outbytesleft, '\0');
+    size_t outbyresleft = inbytesleft * 4;
+    std::string out(outbyresleft, '\0');
     char* outbuf = &out[0];
 
-    if (iconv(cd, &inbuf, &inbytesleft, &outbuf, &outbytesleft) == (size_t)-1) {
+    if (iconv(cd, &inbuf, &inbytesleft, &outbuf, &outbyresleft) == (size_t)-1) {
         std::cerr << "Conversion error: " << strerror(errno) << std::endl;
         iconv_close(cd);
         return cp1251Str;
     }
 
     iconv_close(cd);
-    out.resize(out.size() - outbytesleft);
+    out.resize(out.size() - outbyresleft);
     return out;
 }
 
