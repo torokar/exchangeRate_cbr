@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QtConcurrent/QtConcurrent>
 #include <QThread>
-#include "getFromPostgres.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
