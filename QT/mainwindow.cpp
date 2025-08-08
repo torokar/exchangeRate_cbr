@@ -9,7 +9,7 @@
 #include <QMessageBox>
 #include <second_window.h>
 #include <connection_cb.h>
-#include <getFromPostgres.h>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
