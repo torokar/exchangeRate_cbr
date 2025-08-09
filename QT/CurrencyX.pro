@@ -1,7 +1,7 @@
-QT += core gui widgets sql
+QT += core gui widgets sql xml concurrent
 CONFIG += c++17
 
-TARGET = YourAppName
+TARGET = AppCurrence
 
 #--------------------------------------------------
 # PostgresSQL

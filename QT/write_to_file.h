@@ -1,43 +1,101 @@
 #ifndef WRITE_TO_FILE_H
 #define WRITE_TO_FILE_H
 
-#pragma once
-#include <pqxx/pqxx>
-#include "container.h"
-#include <iostream>
-#include <fstream>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
+#include <container.h>
 
-//recording data into a file received from the website of the Central Bank of Russia
-inline void WriteFile(const std::vector<Currence>& data)
+
+// inline void WriteFile(const QVector<Currence>& data)
+// {
+//     // Создаем директорию, если ее нет
+//     QDir().mkpath("data_file");
+
+//     QFile file("data_file/data.txt");
+//     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+//         qCritical() << "Could not open file for writing:" << file.errorString();
+//         return;
+//     }
+
+//     QTextStream out(&file);
+//     out.setCodec("UTF-8"); // Устанавливаем кодировку UTF-8
+
+//     for (const auto& currency : data) {
+//         // Заменяем запятые на точки в значении
+//         QString value = currency.Value;
+//         value.replace(',', '.');
+
+//         // Формируем строку запроса
+//         out << "INSERT INTO exc (CharCode, NameCurrency, Value) VALUES ('"
+//             << currency.CharCode << "', '"
+//             << currency.Name_currence << "', '"
+//             << value << "');\n";
+//     }
+
+//     file.close();
+//     qDebug() << "Successfully wrote" << data.size() << "records to file";
+// }
+
+inline void WriteFile(const QVector<Currence>& data)
 {
-    std::ofstream out("data_file/data.txt", std::ios::out | std::ios::binary);
 
-    if (out.is_open())
-    {
-        for (int i = 0; i < data.size(); i++)
-        {
-            std::string value_fixed = data[i].Value;
-            std::replace(value_fixed.begin(), value_fixed.end(), ',', '.');
 
-            std::string request = "insert into exc (CharCode, NameCurrency, Value) values ('";
-            request += data[i].CharCode;
-            request += "', '";
-            request += data[i].Name_currence;
-            request += "', '";
-            request += value_fixed;
-            request += "');";
 
-            out << request << std::endl;
+    //Получения пути к директории
+    QString Dir = QCoreApplication::applicationDirPath();
+
+    //Создания подпапки
+    QDir dir(Dir + "/data");
+    if (!dir.exists()) {
+        if (!dir.mkpath(".")) {
+            qCritical() << "Ошибка создания директории! Проверте права доступа.";
+            return;
         }
-        std::cout << "The data has been written to the file.!" << std::endl;
-    }
-    else
-    {
-        std::cerr << "Data was not written to the file.!\n";
     }
 
-    out.close();
+    QString filePath = dir.filePath("currency_data.txt");
+
+    QFile file(filePath);
+
+    QTextStream out(&file);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        // Если не удалось открыть, выводим ошибку
+        qDebug() << "Ошибка открытия файла:" << file.errorString();
+        return;
+    }
+
+    for (const auto text : data) {
+
+        // Ее краткое названия
+        QString DataCurrence = text.CharCode;
+        out << DataCurrence << " | ";
+
+        //Названия валюты
+        DataCurrence = text.Name_currence;
+        out << DataCurrence << " | ";
+
+        //Значение
+        DataCurrence = text.Value;
+        out << DataCurrence << " | ";
+
+        //Дата
+        DataCurrence = text.Date;
+        out << DataCurrence << " | ";
+
+    }
+
+    qDebug() << "Будет создан файл:" << dir.filePath("currency_data.txt");
+
+    file.close();
+
 }
+
+
+
 
 
 #endif // WRITE_TO_FILE_H

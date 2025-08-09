@@ -3,13 +3,14 @@
 #pragma once
 #include <pqxx/pqxx>
 #include <iostream>
-#include "container.h"
 #include <iconv.h>
 #include <cerrno>
 #include <cstring>
 #include <convertCP1251.h>
+#include "container.h"
+#include <QVector>
 
-inline void ConnectedBD(const std::vector<Currence>& data) {
+inline void ConnectedBD(const QVector<Currence>& Data) {
     try {
         //Подключение к базе
         pqxx::connection conn(
@@ -56,20 +57,20 @@ inline void ConnectedBD(const std::vector<Currence>& data) {
             }
         }
 
-        for (const auto& currency : data) {
+        for (const auto& currency : Data) {
             txn.exec_params(
                 "INSERT INTO exdc (CharCode, NameCurrency, Value, Date) "
                 "VALUES ($1, $2, $3, $4)"
                 "ON CONFLICT (Date, CharCode) DO NOTHING",
-                currency.CharCode,
-                ConvertCP1251ToUTF8(currency.Name_currence),
-                currency.Value,
-                currency.Date
+                currency.CharCode.toStdString(),
+                currency.Name_currence.toStdString(),
+                currency.Value.toStdString(),
+                currency.Date.toStdString()
                 );
         }
 
         txn.commit();
-        std::cout << "The data has been sent to the database.\n";
+        std::cout << "The  has been sent to the database.\n";
     }
     catch (const std::exception& e) {
         std::cerr << "Error(#1): " << e.what() << std::endl;

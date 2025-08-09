@@ -38,29 +38,21 @@ void second_window::setDate(const QString &newDate)
 //Вставка данных в таблицу
 void second_window::loadDataFromDatabase()
 {
-    std::vector<Currence> dataCurr;
-    dataCurr = conn_cbRussian(date);
+    QVector<Currence> dataCurr = conn_cbRussian(date);
 
     model->removeRows(0, model->rowCount());
 
-    for(const auto& cur : dataCurr )
-    {
+    for(const auto& cur : dataCurr) {
+
         QList<QStandardItem*> rowItems;
 
-        //Перекодировка из 1251 в UTF-8
-        std::string nameUTF = ConvertCP1251ToUTF8(cur.Name_currence);
+        rowItems << new QStandardItem(cur.CharCode);
+        rowItems << new QStandardItem(cur.Name_currence);
+        rowItems << new QStandardItem(cur.Value);
+        rowItems << new QStandardItem(cur.Date);
 
-       rowItems << new QStandardItem(QString::fromStdString(cur.CharCode));
-       rowItems << new QStandardItem(QString::fromStdString(nameUTF));
-       rowItems << new QStandardItem(QString::fromStdString(cur.Value));
-       rowItems << new QStandardItem(QString::fromStdString(cur.Date));
-
-       model->appendRow(rowItems);
+        model->appendRow(rowItems);
     }
-
-    // model->sort(3, Qt::DescendingOrder);
-
-
 }
 
 second_window::~second_window()

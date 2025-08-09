@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QStandardItem>
+#include <QXmlStreamReader>
 
 namespace Ui {
 class second_window;
