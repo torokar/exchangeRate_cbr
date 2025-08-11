@@ -7,45 +7,26 @@
 #include <QTextStream>
 #include <QDebug>
 #include <container.h>
+#include <QMessageBox>
+#include <QTimer>
 
+inline QString LengthCheck(const QString& string)
+{
+    const int maxlen = 15;
+    if (string.length() > maxlen) {
+        return string.left(maxlen - 3) + "...";
+    }
+    else {
+        return string.leftJustified(maxlen);
+    }
+}
 
-// inline void WriteFile(const QVector<Currence>& data)
-// {
-//     // Создаем директорию, если ее нет
-//     QDir().mkpath("data_file");
-
-//     QFile file("data_file/data.txt");
-//     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-//         qCritical() << "Could not open file for writing:" << file.errorString();
-//         return;
-//     }
-
-//     QTextStream out(&file);
-//     out.setCodec("UTF-8"); // Устанавливаем кодировку UTF-8
-
-//     for (const auto& currency : data) {
-//         // Заменяем запятые на точки в значении
-//         QString value = currency.Value;
-//         value.replace(',', '.');
-
-//         // Формируем строку запроса
-//         out << "INSERT INTO exc (CharCode, NameCurrency, Value) VALUES ('"
-//             << currency.CharCode << "', '"
-//             << currency.Name_currence << "', '"
-//             << value << "');\n";
-//     }
-
-//     file.close();
-//     qDebug() << "Successfully wrote" << data.size() << "records to file";
-// }
 
 inline void WriteFile(const QVector<Currence>& data)
 {
-
-
-
     //Получения пути к директории
     QString Dir = QCoreApplication::applicationDirPath();
+
 
     //Создания подпапки
     QDir dir(Dir + "/data");
@@ -63,32 +44,39 @@ inline void WriteFile(const QVector<Currence>& data)
     QTextStream out(&file);
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        // Если не удалось открыть, выводим ошибку
         qDebug() << "Ошибка открытия файла:" << file.errorString();
         return;
     }
 
-    for (const auto text : data) {
+    out << "Code       | Name            | Value   | Date\n";
+    out << "---------------------------------------------\n";
 
+    for (const auto text : data) {
         // Ее краткое названия
-        QString DataCurrence = text.CharCode;
-        out << DataCurrence << " | ";
+        out << LengthCheck(text.CharCode).leftJustified(13) << " | ";
 
         //Названия валюты
-        DataCurrence = text.Name_currence;
-        out << DataCurrence << " | ";
+        out << LengthCheck(text.Name_currence).leftJustified(13) << " | ";
 
         //Значение
-        DataCurrence = text.Value;
-        out << DataCurrence << " | ";
+        out << LengthCheck(text.Value).leftJustified(13) << " | ";
 
         //Дата
-        DataCurrence = text.Date;
-        out << DataCurrence << " | ";
+        out << LengthCheck(text.Date).leftJustified(13) << " | \n";
 
     }
 
-    qDebug() << "Будет создан файл:" << dir.filePath("currency_data.txt");
+    if(out.status() != QTextStream::Ok){
+        qCritical() << "Ошибка записи в файл!";
+    }
+    else{
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Информация");
+        msgBox.setText("Данные записаны в файл");
+        msgBox.setIcon(QMessageBox::Information);
+        QTimer::singleShot(2000, &msgBox, &QMessageBox::accept);
+        msgBox.exec();
+    }
 
     file.close();
 
