@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QStandardItem>
 #include <QXmlStreamReader>
+#include <QVector>
+#include <container.h>
 
 namespace Ui {
 class second_window;
@@ -19,10 +21,14 @@ public:
     ~second_window();
     void setDate(const QString &date);
 
+private slots:
+    void on_write_clicked();
+
 private:
     Ui::second_window *ui;
     QStandardItemModel *model;
-    void loadDataFromDatabase();
+    void loadDataFromWebCB();
+    QVector<Currence> currenceDataForSecondWindow;
     QString date;
 };
 

@@ -26,7 +26,7 @@ second_window::second_window(QWidget *parent, const QString &date) :
     ui->tableView->verticalHeader()->setVisible(false);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    loadDataFromDatabase();
+    loadDataFromWebCB();
 }
 
 void second_window::setDate(const QString &newDate)
@@ -36,13 +36,13 @@ void second_window::setDate(const QString &newDate)
 
 
 //Вставка данных в таблицу
-void second_window::loadDataFromDatabase()
+void second_window::loadDataFromWebCB()
 {
-    QVector<Currence> dataCurr = conn_cbRussian(date);
+    currenceDataForSecondWindow = conn_cbRussian(date);
 
     model->removeRows(0, model->rowCount());
 
-    for(const auto& cur : dataCurr) {
+    for(const auto& cur : currenceDataForSecondWindow) {
 
         QList<QStandardItem*> rowItems;
 
@@ -59,3 +59,9 @@ second_window::~second_window()
 {
     delete ui;
 }
+
+void second_window::on_write_clicked()
+{
+    WriteFile(currenceDataForSecondWindow);
+}
+

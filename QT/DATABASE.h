@@ -70,7 +70,6 @@ inline void ConnectedBD(const QVector<Currence>& Data) {
         }
 
         txn.commit();
-        std::cout << "The  has been sent to the database.\n";
     }
     catch (const std::exception& e) {
         std::cerr << "Error(#1): " << e.what() << std::endl;

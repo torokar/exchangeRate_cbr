@@ -17,15 +17,44 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
-     <width>771</width>
-     <height>521</height>
+     <y>30</y>
+     <width>781</width>
+     <height>501</height>
     </rect>
    </property>
    <property name="cursor" stdset="0">
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
   </widget>
+  <widget class="QPushButton" name="write">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>-10</y>
+     <width>111</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Записать в файл</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>0</y>
+     <width>80</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <zorder>write</zorder>
+  <zorder>tableView</zorder>
+  <zorder>pushButton</zorder>
  </widget>
  <resources/>
  <connections/>

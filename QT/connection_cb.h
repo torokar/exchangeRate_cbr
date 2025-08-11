@@ -50,7 +50,6 @@ inline QVector<Currence> conn_cbRussian(const QString& dateUser)
 
     // Парсинг XML
     SubstrCurrensiFromXML(xmlData, dataCurr, dateUser);
-    WriteFile(dataCurr);
 
     QtConcurrent::run([data = dataCurr]() { // Используем копию
 

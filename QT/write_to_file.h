@@ -48,12 +48,13 @@ inline void WriteFile(const QVector<Currence>& data)
         return;
     }
 
-    out << "Code       | Name            | Value   | Date\n";
-    out << "---------------------------------------------\n";
+    out << "|======================================================================|\n";
+    out << "|      Code      |      Name       |      Value      |     Date        |\n";
+    out << "|======================================================================|\n";
 
     for (const auto text : data) {
         // Ее краткое названия
-        out << LengthCheck(text.CharCode).leftJustified(13) << " | ";
+        out << "|" << LengthCheck(text.CharCode).leftJustified(13) << " | ";
 
         //Названия валюты
         out << LengthCheck(text.Name_currence).leftJustified(13) << " | ";
@@ -63,6 +64,8 @@ inline void WriteFile(const QVector<Currence>& data)
 
         //Дата
         out << LengthCheck(text.Date).leftJustified(13) << " | \n";
+
+        out << "|----------------------------------------------------------------------|\n";
 
     }
 
