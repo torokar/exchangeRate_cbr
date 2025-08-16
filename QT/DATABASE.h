@@ -39,7 +39,7 @@ inline void ConnectedBD(const QVector<Currence>& Data) {
                 "CREATE TABLE IF NOT EXISTS exdc ("
                 "CharCode VARCHAR(10) NOT NULL, "
                 "NameCurrency VARCHAR(50) NOT NULL, "
-                "Value VARCHAR(50) NOT NULL, "
+                "Value DECIMAL(10, 3) NOT NULL, "
                 "Date DATE NOT NULL, "
                 "UNIQUE(Date, CharCode)"
                 ")"
@@ -64,7 +64,7 @@ inline void ConnectedBD(const QVector<Currence>& Data) {
                 "ON CONFLICT (Date, CharCode) DO NOTHING",
                 currency.CharCode.toStdString(),
                 currency.Name_currence.toStdString(),
-                currency.Value.toStdString(),
+                currency.Value,
                 currency.Date.toStdString()
                 );
         }

@@ -23,6 +23,7 @@ public:
 
 private slots:
     void on_write_clicked();
+    void on_graph_clicked();
 
 private:
     Ui::second_window *ui;

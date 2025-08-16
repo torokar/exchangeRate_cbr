@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
 
     // Запускаем главное окно
     MainWindow w;
-    w.setWindowTitle("Курс Валют"); //Названия окна
+    w.setWindowTitle("Currence"); //Названия окна
     w.resize(600,600);
 
     //Получения размера экрана

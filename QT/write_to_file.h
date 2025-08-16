@@ -60,7 +60,8 @@ inline void WriteFile(const QVector<Currence>& data)
         out << LengthCheck(text.Name_currence).leftJustified(13) << " | ";
 
         //Значение
-        out << LengthCheck(text.Value).leftJustified(13) << " | ";
+        QString valueStr = QString::number(text.Value, 'f', 3);
+        out << LengthCheck(valueStr).leftJustified(13) << " | ";
 
         //Дата
         out << LengthCheck(text.Date).leftJustified(13) << " | \n";

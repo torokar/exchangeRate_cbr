@@ -8,7 +8,7 @@
 //Парсинг данных с сайта
 //Проверка на дубликаты
 inline bool CheckForDuplicates(const QVector<Currence>& data, const QString& name,
-                               const QString& value, const QString& charcode)
+                               const double& value, const QString& charcode)
 {
     for (const auto& item : data) {
         if (item.Name_currence == name || item.Value == value || item.CharCode == charcode) {
@@ -48,11 +48,22 @@ inline void SubstrCurrensiFromXML(const QByteArray& xmlData, QVector<Currence>& 
                 current.Name_currence = xml.readElementText();
             }
             else if (xml.name() == "Value") {
-                current.Value = xml.readElementText();
+                QString valueStr = xml.readElementText();
+                valueStr.replace(',','.');
+
+                bool ok;
+                double value = valueStr.toDouble(&ok);
+                if (ok) {
+                    current.Value = value;
+                }
+                else{
+                    qWarning() << "Ошибка вытягивания значения валюты: " << valueStr;
+                    current.Value = 0.0;
+                }
             }
         }
         else if (xml.isEndElement() && xml.name() == "Valute") {
-            if (!current.CharCode.isEmpty() && !current.Value.isEmpty()) {
+            if (!current.CharCode.isEmpty()) {
                 if (!CheckForDuplicates(result, current.Name_currence, current.Value, current.CharCode)) {
                     result.append(current);
                 }

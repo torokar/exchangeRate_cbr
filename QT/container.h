@@ -7,7 +7,7 @@ struct Currence
 {
     QString CharCode;
     QString Name_currence;
-    QString Value;
+    double Value;
     QString Date;
 };
 #endif // CONTAINER_H

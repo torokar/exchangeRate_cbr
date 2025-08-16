@@ -5,6 +5,7 @@
 #include <QDebug>
 #include "connection_cb.h"
 #include <QTextCodec>
+#include "tst_graphics2dhistogrammtest.h"
 #include <convertCP1251.h>
 
 second_window::second_window(QWidget *parent, const QString &date) :
@@ -34,7 +35,6 @@ void second_window::setDate(const QString &newDate)
     date = newDate;
 }
 
-
 //Вставка данных в таблицу
 void second_window::loadDataFromWebCB()
 {
@@ -43,12 +43,18 @@ void second_window::loadDataFromWebCB()
     model->removeRows(0, model->rowCount());
 
     for(const auto& cur : currenceDataForSecondWindow) {
-
         QList<QStandardItem*> rowItems;
 
         rowItems << new QStandardItem(cur.CharCode);
         rowItems << new QStandardItem(cur.Name_currence);
-        rowItems << new QStandardItem(cur.Value);
+
+
+        //Числовой элемент в таблице для корректной работы сортировки в таблице
+        QStandardItem* valueItem = new QStandardItem();
+        valueItem->setData(cur.Value, Qt::UserRole); //Элемент для числовых значений
+        valueItem->setData(QString::number(cur.Value, 'f', 4), Qt::DisplayRole); //Отображения в таблице
+        rowItems << valueItem;
+
         rowItems << new QStandardItem(cur.Date);
 
         model->appendRow(rowItems);
@@ -63,5 +69,12 @@ second_window::~second_window()
 void second_window::on_write_clicked()
 {
     WriteFile(currenceDataForSecondWindow);
+}
+
+
+void second_window::on_graph_clicked()
+{
+    Graphics2DHistogrammTest test;
+    test.runTest();
 }
 
