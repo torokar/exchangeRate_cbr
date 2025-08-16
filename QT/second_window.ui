@@ -11,21 +11,61 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Currence</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="zoom-in"/>
+  </property>
+  <property name="inputMethodHints">
+   <set>Qt::ImhNone</set>
+  </property>
+  <property name="modal">
+   <bool>false</bool>
   </property>
   <widget class="QTableView" name="tableView">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
-     <width>771</width>
-     <height>521</height>
+     <y>30</y>
+     <width>781</width>
+     <height>501</height>
     </rect>
    </property>
    <property name="cursor" stdset="0">
     <cursorShape>PointingHandCursor</cursorShape>
    </property>
+   <property name="sortingEnabled">
+    <bool>true</bool>
+   </property>
   </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>224</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="write">
+      <property name="text">
+       <string>Записать в файл</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="graph">
+      <property name="text">
+       <string>Показать графы</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <zorder>layoutWidget</zorder>
+  <zorder>tableView</zorder>
  </widget>
  <resources/>
  <connections/>

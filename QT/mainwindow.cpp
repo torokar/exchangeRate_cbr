@@ -9,7 +9,6 @@
 #include <QMessageBox>
 #include <second_window.h>
 #include <connection_cb.h>
-#include <getFromPostgres.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -29,13 +28,11 @@ void MainWindow::on_pushButton_clicked()
     int month = ui->spinMonth->value();
     int day = ui->spinDay->value();
     QString year = ui->InputYear->text();
-    int yearInt = year.toInt();
-
 
     //Проверка корректности месяца
     if(month < 1 || month > 12)
     {
-        QMessageBox::warning(this, "Error", "Месяц должен быть от 1 до 12.");
+        QMessageBox::critical(this, "Error", "Месяц должен быть от 1 до 12.");
         return;
     }
 
@@ -44,13 +41,13 @@ void MainWindow::on_pushButton_clicked()
 
     if(day <= 0 || day > 31)
     {
-        QMessageBox::warning(this, "Error", "День должен быть от 1 до 31 (для выбранного месяца).");
+        QMessageBox::critical(this, "Error", "День должен быть от 1 до 31 (для выбранного месяца).");
         return;
     }
 
     if((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)
     {
-        QMessageBox::warning(this, "Erro", "В этом месяце не может быть больше 30 дней!");
+        QMessageBox::critical(this, "Error", "В этом месяце не может быть больше 30 дней!");
         return;
     }
 
@@ -60,11 +57,16 @@ void MainWindow::on_pushButton_clicked()
     {
         if(day > 28)
         {
-            QMessageBox::warning(this, "Error", "Февраль не имеет больше 28 дней");
+            QMessageBox::critical(this, "Error", "Февраль не имеет больше 28 дней");
             return;
         }
     }
 
+
+    if (year.toInt() < 1993) {
+        QMessageBox::critical(this, "Error", "Нет данных по годам меньше '1993' годов. Введите данные начиная с 1992 по нынешный год.");
+        return;
+    }
 
 
     QString forDay = QString("%1").arg(day, 2, 10, QChar('0'));
@@ -81,16 +83,14 @@ void MainWindow::on_pushButton_clicked()
     QTimer::singleShot(3000, &msgBox, &QMessageBox::accept);
     msgBox.exec();
 
+    //Фоновый вызов с передачей даты в поток
     QtConcurrent::run([this, date]()
-                      {
-                        conn_cbRussian(date);
-                        QMetaObject::invokeMethod(this, "handData", Qt::QueuedConnection);
-                      });
+                      { QMetaObject::invokeMethod(this, "handData", Qt::QueuedConnection, Q_ARG(QString, date)); });
 }
 
-void MainWindow::handData()
+void MainWindow::handData(const QString &date)
 {
-    second_window window;
+    second_window window(nullptr, date);
     window.setModal(true);
     window.exec();
 }

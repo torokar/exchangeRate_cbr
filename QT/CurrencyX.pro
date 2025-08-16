@@ -1,7 +1,15 @@
-QT += core gui widgets sql
-CONFIG += c++17
+QT += core gui widgets sql xml concurrent testlib
+CONFIG += c++17 qtestlib warn_on
 
-TARGET = YourAppName
+TARGET = Currence
+
+
+#--------------------------------------------------
+# Тестовые файлы
+#--------------------------------------------------
+TESTSOURCES += tst_Graphics2DHistogrammTest.cpp
+TESTHEADERS += TestGraph.h
+
 
 #--------------------------------------------------
 # PostgresSQL
@@ -55,7 +63,6 @@ unix:!android {
         QT_PLUGINS_DIR = /usr/lib/x86_64-linux-gnu/qt5/plugins
     }
 
-    # Копирование плагина xcb при сборке
     platformPlugin.file = $$QT_PLUGINS_DIR/platforms/libqxcb.so
     exists($$platformPlugin.file) {
         target.path = $$OUT_PWD
@@ -88,20 +95,34 @@ unix {
 
 
 SOURCES += \
+    #include "tst_graphics2dhistogrammtest.moc" .cpp \
+    GraphicsDataItem.cpp \
+    GraphicsPlotItem.cpp \
+    GraphicsPlotLegend.cpp \
+    graph.cpp \
     main.cpp \
     mainwindow.cpp \
-    second_window.cpp
+    second_window.cpp \
+    tst_graphics2dhistogrammtest.cpp
 
 HEADERS += \
     DATABASE.h \
+    Global.h \
+    GraphicsDataItem.h \
+    GraphicsPlotItem.h \
+    GraphicsPlotLegend.h \
     config_parser.h \
     connection_cb.h \
     container.h \
+    convertCP1251.h \
+    graph.h \
     mainwindow.h \
     second_window.h \
+    tst_graphics2dhistogrammtest.h \
     write_to_file.h
 
 FORMS += \
+    graph.ui \
     mainwindow.ui \
     second_window.ui
 
@@ -113,3 +134,16 @@ RESOURCES += \
 
 DISTFILES += \
     image/Без названия.png
+
+unix:!symbian {
+    maemo5 {
+        target.path = /opt/usr/lib
+    } else {
+        target.path = /usr/lib
+    }
+    INSTALLS += target
+}
+
+target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+

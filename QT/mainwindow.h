@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QtConcurrent/QtConcurrent>
 #include <QThread>
-#include "getFromPostgres.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,7 +21,7 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    void handData();
+    void handData(const QString &date);
 
 private:
     Ui::MainWindow *ui;

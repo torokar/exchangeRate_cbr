@@ -3,11 +3,16 @@
 #include <QStandardItemModel>
 #include <pqxx/pqxx>
 #include <QDebug>
+#include "connection_cb.h"
+#include <QTextCodec>
+#include "tst_graphics2dhistogrammtest.h"
+#include <convertCP1251.h>
 
-second_window::second_window(QWidget *parent) :
+second_window::second_window(QWidget *parent, const QString &date) :
     QDialog(parent),
     ui(new Ui::second_window),
-    model(new QStandardItemModel(this))
+    model(new QStandardItemModel(this)),
+    date(date)
 {
     ui->setupUi(this);
     this->setFixedSize(this->size());
@@ -22,54 +27,37 @@ second_window::second_window(QWidget *parent) :
     ui->tableView->verticalHeader()->setVisible(false);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    loadDataFromDatabase();
+    loadDataFromWebCB();
 }
 
-void second_window::loadDataFromDatabase()
+void second_window::setDate(const QString &newDate)
 {
-    try {
+    date = newDate;
+}
 
-        pqxx::connection conn(
-            "host=localhost "
-            "port=5432 "
-            "dbname=mydb "
-            "user=service "
-            "password=11111111 "
-            "options='-c client_encoding=UTF8'"
-            );
+//Вставка данных в таблицу
+void second_window::loadDataFromWebCB()
+{
+    currenceDataForSecondWindow = conn_cbRussian(date);
 
-        if (conn.is_open()) {
-            pqxx::work txn(conn);
+    model->removeRows(0, model->rowCount());
 
-            pqxx::result res = txn.exec("SELECT CharCode, NameCurrency, Value,"
-                                        " Date FROM exdc ORDER BY Date DESC");
+    for(const auto& cur : currenceDataForSecondWindow) {
+        QList<QStandardItem*> rowItems;
 
-            // Очищаем модель перед загрузкой новых данных
-            model->removeRows(0, model->rowCount());
+        rowItems << new QStandardItem(cur.CharCode);
+        rowItems << new QStandardItem(cur.Name_currence);
 
-            //Загрузка данных в таблицу из БД
-            for (const auto& row : res) {
-                QList<QStandardItem*> items;
-                items << new QStandardItem(QString::fromStdString(row["CharCode"].as<std::string>()));
-                items << new QStandardItem(QString::fromStdString(row["NameCurrency"].as<std::string>()));
-                items << new QStandardItem(QString::fromStdString(row["Value"].as<std::string>()));
-                items << new QStandardItem(QString::fromStdString(row["Date"].as<std::string>()));
-                model->appendRow(items);
-            }
 
-            txn.commit();
-            //Если нет данных
-        } else {
-            qDebug() << "Не удалось подключиться к базе данных";
-            QList<QStandardItem*> rowItems;
-            rowItems << new QStandardItem("Нет данных");
-            rowItems << new QStandardItem("");
-            rowItems << new QStandardItem("");
-            rowItems << new QStandardItem("");
-            model->appendRow(rowItems);
-        }
-    } catch (const std::exception& e) {
-        qDebug() << "Ошибка при загрузке данных:" << e.what();
+        //Числовой элемент в таблице для корректной работы сортировки в таблице
+        QStandardItem* valueItem = new QStandardItem();
+        valueItem->setData(cur.Value, Qt::UserRole); //Элемент для числовых значений
+        valueItem->setData(QString::number(cur.Value, 'f', 4), Qt::DisplayRole); //Отображения в таблице
+        rowItems << valueItem;
+
+        rowItems << new QStandardItem(cur.Date);
+
+        model->appendRow(rowItems);
     }
 }
 
@@ -77,3 +65,16 @@ second_window::~second_window()
 {
     delete ui;
 }
+
+void second_window::on_write_clicked()
+{
+    WriteFile(currenceDataForSecondWindow);
+}
+
+
+void second_window::on_graph_clicked()
+{
+    Graphics2DHistogrammTest test;
+    test.runTest();
+}
+

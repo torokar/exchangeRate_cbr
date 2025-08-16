@@ -3,37 +3,14 @@
 #pragma once
 #include <pqxx/pqxx>
 #include <iostream>
-#include "container.h"
 #include <iconv.h>
 #include <cerrno>
 #include <cstring>
+#include <convertCP1251.h>
+#include "container.h"
+#include <QVector>
 
-// Функция преобразования CP1251 -> UTF-8
-inline std::string ConvertCP1251ToUTF8(const std::string& cp1251Str) {
-    iconv_t cd = iconv_open("UTF-8", "CP1251");
-    if (cd == (iconv_t)-1) {
-        std::cerr << "Error opening iconv: " << strerror(errno) << std::endl;
-        return cp1251Str;
-    }
-
-    size_t inbytesleft = cp1251Str.size();
-    char* inbuf = const_cast<char*>(cp1251Str.data());
-    size_t outbytesleft = inbytesleft * 4; // UTF-8 max size
-    std::string out(outbytesleft, '\0');
-    char* outbuf = &out[0];
-
-    if (iconv(cd, &inbuf, &inbytesleft, &outbuf, &outbytesleft) == (size_t)-1) {
-        std::cerr << "Conversion error: " << strerror(errno) << std::endl;
-        iconv_close(cd);
-        return cp1251Str;
-    }
-
-    iconv_close(cd);
-    out.resize(out.size() - outbytesleft);
-    return out;
-}
-
-inline void ConnectedBD(const std::vector<Currence>& data) {
+inline void ConnectedBD(const QVector<Currence>& Data) {
     try {
         //Подключение к базе
         pqxx::connection conn(
@@ -62,7 +39,7 @@ inline void ConnectedBD(const std::vector<Currence>& data) {
                 "CREATE TABLE IF NOT EXISTS exdc ("
                 "CharCode VARCHAR(10) NOT NULL, "
                 "NameCurrency VARCHAR(50) NOT NULL, "
-                "Value VARCHAR(50) NOT NULL, "
+                "Value DECIMAL(10, 3) NOT NULL, "
                 "Date DATE NOT NULL, "
                 "UNIQUE(Date, CharCode)"
                 ")"
@@ -80,26 +57,23 @@ inline void ConnectedBD(const std::vector<Currence>& data) {
             }
         }
 
-        for (const auto& currency : data) {
+        for (const auto& currency : Data) {
             txn.exec_params(
                 "INSERT INTO exdc (CharCode, NameCurrency, Value, Date) "
                 "VALUES ($1, $2, $3, $4)"
                 "ON CONFLICT (Date, CharCode) DO NOTHING",
-                currency.CharCode,
-                ConvertCP1251ToUTF8(currency.Name_currence),
+                currency.CharCode.toStdString(),
+                currency.Name_currence.toStdString(),
                 currency.Value,
-                currency.Date
+                currency.Date.toStdString()
                 );
         }
 
         txn.commit();
-        std::cout << "The data has been sent to the database.\n";
     }
     catch (const std::exception& e) {
         std::cerr << "Error(#1): " << e.what() << std::endl;
     }
 }
-
-
 
 #endif // DATABASE_H

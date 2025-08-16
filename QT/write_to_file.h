@@ -1,43 +1,93 @@
 #ifndef WRITE_TO_FILE_H
 #define WRITE_TO_FILE_H
 
-#pragma once
-#include <pqxx/pqxx>
-#include "container.h"
-#include <iostream>
-#include <fstream>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
+#include <QTextStream>
+#include <QDebug>
+#include <container.h>
+#include <QMessageBox>
+#include <QTimer>
 
-//recording data into a file received from the website of the Central Bank of Russia
-void WriteFile(const std::vector<Currence>& data)
+inline QString LengthCheck(const QString& string)
 {
-    std::ofstream out("data_file/data.txt", std::ios::out | std::ios::binary);
-
-    if (out.is_open())
-    {
-        for (int i = 0; i < data.size(); i++)
-        {
-            std::string value_fixed = data[i].Value;
-            std::replace(value_fixed.begin(), value_fixed.end(), ',', '.');
-
-            std::string request = "insert into exc (CharCode, NameCurrency, Value) values ('";
-            request += data[i].CharCode;
-            request += "', '";
-            request += data[i].Name_currence;
-            request += "', '";
-            request += value_fixed;
-            request += "');";
-
-            out << request << std::endl;
-        }
-        std::cout << "The data has been written to the file.!" << std::endl;
+    const int maxlen = 15;
+    if (string.length() > maxlen) {
+        return string.left(maxlen - 3) + "...";
     }
-    else
-    {
-        std::cerr << "Data was not written to the file.!\n";
+    else {
+        return string.leftJustified(maxlen);
     }
-
-    out.close();
 }
+
+
+inline void WriteFile(const QVector<Currence>& data)
+{
+    //Получения пути к директории
+    QString Dir = QCoreApplication::applicationDirPath();
+
+
+    //Создания подпапки
+    QDir dir(Dir + "/data");
+    if (!dir.exists()) {
+        if (!dir.mkpath(".")) {
+            qCritical() << "Ошибка создания директории! Проверте права доступа.";
+            return;
+        }
+    }
+
+    QString filePath = dir.filePath("currency_data.txt");
+
+    QFile file(filePath);
+
+    QTextStream out(&file);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Ошибка открытия файла:" << file.errorString();
+        return;
+    }
+
+    out << "|======================================================================|\n";
+    out << "|      Code      |      Name       |      Value      |     Date        |\n";
+    out << "|======================================================================|\n";
+
+    for (const auto text : data) {
+        // Ее краткое названия
+        out << "|" << LengthCheck(text.CharCode).leftJustified(13) << " | ";
+
+        //Названия валюты
+        out << LengthCheck(text.Name_currence).leftJustified(13) << " | ";
+
+        //Значение
+        QString valueStr = QString::number(text.Value, 'f', 3);
+        out << LengthCheck(valueStr).leftJustified(13) << " | ";
+
+        //Дата
+        out << LengthCheck(text.Date).leftJustified(13) << " | \n";
+
+        out << "|----------------------------------------------------------------------|\n";
+
+    }
+
+    if(out.status() != QTextStream::Ok){
+        qCritical() << "Ошибка записи в файл!";
+    }
+    else{
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Информация");
+        msgBox.setText("Данные записаны в файл");
+        msgBox.setIcon(QMessageBox::Information);
+        QTimer::singleShot(2000, &msgBox, &QMessageBox::accept);
+        msgBox.exec();
+    }
+
+    file.close();
+
+}
+
+
+
 
 
 #endif // WRITE_TO_FILE_H
