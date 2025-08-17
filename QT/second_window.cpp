@@ -5,8 +5,8 @@
 #include <QDebug>
 #include "connection_cb.h"
 #include <QTextCodec>
-#include "tst_graphics2dhistogrammtest.h"
 #include <convertCP1251.h>
+#include "customgraph.h"
 
 second_window::second_window(QWidget *parent, const QString &date) :
     QDialog(parent),
@@ -74,7 +74,7 @@ void second_window::on_write_clicked()
 
 void second_window::on_graph_clicked()
 {
-    Graphics2DHistogrammTest test;
-    test.runTest();
+    CustomGraph *graphWindow = new CustomGraph(this);
+    graphWindow->show();
 }
 

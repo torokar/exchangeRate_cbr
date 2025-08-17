@@ -1,4 +1,4 @@
-QT += core gui widgets sql xml concurrent testlib
+QT += core gui widgets sql xml concurrent testlib printsupport
 CONFIG += c++17 qtestlib warn_on
 
 TARGET = Currence
@@ -95,17 +95,17 @@ unix {
 
 
 SOURCES += \
-    #include "tst_graphics2dhistogrammtest.moc" .cpp \
+    ../lib/qcustomplot/qcustomplot.cpp \
     GraphicsDataItem.cpp \
     GraphicsPlotItem.cpp \
     GraphicsPlotLegend.cpp \
-    graph.cpp \
+    customgraph.cpp \
     main.cpp \
     mainwindow.cpp \
-    second_window.cpp \
-    tst_graphics2dhistogrammtest.cpp
+    second_window.cpp
 
 HEADERS += \
+    ../lib/qcustomplot/qcustomplot.h \
     DATABASE.h \
     Global.h \
     GraphicsDataItem.h \
@@ -115,14 +115,14 @@ HEADERS += \
     connection_cb.h \
     container.h \
     convertCP1251.h \
-    graph.h \
+    customgraph.h \
     mainwindow.h \
     second_window.h \
-    tst_graphics2dhistogrammtest.h \
     write_to_file.h
 
+
 FORMS += \
-    graph.ui \
+    customgraph.ui \
     mainwindow.ui \
     second_window.ui
 
