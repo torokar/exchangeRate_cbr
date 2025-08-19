@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QVector>
+#include <QTimer>
 
 namespace Ui {
 class CustomGraph;
@@ -16,11 +17,20 @@ public:
     explicit CustomGraph(QWidget *parent = nullptr);
     ~CustomGraph();
 
+private slots:
+    // void on_pushButton_clicked();
+    // void TimerSlot();
+
 private:
     Ui::CustomGraph *ui;
-    double xBegin, xEnd, step, variable;
-    int numPoints;
+    QTimer *timer;
 
+    double step;
+    double xBegin;
+    double xEnd;
+    double variable;
+    int numPoints;
+    int time;
     QVector<double> x, y;
 };
 

@@ -32,6 +32,7 @@ unix {
 CURL_INSTALL_DIR = /home/andreyonkhonov/clone/exchangeRate_cbr/lib
 
 INCLUDEPATH += $$CURL_INSTALL_DIR/include
+INCLUDEPATH += ../lib/qcustomplot
 
 LIBS += -L$$CURL_INSTALL_DIR/lib -lcurl
 
