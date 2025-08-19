@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>776</width>
+    <width>567</width>
     <height>528</height>
    </rect>
   </property>
@@ -14,7 +14,8 @@
    <string>Currence</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="zoom-in"/>
+   <iconset theme="zoom-in">
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <property name="inputMethodHints">
    <set>Qt::ImhNone</set>
@@ -26,8 +27,8 @@
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>30</y>
-     <width>781</width>
+     <y>0</y>
+     <width>561</width>
      <height>501</height>
     </rect>
    </property>
@@ -38,12 +39,12 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
-     <width>224</width>
+     <y>500</y>
+     <width>222</width>
      <height>25</height>
     </rect>
    </property>
@@ -64,8 +65,6 @@
     </item>
    </layout>
   </widget>
-  <zorder>layoutWidget</zorder>
-  <zorder>tableView</zorder>
  </widget>
  <resources/>
  <connections/>

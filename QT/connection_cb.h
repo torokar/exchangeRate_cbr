@@ -22,6 +22,7 @@ static size_t WriteCallback(void* contents, size_t size, size_t nmemb, QByteArra
 
 inline QVector<Currence> conn_cbRussian(const QString& dateUser)
 {
+
     QByteArray xmlData;
     QVector<Currence> dataCurr;
     const QString full_url = "https://www.cbr.ru/scripts/XML_daily.asp?date_req=" + dateUser;
