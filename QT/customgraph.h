@@ -3,7 +3,8 @@
 
 #include <QDialog>
 #include <QVector>
-#include <QTimer>
+#include "container.h"
+#include "../lib/qcustomplot/qcustomplot.h"
 
 namespace Ui {
 class CustomGraph;
@@ -14,24 +15,22 @@ class CustomGraph : public QDialog
     Q_OBJECT
 
 public:
-    explicit CustomGraph(QWidget *parent = nullptr);
+    explicit CustomGraph(const QVector<Currence> &data, QWidget *parent = nullptr);
     ~CustomGraph();
+    void setCurrenceData(const QVector<Currence> &data); //Для обновления и получения данных
 
-private slots:
-    // void on_pushButton_clicked();
-    // void TimerSlot();
+    void addPoint();
+    void plot();
+    void clearPoints();
+    void plotDrawting();
+    void viewGraph();
 
 private:
     Ui::CustomGraph *ui;
-    QTimer *timer;
 
-    double step;
-    double xBegin;
-    double xEnd;
-    double variable;
-    int numPoints;
-    int time;
-    QVector<double> x, y;
+    QVector<QCPItemText*> textLabels;
+    QVector<double> xValues, yValues;
+    QVector<Currence> currenceData; // Вектор данных
 };
 
 #endif // CUSTOMGRAPH_H

@@ -1,27 +1,20 @@
-QT += core gui widgets sql xml concurrent testlib printsupport
+QT += core gui widgets sql xml concurrent testlib printsupport core5compat
 CONFIG += c++17 qtestlib warn_on
 
 TARGET = Currence
-
-
-#--------------------------------------------------
-# Тестовые файлы
-#--------------------------------------------------
-TESTSOURCES += tst_Graphics2DHistogrammTest.cpp
-TESTHEADERS += TestGraph.h
-
 
 #--------------------------------------------------
 # PostgresSQL
 #--------------------------------------------------
 
-unix {
-    LIBS += -L/usr/lib/x86_64-linux-gnu -lpq
+# Для систем на базе Arch Linux/Manjaro
+linux-g++-64 {
+    LIBS += -L/usr/lib -lpq
     INCLUDEPATH += /usr/include/postgresql
 
     # Проверка наличия libpq
-    !exists(/usr/lib/x86_64-linux-gnu/libpq.so) {
-        error("libpq не найден! Установите: sudo apt install libpq-dev")
+    !exists(/usr/lib/libpq.so) {
+        error("libpq не найден! Установите: sudo pacman -S postgresql-libs")
     }
 }
 
@@ -40,14 +33,27 @@ LIBS += -L$$CURL_INSTALL_DIR/lib -lcurl
 # libpqxx
 #--------------------------------------------------
 
-# Пути к libpqxx
-LIBPQXX_INSTALL_DIR =  /home/andreyonkhonov/clone/exchangeRate_cbr/lib/libpqxx-install
-exists($$LIBPQXX_INSTALL_DIR) {`
-    INCLUDEPATH += $$LIBPQXX_INSTALL_DIR/include
-    LIBS += -L$$LIBPQXX_INSTALL_DIR/lib -lpqxx
-    message("Подключен libpqxx из: $$LIBPQXX_INSTALL_DIR")
+LIBPQXX_SOURCE_DIR = $$PWD/../lib/libpqxx-7.7.5
+LIBPQXX_INSTALL_DIR = $$PWD/../lib/libpqxx-install
+
+exists($$LIBPQXX_SOURCE_DIR) {
+    message("Исходники libpqxx найдены в: $$LIBPQXX_SOURCE_DIR")
+
+    INCLUDEPATH += $$LIBPQXX_SOURCE_DIR/include
+
+    exists($$LIBPQXX_INSTALL_DIR/lib/libpqxx.a) | exists($$LIBPQXX_INSTALL_DIR/lib/libpqxx.so) {
+        message("Используем собранную libpqxx из: $$LIBPQXX_INSTALL_DIR")
+        LIBS += -L$$LIBPQXX_INSTALL_DIR/lib -lpqxx
+        INCLUDEPATH += $$LIBPQXX_INSTALL_DIR/include
+    } else {
+        message("Используем исходники libpqxx, линкуем с системной libpq")
+        LIBS += -lpq
+        SOURCES += $$files($$LIBPQXX_SOURCE_DIR/src/*.cxx)
+        HEADERS += $$files($$LIBPQXX_SOURCE_DIR/include/pqxx/*.hxx)
+        INCLUDEPATH += $$LIBPQXX_SOURCE_DIR/include
+    }
 } else {
-    error("Директория libpqxx не найдена: $$LIBPQXX_INSTALL_DIR")
+    error("Директория с libpqxx не найдена: $$LIBPQXX_SOURCE_DIR")
 }
 
 # Подключение PostgreSQL
@@ -94,12 +100,14 @@ unix {
     }
 }
 
+unix:!linux-g++-64:!linux-g++ {
+    LIBS += -lpq
+    INCLUDEPATH += /usr/include/postgresql
+}
+
 
 SOURCES += \
     ../lib/qcustomplot/qcustomplot.cpp \
-    GraphicsDataItem.cpp \
-    GraphicsPlotItem.cpp \
-    GraphicsPlotLegend.cpp \
     customgraph.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -108,10 +116,6 @@ SOURCES += \
 HEADERS += \
     ../lib/qcustomplot/qcustomplot.h \
     DATABASE.h \
-    Global.h \
-    GraphicsDataItem.h \
-    GraphicsPlotItem.h \
-    GraphicsPlotLegend.h \
     config_parser.h \
     connection_cb.h \
     container.h \

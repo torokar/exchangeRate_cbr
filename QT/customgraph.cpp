@@ -1,86 +1,111 @@
 #include "customgraph.h"
-#include "../lib/qcustomplot/qcustomplot.h"
-#include <QTimer>
 #include "ui_customgraph.h"
+#include <QDebug>
 
-CustomGraph::CustomGraph(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::CustomGraph)
+CustomGraph::CustomGraph(const QVector<Currence> &data, QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::CustomGraph)
+    , currenceData(data)
 {
     ui->setupUi(this);
 
-
-    //Переменные
-    step = 0.1;
-    xBegin = -3;
-    xEnd = 3 + step;
-
-    ui->widget->xAxis->setRange(-4, 4);
-    ui->widget->yAxis->setRange(0, 9);
-
-
-
-    variable = xBegin;
-    numPoints = (xEnd - xBegin) / step + 2;
-
-
-    //Заполнения вектора точками графика
-    for (variable = xBegin; variable <= xEnd; variable += step) {
-
-        x.push_back(variable);
-        y.push_back(variable * variable);
-
+    for (int i = 0; i < data.size(); ++i) {
+        xValues.push_back(i);
+        yValues.push_back(data[i].Value);
     }
 
+    ui->widget->xAxis->setRange(0, currenceData.size());
+    ui->widget->yAxis->setRange(0, 100);
 
-    //Вывод графика
-    ui->widget->addGraph();
-    //Передача точек графика
-    ui->widget->graph(0)->addData(x, y);
-    ui->widget->replot();
+    viewGraph();
+
+
 }
-
 
 CustomGraph::~CustomGraph()
 {
+    clearPoints();
     delete ui;
 }
 
-void CustomGraph::on_pushButton_clicked()
+void CustomGraph::clearPoints()
 {
-    timer = new QTimer(this);
-    connect(timer, SIGNAL(timeof()), this, SLOT(TimerSlot()));
-    ui->widget->clearGraphs();
-    timer = 0;
-    timer->start(20);
-    variable = xBegin;
-    x.clear();
-    y.clear();
+    //Удаляет все подписи
+    for (QCPItemText *textLabel : textLabels) {
+        ui->widget->removeItem(textLabel);
+        delete textLabel;
+    }
+    textLabels.clear();
+}
+
+void CustomGraph::addPoint()
+{
+    clearPoints();
+
+    //Настройка отображения точек
+    for (int i = 0; i < currenceData.size(); ++i) {
+        const Currence &cur = currenceData[i];
+
+        QCPItemText *textPoint = new QCPItemText(ui->widget);
+        textPoint->setPositionAlignment(Qt::AlignCenter | Qt::AlignBottom);
+        textPoint->position->setType(QCPItemPosition::ptPlotCoords);
+        textPoint->position->setCoords(xValues[i], cur.Value + 5);
+        textPoint->setText(QString::number(cur.Value));
+        textPoint->setFont(QFont(font().family(), 8));
+        textPoint->setPen(QPen(Qt::black));
+        textPoint->setBrush(QBrush(Qt::white));
+        textPoint->setPadding(QMargins(2,2,2,2));
+
+        textLabels.append(textPoint);
+    }
 
 }
 
-void CustomGraph::TimerSlot()
+void CustomGraph::plotDrawting()
 {
-    if (time <= 20 * numPoints) {
-        if (variable <= xEnd) {
-            x.push_back(variable);
-            if (ui->radioButton->isChecked()) {
-                y.push_back(variable * variable);
-            }
-            else if(ui->radioButton_2->isChecked()) {
-                y.push_back(sin(variable));
-            }
-            variable += step;
-        }
-        time += 20;
-    }
-    else {
-        time = 0;
-        timer->stop();
-    }
-
-    ui->widget->addGraph();
-    ui->widget->graph(0)->addData(x, y);
     ui->widget->replot();
+    ui->widget->update();
+
+
 }
+
+void CustomGraph::viewGraph()
+{
+    //Настройка графика
+    ui->widget->clearGraphs(); //Очистка графика
+    ui->widget->addGraph();
+    ui->widget->graph(0);
+    ui->widget->graph(0)->setPen(QColor(Qt::green));
+    ui->widget->graph(0)->setLineStyle(QCPGraph::lsLine);
+    ui->widget->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 8));
+    ui->widget->graph(0)->setLineStyle(QCPGraph::lsLine);
+
+    ui->widget->graph(0)->setData(xValues, yValues);
+
+    //Передвижение по графику
+    ui->widget->setInteraction(QCP::iRangeDrag, true);
+    ui->widget->setInteraction(QCP::iRangeZoom, true);
+
+    //Добавления точки
+    addPoint();
+    //Настройка осей
+    QSharedPointer<QCPAxisTickerText> textTicker(new QCPAxisTickerText);
+
+    for (int i = 0; i < currenceData.size(); ++i) {
+
+        const Currence &cur = currenceData[i];
+
+        QString str = cur.Name_currence;
+
+        textTicker->addTick(i, str);
+
+    }
+
+    ui->widget->xAxis->setTicker(textTicker);
+    ui->widget->xAxis->setLabel("Валюта");
+    ui->widget->yAxis->setLabel("Курс рубля");
+
+    plotDrawting();
+}
+
 

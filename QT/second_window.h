@@ -6,6 +6,7 @@
 #include <QXmlStreamReader>
 #include <QVector>
 #include <container.h>
+#include <customgraph.h>
 
 namespace Ui {
 class second_window;
@@ -31,6 +32,7 @@ private:
     void loadDataFromWebCB();
     QVector<Currence> currenceDataForSecondWindow;
     QString date;
+    CustomGraph *Graph;
 };
 
 #endif // SECOND_WINDOW_H
