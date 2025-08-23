@@ -29,12 +29,10 @@ unix {
 # CURL
 #--------------------------------------------------
 
-CURL_INSTALL_DIR = /home/andreyonkhonov/clone/exchangeRate_cbr/lib
-
-INCLUDEPATH += $$CURL_INSTALL_DIR/include
-INCLUDEPATH += ../lib/qcustomplot
-
-LIBS += -L$$CURL_INSTALL_DIR/lib -lcurl
+unix {
+    LIBS += -lcurl
+    message("Используется системный curl")
+}
 
 #--------------------------------------------------
 # libpqxx
@@ -97,9 +95,6 @@ unix {
 
 SOURCES += \
     ../lib/qcustomplot/qcustomplot.cpp \
-    GraphicsDataItem.cpp \
-    GraphicsPlotItem.cpp \
-    GraphicsPlotLegend.cpp \
     customgraph.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -108,10 +103,6 @@ SOURCES += \
 HEADERS += \
     ../lib/qcustomplot/qcustomplot.h \
     DATABASE.h \
-    Global.h \
-    GraphicsDataItem.h \
-    GraphicsPlotItem.h \
-    GraphicsPlotLegend.h \
     config_parser.h \
     connection_cb.h \
     container.h \

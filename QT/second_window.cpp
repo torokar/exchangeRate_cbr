@@ -3,10 +3,12 @@
 #include <QStandardItemModel>
 #include <pqxx/pqxx>
 #include <QDebug>
-#include "connection_cb.h"
-#include <QTextCodec>
+#include <QStringConverter>
 #include <convertCP1251.h>
 #include "customgraph.h"
+#include "write_to_file.h"
+#include "connection_cb.h"
+#include <QMessageBox>
 
 second_window::second_window(QWidget *parent, const QString &date) :
     QDialog(parent),
@@ -16,6 +18,8 @@ second_window::second_window(QWidget *parent, const QString &date) :
 {
     ui->setupUi(this);
     this->setFixedSize(this->size());
+
+
 
     model->setColumnCount(4);
     model->setHorizontalHeaderLabels({"Код", "Валюта", "Курс", "Дата"});
@@ -74,7 +78,11 @@ void second_window::on_write_clicked()
 
 void second_window::on_graph_clicked()
 {
-    CustomGraph *graphWindow = new CustomGraph(this);
-    graphWindow->show();
-}
+    if (currenceDataForSecondWindow.isEmpty()) {
+        QMessageBox::warning(this, "Ошибка", "Нет данных для построения графика");
+        return;
+    }
 
+    Graph = new CustomGraph(currenceDataForSecondWindow, this);
+    Graph->show();
+}
