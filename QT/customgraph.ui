@@ -11,7 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Currence</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="appointment-new"/>
   </property>
   <widget class="QCustomPlot" name="widget" native="true">
    <property name="geometry">

@@ -52,11 +52,11 @@ inline QVector<Currence> conn_cbRussian(const QString& dateUser)
     // Парсинг XML
     SubstrCurrensiFromXML(xmlData, dataCurr, dateUser);
 
-    QtConcurrent::run([data = dataCurr]() { // Используем копию
-
-        ConnectedBD(data);
-    });
-
+    try {
+        ConnectedBD(dataCurr);
+    } catch (const std::exception& e) {
+        std::cout << "Database operation in conn_cbRussian failed: " << e.what() << std::endl;
+    }
 
     curl_easy_cleanup(curl);
     return dataCurr;

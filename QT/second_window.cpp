@@ -83,6 +83,12 @@ void second_window::on_graph_clicked()
         return;
     }
 
-    Graph = new CustomGraph(currenceDataForSecondWindow, this);
-    Graph->show();
+    //Если Graph существует сначала удаляем
+    if (Graph) {
+        delete Graph;
+        Graph = nullptr;
+    }
+
+    Graph = new CustomGraph(currenceDataForSecondWindow, nullptr);
+    Graph->exec();
 }

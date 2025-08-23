@@ -10,6 +10,7 @@
 #define UI_CUSTOMGRAPH_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
 #include "../lib/qcustomplot/qcustomplot.h"
@@ -26,6 +27,8 @@ public:
         if (CustomGraph->objectName().isEmpty())
             CustomGraph->setObjectName("CustomGraph");
         CustomGraph->resize(600, 433);
+        QIcon icon(QIcon::fromTheme(QString::fromUtf8("appointment-new")));
+        CustomGraph->setWindowIcon(icon);
         widget = new QCustomPlot(CustomGraph);
         widget->setObjectName("widget");
         widget->setGeometry(QRect(9, 10, 581, 411));
@@ -37,7 +40,7 @@ public:
 
     void retranslateUi(QDialog *CustomGraph)
     {
-        CustomGraph->setWindowTitle(QCoreApplication::translate("CustomGraph", "Dialog", nullptr));
+        CustomGraph->setWindowTitle(QCoreApplication::translate("CustomGraph", "Currence", nullptr));
     } // retranslateUi
 
 };

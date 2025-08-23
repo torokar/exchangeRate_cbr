@@ -9,8 +9,13 @@
 #include <convertCP1251.h>
 #include "container.h"
 #include <QVector>
+#include <QMessageBox>
 
 inline void ConnectedBD(const QVector<Currence>& Data) {
+
+
+
+
     try {
         //Подключение к базе
         pqxx::connection conn(
@@ -19,15 +24,15 @@ inline void ConnectedBD(const QVector<Currence>& Data) {
             "dbname=mydb "
             "user=service "
             "password=11111111 "
+            "connect_timeout=2 "
             "options='-c client_encoding=UTF8'"
             );
 
-        if (conn.is_open()) {
-            std::cout << "Successful connection to the database: " << conn.dbname() << std::endl;
-        } else {
-            std::cerr << "Error connection." << std::endl;
-            return;
+        if (!conn.is_open()) {
+            QMessageBox::warning(nullptr, "Warning", "База данных недоступна.");
+            return; // Прекращаем выполнение функции, если нет подключения
         }
+
 
         pqxx::work txn(conn);
         txn.exec("SET client_encoding TO 'UTF8'");
@@ -72,7 +77,11 @@ inline void ConnectedBD(const QVector<Currence>& Data) {
         txn.commit();
     }
     catch (const std::exception& e) {
-        std::cerr << "Error(#1): " << e.what() << std::endl;
+        std::cout << "Error(#1): " << e.what() << std::endl;
+    }
+    catch (...) {
+        // Перехватываем любые другие исключения
+        std::cout << "Unknown database error" << std::endl;
     }
 }
 

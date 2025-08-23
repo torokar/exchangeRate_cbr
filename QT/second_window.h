@@ -7,6 +7,7 @@
 #include <QVector>
 #include <container.h>
 #include <customgraph.h>
+#include <QCloseEvent>
 
 namespace Ui {
 class second_window;
@@ -32,7 +33,7 @@ private:
     void loadDataFromWebCB();
     QVector<Currence> currenceDataForSecondWindow;
     QString date;
-    CustomGraph *Graph;
+    CustomGraph *Graph = nullptr;
 };
 
 #endif // SECOND_WINDOW_H
