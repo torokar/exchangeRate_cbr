@@ -8,7 +8,7 @@
 #include <QString>
 #include <QMessageBox>
 #include <second_window.h>
-#include <connection_cb.h>
+#include "connectionbank.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
