@@ -3,14 +3,6 @@ CONFIG += c++17 qtestlib warn_on
 
 TARGET = Currence
 
-
-#--------------------------------------------------
-# Тестовые файлы
-#--------------------------------------------------
-TESTSOURCES += tst_Graphics2DHistogrammTest.cpp
-TESTHEADERS += TestGraph.h
-
-
 #--------------------------------------------------
 # PostgresSQL
 #--------------------------------------------------
@@ -40,7 +32,7 @@ unix {
 
 # Пути к libpqxx
 LIBPQXX_INSTALL_DIR =  /home/andreyonkhonov/clone/exchangeRate_cbr/lib/libpqxx-install
-exists($$LIBPQXX_INSTALL_DIR) {`
+exists($$LIBPQXX_INSTALL_DIR) {
     INCLUDEPATH += $$LIBPQXX_INSTALL_DIR/include
     LIBS += -L$$LIBPQXX_INSTALL_DIR/lib -lpqxx
     message("Подключен libpqxx из: $$LIBPQXX_INSTALL_DIR")
@@ -95,22 +87,27 @@ unix {
 
 SOURCES += \
     ../lib/qcustomplot/qcustomplot.cpp \
+    configparser.cpp \
+    connectionbank.cpp \
+    convert1251.cpp \
     customgraph.cpp \
+    databaseconfig.cpp \
     main.cpp \
     mainwindow.cpp \
-    second_window.cpp
+    second_window.cpp \
+    writefile.cpp
 
 HEADERS += \
     ../lib/qcustomplot/qcustomplot.h \
-    DATABASE.h \
-    config_parser.h \
-    connection_cb.h \
+    configparser.h \
+    connectionbank.h \
     container.h \
-    convertCP1251.h \
+    convert1251.h \
     customgraph.h \
+    databaseconfig.h \
     mainwindow.h \
     second_window.h \
-    write_to_file.h
+    writefile.h
 
 
 FORMS += \

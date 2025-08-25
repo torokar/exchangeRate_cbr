@@ -13,7 +13,7 @@
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
-#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTableView>
@@ -26,7 +26,7 @@ class Ui_second_window
 public:
     QTableView *tableView;
     QWidget *widget;
-    QHBoxLayout *horizontalLayout;
+    QGridLayout *gridLayout;
     QPushButton *write;
     QPushButton *graph;
 
@@ -52,19 +52,19 @@ public:
         tableView->setSortingEnabled(true);
         widget = new QWidget(second_window);
         widget->setObjectName("widget");
-        widget->setGeometry(QRect(0, 500, 222, 25));
-        horizontalLayout = new QHBoxLayout(widget);
-        horizontalLayout->setObjectName("horizontalLayout");
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        widget->setGeometry(QRect(0, 500, 561, 25));
+        gridLayout = new QGridLayout(widget);
+        gridLayout->setObjectName("gridLayout");
+        gridLayout->setContentsMargins(0, 0, 0, 0);
         write = new QPushButton(widget);
         write->setObjectName("write");
 
-        horizontalLayout->addWidget(write);
+        gridLayout->addWidget(write, 0, 0, 1, 1);
 
         graph = new QPushButton(widget);
         graph->setObjectName("graph");
 
-        horizontalLayout->addWidget(graph);
+        gridLayout->addWidget(graph, 0, 1, 1, 1);
 
 
         retranslateUi(second_window);

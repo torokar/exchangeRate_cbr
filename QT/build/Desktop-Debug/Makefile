@@ -53,19 +53,29 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../../../lib/qcustomplot/qcustomplot.cpp \
+		../../configparser.cpp \
+		../../connectionbank.cpp \
+		../../convert1251.cpp \
 		../../customgraph.cpp \
+		../../databaseconfig.cpp \
 		../../main.cpp \
 		../../mainwindow.cpp \
-		../../second_window.cpp qrc_image.cpp \
+		../../second_window.cpp \
+		../../writefile.cpp qrc_image.cpp \
 		moc_qcustomplot.cpp \
 		moc_customgraph.cpp \
 		moc_mainwindow.cpp \
 		moc_second_window.cpp
 OBJECTS       = qcustomplot.o \
+		configparser.o \
+		connectionbank.o \
+		convert1251.o \
 		customgraph.o \
+		databaseconfig.o \
 		main.o \
 		mainwindow.o \
 		second_window.o \
+		writefile.o \
 		qrc_image.o \
 		moc_qcustomplot.o \
 		moc_customgraph.o \
@@ -169,19 +179,24 @@ DIST          = ../../image/Без \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/lex.prf \
 		../../../../CurrencyX.pro ../../../lib/qcustomplot/qcustomplot.h \
-		../../DATABASE.h \
-		../../config_parser.h \
-		../../connection_cb.h \
+		../../configparser.h \
+		../../connectionbank.h \
 		../../container.h \
-		../../convertCP1251.h \
+		../../convert1251.h \
 		../../customgraph.h \
+		../../databaseconfig.h \
 		../../mainwindow.h \
 		../../second_window.h \
-		../../write_to_file.h ../../../lib/qcustomplot/qcustomplot.cpp \
+		../../writefile.h ../../../lib/qcustomplot/qcustomplot.cpp \
+		../../configparser.cpp \
+		../../connectionbank.cpp \
+		../../convert1251.cpp \
 		../../customgraph.cpp \
+		../../databaseconfig.cpp \
 		../../main.cpp \
 		../../mainwindow.cpp \
-		../../second_window.cpp
+		../../second_window.cpp \
+		../../writefile.cpp
 QMAKE_TARGET  = Currence
 DESTDIR       = 
 TARGET        = Currence
@@ -420,8 +435,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../image.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../../lib/qcustomplot/qcustomplot.h ../../DATABASE.h ../../config_parser.h ../../connection_cb.h ../../container.h ../../convertCP1251.h ../../customgraph.h ../../mainwindow.h ../../second_window.h ../../write_to_file.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../../lib/qcustomplot/qcustomplot.cpp ../../customgraph.cpp ../../main.cpp ../../mainwindow.cpp ../../second_window.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../../lib/qcustomplot/qcustomplot.h ../../configparser.h ../../connectionbank.h ../../container.h ../../convert1251.h ../../customgraph.h ../../databaseconfig.h ../../mainwindow.h ../../second_window.h ../../writefile.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../../lib/qcustomplot/qcustomplot.cpp ../../configparser.cpp ../../connectionbank.cpp ../../convert1251.cpp ../../customgraph.cpp ../../databaseconfig.cpp ../../main.cpp ../../mainwindow.cpp ../../second_window.cpp ../../writefile.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../../customgraph.ui ../../mainwindow.ui ../../second_window.ui $(DISTDIR)/
 
 
@@ -521,11 +536,133 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 qcustomplot.o: ../../../lib/qcustomplot/qcustomplot.cpp ../../../lib/qcustomplot/qcustomplot.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qcustomplot.o ../../../lib/qcustomplot/qcustomplot.cpp
 
+configparser.o: ../../configparser.cpp ../../configparser.h \
+		../../container.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o configparser.o ../../configparser.cpp
+
+connectionbank.o: ../../connectionbank.cpp ../../connectionbank.h \
+		../../../lib/libpqxx-install/include/pqxx/pqxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/header-pre.hxx \
+		../../../lib/libpqxx-install/include/pqxx/config-public-compiler.h \
+		../../../lib/libpqxx-install/include/pqxx/array.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/encoding_group.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/encodings.hxx \
+		../../../lib/libpqxx-install/include/pqxx/binarystring.hxx \
+		../../../lib/libpqxx-install/include/pqxx/result.hxx \
+		../../../lib/libpqxx-install/include/pqxx/except.hxx \
+		../../../lib/libpqxx-install/include/pqxx/types.hxx \
+		../../../lib/libpqxx-install/include/pqxx/util.hxx \
+		../../../lib/libpqxx-install/include/pqxx/version.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/libpq-forward.hxx \
+		../../../lib/libpqxx-install/include/pqxx/zview.hxx \
+		../../../lib/libpqxx-install/include/pqxx/strconv.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/conversions.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-pre.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-post.hxx \
+		../../../lib/libpqxx-install/include/pqxx/blob.hxx \
+		../../../lib/libpqxx-install/include/pqxx/dbtransaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/transaction_base.hxx \
+		../../../lib/libpqxx-install/include/pqxx/connection.hxx \
+		../../../lib/libpqxx-install/include/pqxx/errorhandler.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/concat.hxx \
+		../../../lib/libpqxx-install/include/pqxx/params.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/statement_parameters.hxx \
+		../../../lib/libpqxx-install/include/pqxx/separated_list.hxx \
+		../../../lib/libpqxx-install/include/pqxx/isolation.hxx \
+		../../../lib/libpqxx-install/include/pqxx/row.hxx \
+		../../../lib/libpqxx-install/include/pqxx/field.hxx \
+		../../../lib/libpqxx-install/include/pqxx/composite.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/array-composite.hxx \
+		../../../lib/libpqxx-install/include/pqxx/stream_from.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/stream_iterator.hxx \
+		../../../lib/libpqxx-install/include/pqxx/transaction_focus.hxx \
+		../../../lib/libpqxx-install/include/pqxx/cursor.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/sql_cursor.hxx \
+		../../../lib/libpqxx-install/include/pqxx/largeobject.hxx \
+		../../../lib/libpqxx-install/include/pqxx/nontransaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/transaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/notification.hxx \
+		../../../lib/libpqxx-install/include/pqxx/pipeline.hxx \
+		../../../lib/libpqxx-install/include/pqxx/prepared_statement.hxx \
+		../../../lib/libpqxx-install/include/pqxx/range.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/result_iterator.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/result_iter.hxx \
+		../../../lib/libpqxx-install/include/pqxx/robusttransaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/stream_to.hxx \
+		../../../lib/libpqxx-install/include/pqxx/subtransaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/time.hxx \
+		../../../lib/libpqxx-install/include/pqxx/transactor.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/header-post.hxx \
+		../../convertCP1251.h \
+		../../configparser.h \
+		../../databaseconfig.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o connectionbank.o ../../connectionbank.cpp
+
+convert1251.o: ../../convert1251.cpp ../../convert1251.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o convert1251.o ../../convert1251.cpp
+
 customgraph.o: ../../customgraph.cpp ../../customgraph.h \
 		../../container.h \
 		../../../lib/qcustomplot/qcustomplot.h \
 		ui_customgraph.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o customgraph.o ../../customgraph.cpp
+
+databaseconfig.o: ../../databaseconfig.cpp ../../databaseconfig.h \
+		../../../lib/libpqxx-install/include/pqxx/pqxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/header-pre.hxx \
+		../../../lib/libpqxx-install/include/pqxx/config-public-compiler.h \
+		../../../lib/libpqxx-install/include/pqxx/array.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/encoding_group.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/encodings.hxx \
+		../../../lib/libpqxx-install/include/pqxx/binarystring.hxx \
+		../../../lib/libpqxx-install/include/pqxx/result.hxx \
+		../../../lib/libpqxx-install/include/pqxx/except.hxx \
+		../../../lib/libpqxx-install/include/pqxx/types.hxx \
+		../../../lib/libpqxx-install/include/pqxx/util.hxx \
+		../../../lib/libpqxx-install/include/pqxx/version.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/libpq-forward.hxx \
+		../../../lib/libpqxx-install/include/pqxx/zview.hxx \
+		../../../lib/libpqxx-install/include/pqxx/strconv.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/conversions.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-pre.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-post.hxx \
+		../../../lib/libpqxx-install/include/pqxx/blob.hxx \
+		../../../lib/libpqxx-install/include/pqxx/dbtransaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/transaction_base.hxx \
+		../../../lib/libpqxx-install/include/pqxx/connection.hxx \
+		../../../lib/libpqxx-install/include/pqxx/errorhandler.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/concat.hxx \
+		../../../lib/libpqxx-install/include/pqxx/params.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/statement_parameters.hxx \
+		../../../lib/libpqxx-install/include/pqxx/separated_list.hxx \
+		../../../lib/libpqxx-install/include/pqxx/isolation.hxx \
+		../../../lib/libpqxx-install/include/pqxx/row.hxx \
+		../../../lib/libpqxx-install/include/pqxx/field.hxx \
+		../../../lib/libpqxx-install/include/pqxx/composite.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/array-composite.hxx \
+		../../../lib/libpqxx-install/include/pqxx/stream_from.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/stream_iterator.hxx \
+		../../../lib/libpqxx-install/include/pqxx/transaction_focus.hxx \
+		../../../lib/libpqxx-install/include/pqxx/cursor.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/sql_cursor.hxx \
+		../../../lib/libpqxx-install/include/pqxx/largeobject.hxx \
+		../../../lib/libpqxx-install/include/pqxx/nontransaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/transaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/notification.hxx \
+		../../../lib/libpqxx-install/include/pqxx/pipeline.hxx \
+		../../../lib/libpqxx-install/include/pqxx/prepared_statement.hxx \
+		../../../lib/libpqxx-install/include/pqxx/range.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/result_iterator.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/result_iter.hxx \
+		../../../lib/libpqxx-install/include/pqxx/robusttransaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/stream_to.hxx \
+		../../../lib/libpqxx-install/include/pqxx/subtransaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/time.hxx \
+		../../../lib/libpqxx-install/include/pqxx/transactor.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/header-post.hxx \
+		../../convertCP1251.h \
+		../../container.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o databaseconfig.o ../../databaseconfig.cpp
 
 main.o: ../../main.cpp ../../mainwindow.h \
 		../../../lib/libpqxx-install/include/pqxx/pqxx \
@@ -640,11 +777,7 @@ mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		../../container.h \
 		../../customgraph.h \
 		../../../lib/qcustomplot/qcustomplot.h \
-		../../connection_cb.h \
-		../../config_parser.h \
-		../../write_to_file.h \
-		../../DATABASE.h \
-		../../convertCP1251.h
+		../../configparser.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../../mainwindow.cpp
 
 second_window.o: ../../second_window.cpp ../../second_window.h \
@@ -705,11 +838,12 @@ second_window.o: ../../second_window.cpp ../../second_window.h \
 		../../../lib/libpqxx-install/include/pqxx/transactor.hxx \
 		../../../lib/libpqxx-install/include/pqxx/internal/header-post.hxx \
 		../../convertCP1251.h \
-		../../write_to_file.h \
-		../../connection_cb.h \
-		../../config_parser.h \
-		../../DATABASE.h
+		../../configparser.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o second_window.o ../../second_window.cpp
+
+writefile.o: ../../writefile.cpp ../../writefile.h \
+		../../container.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o writefile.o ../../writefile.cpp
 
 qrc_image.o: qrc_image.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_image.o qrc_image.cpp

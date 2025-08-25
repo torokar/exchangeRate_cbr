@@ -4,11 +4,11 @@
 #include <pqxx/pqxx>
 #include <QDebug>
 #include <QStringConverter>
-#include <convertCP1251.h>
+#include <convert1251.h>
 #include "customgraph.h"
-#include "write_to_file.h"
-#include "connection_cb.h"
+#include <connectionbank.h>
 #include <QMessageBox>
+#include "writefile.h"
 
 second_window::second_window(QWidget *parent, const QString &date) :
     QDialog(parent),
@@ -42,7 +42,7 @@ void second_window::setDate(const QString &newDate)
 //Вставка данных в таблицу
 void second_window::loadDataFromWebCB()
 {
-    currenceDataForSecondWindow = conn_cbRussian(date);
+    currenceDataForSecondWindow = ConnectionBank::conn_cbRussian(date);
 
     model->removeRows(0, model->rowCount());
 
@@ -72,7 +72,7 @@ second_window::~second_window()
 
 void second_window::on_write_clicked()
 {
-    WriteFile(currenceDataForSecondWindow);
+    WriteFile::WriteToFile(currenceDataForSecondWindow);
 }
 
 

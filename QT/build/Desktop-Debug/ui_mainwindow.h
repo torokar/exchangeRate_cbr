@@ -61,7 +61,7 @@ public:
         label->setFont(font);
         pushButton = new QPushButton(centralwidget);
         pushButton->setObjectName("pushButton");
-        pushButton->setGeometry(QRect(-20, 170, 241, 23));
+        pushButton->setGeometry(QRect(-10, 170, 241, 23));
         QFont font1;
         font1.setFamilies({QString::fromUtf8("C059")});
         pushButton->setFont(font1);
@@ -109,7 +109,7 @@ public:
 
         label_5 = new QLabel(centralwidget);
         label_5->setObjectName("label_5");
-        label_5->setGeometry(QRect(-30, 150, 251, 20));
+        label_5->setGeometry(QRect(-30, 140, 251, 41));
         label_5->setPixmap(QPixmap(QString::fromUtf8(":/image/\320\221\320\265\320\267 \320\275\320\260\320\267\320\262\320\260\320\275\320\270\321\217.png")));
         label_6 = new QLabel(centralwidget);
         label_6->setObjectName("label_6");
