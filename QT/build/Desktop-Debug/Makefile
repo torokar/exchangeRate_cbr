@@ -58,12 +58,15 @@ SOURCES       = ../../../lib/qcustomplot/qcustomplot.cpp \
 		../../convert1251.cpp \
 		../../customgraph.cpp \
 		../../databaseconfig.cpp \
+		../../dialogprogress.cpp \
 		../../main.cpp \
 		../../mainwindow.cpp \
 		../../second_window.cpp \
 		../../writefile.cpp qrc_image.cpp \
 		moc_qcustomplot.cpp \
+		moc_connectionbank.cpp \
 		moc_customgraph.cpp \
+		moc_dialogprogress.cpp \
 		moc_mainwindow.cpp \
 		moc_second_window.cpp
 OBJECTS       = qcustomplot.o \
@@ -72,13 +75,16 @@ OBJECTS       = qcustomplot.o \
 		convert1251.o \
 		customgraph.o \
 		databaseconfig.o \
+		dialogprogress.o \
 		main.o \
 		mainwindow.o \
 		second_window.o \
 		writefile.o \
 		qrc_image.o \
 		moc_qcustomplot.o \
+		moc_connectionbank.o \
 		moc_customgraph.o \
+		moc_dialogprogress.o \
 		moc_mainwindow.o \
 		moc_second_window.o
 DIST          = ../../image/Без \
@@ -185,6 +191,7 @@ DIST          = ../../image/Без \
 		../../convert1251.h \
 		../../customgraph.h \
 		../../databaseconfig.h \
+		../../dialogprogress.h \
 		../../mainwindow.h \
 		../../second_window.h \
 		../../writefile.h ../../../lib/qcustomplot/qcustomplot.cpp \
@@ -193,6 +200,7 @@ DIST          = ../../image/Без \
 		../../convert1251.cpp \
 		../../customgraph.cpp \
 		../../databaseconfig.cpp \
+		../../dialogprogress.cpp \
 		../../main.cpp \
 		../../mainwindow.cpp \
 		../../second_window.cpp \
@@ -205,7 +213,7 @@ TARGET        = Currence
 first: all
 ####### Build rules
 
-Currence: ui_customgraph.h ui_mainwindow.h ui_second_window.h $(OBJECTS)  
+Currence: ui_customgraph.h ui_dialogprogress.h ui_mainwindow.h ui_second_window.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET)  $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../../CurrencyX.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_pre.prf \
@@ -435,9 +443,9 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../image.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../../lib/qcustomplot/qcustomplot.h ../../configparser.h ../../connectionbank.h ../../container.h ../../convert1251.h ../../customgraph.h ../../databaseconfig.h ../../mainwindow.h ../../second_window.h ../../writefile.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../../lib/qcustomplot/qcustomplot.cpp ../../configparser.cpp ../../connectionbank.cpp ../../convert1251.cpp ../../customgraph.cpp ../../databaseconfig.cpp ../../main.cpp ../../mainwindow.cpp ../../second_window.cpp ../../writefile.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../customgraph.ui ../../mainwindow.ui ../../second_window.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../../../lib/qcustomplot/qcustomplot.h ../../configparser.h ../../connectionbank.h ../../container.h ../../convert1251.h ../../customgraph.h ../../databaseconfig.h ../../dialogprogress.h ../../mainwindow.h ../../second_window.h ../../writefile.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../../lib/qcustomplot/qcustomplot.cpp ../../configparser.cpp ../../connectionbank.cpp ../../convert1251.cpp ../../customgraph.cpp ../../databaseconfig.cpp ../../dialogprogress.cpp ../../main.cpp ../../mainwindow.cpp ../../second_window.cpp ../../writefile.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../customgraph.ui ../../dialogprogress.ui ../../mainwindow.ui ../../second_window.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -476,13 +484,75 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++1z -Wall -Wextra -fPIC -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_qcustomplot.cpp moc_customgraph.cpp moc_mainwindow.cpp moc_second_window.cpp
+compiler_moc_header_make_all: moc_qcustomplot.cpp moc_connectionbank.cpp moc_customgraph.cpp moc_dialogprogress.cpp moc_mainwindow.cpp moc_second_window.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_qcustomplot.cpp moc_customgraph.cpp moc_mainwindow.cpp moc_second_window.cpp
+	-$(DEL_FILE) moc_qcustomplot.cpp moc_connectionbank.cpp moc_customgraph.cpp moc_dialogprogress.cpp moc_mainwindow.cpp moc_second_window.cpp
 moc_qcustomplot.cpp: ../../../lib/qcustomplot/qcustomplot.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
 	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/andreyonkhonov/clone/exchangeRate_cbr/QT/build/Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/andreyonkhonov/clone/exchangeRate_cbr/QT -I/usr/include/postgresql -I/home/andreyonkhonov/clone/exchangeRate_cbr/lib/libpqxx-install/include -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtSql -I/usr/include/x86_64-linux-gnu/qt6/QtXml -I/usr/include/x86_64-linux-gnu/qt6/QtConcurrent -I/usr/include/x86_64-linux-gnu/qt6/QtTest -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../../lib/qcustomplot/qcustomplot.h -o moc_qcustomplot.cpp
+
+moc_connectionbank.cpp: ../../connectionbank.h \
+		../../../lib/libpqxx-install/include/pqxx/pqxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/header-pre.hxx \
+		../../../lib/libpqxx-install/include/pqxx/config-public-compiler.h \
+		../../../lib/libpqxx-install/include/pqxx/array.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/encoding_group.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/encodings.hxx \
+		../../../lib/libpqxx-install/include/pqxx/binarystring.hxx \
+		../../../lib/libpqxx-install/include/pqxx/result.hxx \
+		../../../lib/libpqxx-install/include/pqxx/except.hxx \
+		../../../lib/libpqxx-install/include/pqxx/types.hxx \
+		../../../lib/libpqxx-install/include/pqxx/util.hxx \
+		../../../lib/libpqxx-install/include/pqxx/version.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/libpq-forward.hxx \
+		../../../lib/libpqxx-install/include/pqxx/zview.hxx \
+		../../../lib/libpqxx-install/include/pqxx/strconv.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/conversions.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-pre.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-post.hxx \
+		../../../lib/libpqxx-install/include/pqxx/blob.hxx \
+		../../../lib/libpqxx-install/include/pqxx/dbtransaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/transaction_base.hxx \
+		../../../lib/libpqxx-install/include/pqxx/connection.hxx \
+		../../../lib/libpqxx-install/include/pqxx/errorhandler.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/concat.hxx \
+		../../../lib/libpqxx-install/include/pqxx/params.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/statement_parameters.hxx \
+		../../../lib/libpqxx-install/include/pqxx/separated_list.hxx \
+		../../../lib/libpqxx-install/include/pqxx/isolation.hxx \
+		../../../lib/libpqxx-install/include/pqxx/row.hxx \
+		../../../lib/libpqxx-install/include/pqxx/field.hxx \
+		../../../lib/libpqxx-install/include/pqxx/composite.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/array-composite.hxx \
+		../../../lib/libpqxx-install/include/pqxx/stream_from.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/stream_iterator.hxx \
+		../../../lib/libpqxx-install/include/pqxx/transaction_focus.hxx \
+		../../../lib/libpqxx-install/include/pqxx/cursor.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/sql_cursor.hxx \
+		../../../lib/libpqxx-install/include/pqxx/largeobject.hxx \
+		../../../lib/libpqxx-install/include/pqxx/nontransaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/transaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/notification.hxx \
+		../../../lib/libpqxx-install/include/pqxx/pipeline.hxx \
+		../../../lib/libpqxx-install/include/pqxx/prepared_statement.hxx \
+		../../../lib/libpqxx-install/include/pqxx/range.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/result_iterator.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/result_iter.hxx \
+		../../../lib/libpqxx-install/include/pqxx/robusttransaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/stream_to.hxx \
+		../../../lib/libpqxx-install/include/pqxx/subtransaction.hxx \
+		../../../lib/libpqxx-install/include/pqxx/time.hxx \
+		../../../lib/libpqxx-install/include/pqxx/transactor.hxx \
+		../../../lib/libpqxx-install/include/pqxx/internal/header-post.hxx \
+		../../container.h \
+		../../writefile.h \
+		../../databaseconfig.h \
+		../../convertCP1251.h \
+		../../configparser.h \
+		moc_predefs.h \
+		/usr/lib/qt6/libexec/moc
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/andreyonkhonov/clone/exchangeRate_cbr/QT/build/Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/andreyonkhonov/clone/exchangeRate_cbr/QT -I/usr/include/postgresql -I/home/andreyonkhonov/clone/exchangeRate_cbr/lib/libpqxx-install/include -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtSql -I/usr/include/x86_64-linux-gnu/qt6/QtXml -I/usr/include/x86_64-linux-gnu/qt6/QtConcurrent -I/usr/include/x86_64-linux-gnu/qt6/QtTest -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../connectionbank.h -o moc_connectionbank.cpp
 
 moc_customgraph.cpp: ../../customgraph.h \
 		../../container.h \
@@ -490,6 +560,11 @@ moc_customgraph.cpp: ../../customgraph.h \
 		moc_predefs.h \
 		/usr/lib/qt6/libexec/moc
 	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/andreyonkhonov/clone/exchangeRate_cbr/QT/build/Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/andreyonkhonov/clone/exchangeRate_cbr/QT -I/usr/include/postgresql -I/home/andreyonkhonov/clone/exchangeRate_cbr/lib/libpqxx-install/include -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtSql -I/usr/include/x86_64-linux-gnu/qt6/QtXml -I/usr/include/x86_64-linux-gnu/qt6/QtConcurrent -I/usr/include/x86_64-linux-gnu/qt6/QtTest -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../customgraph.h -o moc_customgraph.cpp
+
+moc_dialogprogress.cpp: ../../dialogprogress.h \
+		moc_predefs.h \
+		/usr/lib/qt6/libexec/moc
+	/usr/lib/qt6/libexec/moc $(DEFINES) --include /home/andreyonkhonov/clone/exchangeRate_cbr/QT/build/Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++ -I/home/andreyonkhonov/clone/exchangeRate_cbr/QT -I/usr/include/postgresql -I/home/andreyonkhonov/clone/exchangeRate_cbr/lib/libpqxx-install/include -I/usr/include/x86_64-linux-gnu/qt6 -I/usr/include/x86_64-linux-gnu/qt6/QtPrintSupport -I/usr/include/x86_64-linux-gnu/qt6/QtWidgets -I/usr/include/x86_64-linux-gnu/qt6/QtGui -I/usr/include/x86_64-linux-gnu/qt6/QtSql -I/usr/include/x86_64-linux-gnu/qt6/QtXml -I/usr/include/x86_64-linux-gnu/qt6/QtConcurrent -I/usr/include/x86_64-linux-gnu/qt6/QtTest -I/usr/include/x86_64-linux-gnu/qt6/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/gcc/x86_64-linux-gnu/13/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../dialogprogress.h -o moc_dialogprogress.cpp
 
 moc_mainwindow.cpp: ../../mainwindow.h \
 		moc_predefs.h \
@@ -508,12 +583,16 @@ compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_customgraph.h ui_mainwindow.h ui_second_window.h
+compiler_uic_make_all: ui_customgraph.h ui_dialogprogress.h ui_mainwindow.h ui_second_window.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_customgraph.h ui_mainwindow.h ui_second_window.h
+	-$(DEL_FILE) ui_customgraph.h ui_dialogprogress.h ui_mainwindow.h ui_second_window.h
 ui_customgraph.h: ../../customgraph.ui \
 		/usr/lib/qt6/libexec/uic
 	/usr/lib/qt6/libexec/uic ../../customgraph.ui -o ui_customgraph.h
+
+ui_dialogprogress.h: ../../dialogprogress.ui \
+		/usr/lib/qt6/libexec/uic
+	/usr/lib/qt6/libexec/uic ../../dialogprogress.ui -o ui_dialogprogress.h
 
 ui_mainwindow.h: ../../mainwindow.ui \
 		/usr/lib/qt6/libexec/uic
@@ -593,9 +672,12 @@ connectionbank.o: ../../connectionbank.cpp ../../connectionbank.h \
 		../../../lib/libpqxx-install/include/pqxx/time.hxx \
 		../../../lib/libpqxx-install/include/pqxx/transactor.hxx \
 		../../../lib/libpqxx-install/include/pqxx/internal/header-post.hxx \
+		../../container.h \
+		../../writefile.h \
+		../../databaseconfig.h \
 		../../convertCP1251.h \
 		../../configparser.h \
-		../../databaseconfig.h
+		../../progresbar.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o connectionbank.o ../../connectionbank.cpp
 
 convert1251.o: ../../convert1251.cpp ../../convert1251.h
@@ -661,8 +743,13 @@ databaseconfig.o: ../../databaseconfig.cpp ../../databaseconfig.h \
 		../../../lib/libpqxx-install/include/pqxx/transactor.hxx \
 		../../../lib/libpqxx-install/include/pqxx/internal/header-post.hxx \
 		../../convertCP1251.h \
-		../../container.h
+		../../container.h \
+		../../convert1251.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o databaseconfig.o ../../databaseconfig.cpp
+
+dialogprogress.o: ../../dialogprogress.cpp ../../dialogprogress.h \
+		ui_dialogprogress.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogprogress.o ../../dialogprogress.cpp
 
 main.o: ../../main.cpp ../../mainwindow.h \
 		../../../lib/libpqxx-install/include/pqxx/pqxx \
@@ -777,7 +864,12 @@ mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		../../container.h \
 		../../customgraph.h \
 		../../../lib/qcustomplot/qcustomplot.h \
-		../../configparser.h
+		../../connectionbank.h \
+		../../writefile.h \
+		../../databaseconfig.h \
+		../../convertCP1251.h \
+		../../configparser.h \
+		../../dialogprogress.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../../mainwindow.cpp
 
 second_window.o: ../../second_window.cpp ../../second_window.h \
@@ -837,6 +929,10 @@ second_window.o: ../../second_window.cpp ../../second_window.h \
 		../../../lib/libpqxx-install/include/pqxx/time.hxx \
 		../../../lib/libpqxx-install/include/pqxx/transactor.hxx \
 		../../../lib/libpqxx-install/include/pqxx/internal/header-post.hxx \
+		../../convert1251.h \
+		../../connectionbank.h \
+		../../writefile.h \
+		../../databaseconfig.h \
 		../../convertCP1251.h \
 		../../configparser.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o second_window.o ../../second_window.cpp
@@ -851,8 +947,14 @@ qrc_image.o: qrc_image.cpp
 moc_qcustomplot.o: moc_qcustomplot.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_qcustomplot.o moc_qcustomplot.cpp
 
+moc_connectionbank.o: moc_connectionbank.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_connectionbank.o moc_connectionbank.cpp
+
 moc_customgraph.o: moc_customgraph.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_customgraph.o moc_customgraph.cpp
+
+moc_dialogprogress.o: moc_dialogprogress.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dialogprogress.o moc_dialogprogress.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

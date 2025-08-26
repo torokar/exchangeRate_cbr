@@ -3,6 +3,7 @@
 #include "databaseconfig.h"
 #include <curl/curl.h>
 #include <QDebug>
+#include "progresbar.h"
 
     size_t ConnectionBank::WriteCallback(void* contents, size_t size, size_t nmemb, QByteArray* output)
     {

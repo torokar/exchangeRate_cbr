@@ -9,6 +9,8 @@
 #include <QMessageBox>
 #include <second_window.h>
 #include "connectionbank.h"
+#include "dialogprogress.h"
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -68,6 +70,10 @@ void MainWindow::on_pushButton_clicked()
         return;
     }
 
+    DialogProgress progressCon;
+    int progressValue = 0;
+    progressCon.Progress(progressValue, "Загрузка данных...");
+
 
     QString forDay = QString("%1").arg(day, 2, 10, QChar('0'));
     QString forMont = QString("%1").arg(month, 2, 10, QChar('0'));
@@ -75,13 +81,6 @@ void MainWindow::on_pushButton_clicked()
 
     QString date = forDay + "/" + forMont + "/" + forYear;
 
-    //Имитация загрузки данных)
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("Информация");
-    msgBox.setText("Идет загрузка данных...");
-    msgBox.setIcon(QMessageBox::Information);
-    QTimer::singleShot(3000, &msgBox, &QMessageBox::accept);
-    msgBox.exec();
 
     //Фоновый вызов с передачей даты в поток
     QtConcurrent::run([this, date]()

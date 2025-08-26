@@ -17,7 +17,7 @@ class ConnectionBank
 {
 public:
 
-    ConnectionBank() = default;
+    ConnectionBank(QObject *parent = nullptr);
 
     static QVector<Currence> conn_cbRussian(const QString& dateUser);
 

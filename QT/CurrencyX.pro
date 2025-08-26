@@ -92,6 +92,7 @@ SOURCES += \
     convert1251.cpp \
     customgraph.cpp \
     databaseconfig.cpp \
+    dialogprogress.cpp \
     main.cpp \
     mainwindow.cpp \
     second_window.cpp \
@@ -105,6 +106,7 @@ HEADERS += \
     convert1251.h \
     customgraph.h \
     databaseconfig.h \
+    dialogprogress.h \
     mainwindow.h \
     second_window.h \
     writefile.h
@@ -112,6 +114,7 @@ HEADERS += \
 
 FORMS += \
     customgraph.ui \
+    dialogprogress.ui \
     mainwindow.ui \
     second_window.ui
 

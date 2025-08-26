@@ -9,6 +9,8 @@
 #include <connectionbank.h>
 #include <QMessageBox>
 #include "writefile.h"
+#include "dialogprogress.h"
+
 
 second_window::second_window(QWidget *parent, const QString &date) :
     QDialog(parent),
@@ -88,6 +90,11 @@ void second_window::on_graph_clicked()
         delete Graph;
         Graph = nullptr;
     }
+
+
+    DialogProgress progressCon;
+    int progressValue = 0;
+    progressCon.Progress(progressValue, "Создание графиков...");
 
     Graph = new CustomGraph(currenceDataForSecondWindow, nullptr);
     Graph->exec();

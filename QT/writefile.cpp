@@ -1,4 +1,5 @@
 #include "writefile.h"
+#include "dialogprogress.h"
 
 QString WriteFile::LengthCheck(const QString& string)
 {
@@ -59,6 +60,12 @@ void WriteFile::WriteToFile(const QVector<Currence>& data)
 
     }
 
+
+
+    DialogProgress progressCon;
+    int progressValue = 0;
+    progressCon.Progress(progressValue, "Запись в текстовый файл...");
+
     if(out.status() != QTextStream::Ok){
         qCritical() << "Ошибка записи в файл!";
     }
@@ -67,7 +74,6 @@ void WriteFile::WriteToFile(const QVector<Currence>& data)
         msgBox.setWindowTitle("Информация");
         msgBox.setText("Данные записаны в файл");
         msgBox.setIcon(QMessageBox::Information);
-        QTimer::singleShot(2000, &msgBox, &QMessageBox::accept);
         msgBox.exec();
     }
 
