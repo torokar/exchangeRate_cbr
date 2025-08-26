@@ -13,7 +13,7 @@
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
-#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTableView>
@@ -25,9 +25,10 @@ class Ui_second_window
 {
 public:
     QTableView *tableView;
-    QWidget *widget;
-    QGridLayout *gridLayout;
+    QWidget *layoutWidget;
+    QHBoxLayout *horizontalLayout;
     QPushButton *write;
+    QPushButton *writeXML;
     QPushButton *graph;
 
     void setupUi(QDialog *second_window)
@@ -50,21 +51,26 @@ public:
         tableView->setGeometry(QRect(0, 0, 561, 501));
         tableView->viewport()->setProperty("cursor", QVariant(QCursor(Qt::PointingHandCursor)));
         tableView->setSortingEnabled(true);
-        widget = new QWidget(second_window);
-        widget->setObjectName("widget");
-        widget->setGeometry(QRect(0, 500, 561, 25));
-        gridLayout = new QGridLayout(widget);
-        gridLayout->setObjectName("gridLayout");
-        gridLayout->setContentsMargins(0, 0, 0, 0);
-        write = new QPushButton(widget);
+        layoutWidget = new QWidget(second_window);
+        layoutWidget->setObjectName("layoutWidget");
+        layoutWidget->setGeometry(QRect(0, 500, 561, 25));
+        horizontalLayout = new QHBoxLayout(layoutWidget);
+        horizontalLayout->setObjectName("horizontalLayout");
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        write = new QPushButton(layoutWidget);
         write->setObjectName("write");
 
-        gridLayout->addWidget(write, 0, 0, 1, 1);
+        horizontalLayout->addWidget(write);
 
-        graph = new QPushButton(widget);
+        writeXML = new QPushButton(layoutWidget);
+        writeXML->setObjectName("writeXML");
+
+        horizontalLayout->addWidget(writeXML);
+
+        graph = new QPushButton(layoutWidget);
         graph->setObjectName("graph");
 
-        gridLayout->addWidget(graph, 0, 1, 1, 1);
+        horizontalLayout->addWidget(graph);
 
 
         retranslateUi(second_window);
@@ -75,7 +81,8 @@ public:
     void retranslateUi(QDialog *second_window)
     {
         second_window->setWindowTitle(QCoreApplication::translate("second_window", "Currence", nullptr));
-        write->setText(QCoreApplication::translate("second_window", "\320\227\320\260\320\277\320\270\321\201\320\260\321\202\321\214 \320\262 \321\204\320\260\320\271\320\273", nullptr));
+        write->setText(QCoreApplication::translate("second_window", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\262 \321\202\320\265\320\272\321\201\321\202\320\276\320\262\320\276\320\274 \321\204\320\260\320\271\320\273\320\265", nullptr));
+        writeXML->setText(QCoreApplication::translate("second_window", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 XML", nullptr));
         graph->setText(QCoreApplication::translate("second_window", "\320\237\320\276\320\272\320\260\320\267\320\260\321\202\321\214 \320\263\321\200\320\260\321\204\321\213", nullptr));
     } // retranslateUi
 

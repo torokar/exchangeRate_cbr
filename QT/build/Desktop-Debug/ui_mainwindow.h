@@ -38,8 +38,6 @@ public:
     QLabel *label_2;
     QLabel *label_3;
     QLabel *label_4;
-    QLabel *label_5;
-    QLabel *label_6;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -61,7 +59,7 @@ public:
         label->setFont(font);
         pushButton = new QPushButton(centralwidget);
         pushButton->setObjectName("pushButton");
-        pushButton->setGeometry(QRect(-10, 170, 241, 23));
+        pushButton->setGeometry(QRect(-10, 162, 241, 31));
         QFont font1;
         font1.setFamilies({QString::fromUtf8("C059")});
         pushButton->setFont(font1);
@@ -88,7 +86,7 @@ public:
 
         layoutWidget1 = new QWidget(centralwidget);
         layoutWidget1->setObjectName("layoutWidget1");
-        layoutWidget1->setGeometry(QRect(60, 50, 48, 96));
+        layoutWidget1->setGeometry(QRect(57, 50, 51, 96));
         verticalLayout_2 = new QVBoxLayout(layoutWidget1);
         verticalLayout_2->setObjectName("verticalLayout_2");
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
@@ -107,14 +105,6 @@ public:
 
         verticalLayout_2->addWidget(label_4);
 
-        label_5 = new QLabel(centralwidget);
-        label_5->setObjectName("label_5");
-        label_5->setGeometry(QRect(-30, 140, 251, 41));
-        label_5->setPixmap(QPixmap(QString::fromUtf8(":/image/\320\221\320\265\320\267 \320\275\320\260\320\267\320\262\320\260\320\275\320\270\321\217.png")));
-        label_6 = new QLabel(centralwidget);
-        label_6->setObjectName("label_6");
-        label_6->setGeometry(QRect(-10, 30, 251, 20));
-        label_6->setPixmap(QPixmap(QString::fromUtf8(":/image/\320\221\320\265\320\267 \320\275\320\260\320\267\320\262\320\260\320\275\320\270\321\217.png")));
         MainWindow->setCentralWidget(centralwidget);
 
         retranslateUi(MainWindow);
@@ -131,8 +121,6 @@ public:
         label_2->setText(QCoreApplication::translate("MainWindow", "\320\224\320\265\320\275\321\214:", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "\320\234\320\265\321\201\321\217\321\206: ", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "\320\223\320\276\320\264:", nullptr));
-        label_5->setText(QString());
-        label_6->setText(QString());
     } // retranslateUi
 
 };

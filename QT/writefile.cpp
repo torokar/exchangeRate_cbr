@@ -12,6 +12,38 @@ QString WriteFile::LengthCheck(const QString& string)
     }
 }
 
+
+void WriteFile::saveXML(QByteArray& xmlData, const QString& fileName)
+{
+    QFile file(fileName);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qWarning() << "Ошибка открытия файла:" << file.errorString();
+        return;
+    }
+
+    QTextStream out(&file);
+
+    out << xmlData;
+
+    DialogProgress progressCon;
+    int progressValue = 0;
+    progressCon.Progress(progressValue, "Запись в текстовый файл...");
+
+    if(out.status() != QTextStream::Ok){
+        qCritical() << "Ошибка записи в файл!";
+    }
+    else{
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Информация");
+        msgBox.setText("Данные записаны в файл");
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.exec();
+    }
+
+    file.close();
+}
+
 void WriteFile::WriteToFile(const QVector<Currence>& data)
 {
     //Получения пути к директории

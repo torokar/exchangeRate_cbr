@@ -10,11 +10,6 @@ TARGET = Currence
 unix {
     LIBS += -L/usr/lib/x86_64-linux-gnu -lpq
     INCLUDEPATH += /usr/include/postgresql
-
-    # Проверка наличия libpq
-    !exists(/usr/lib/x86_64-linux-gnu/libpq.so) {
-        error("libpq не найден! Установите: sudo apt install libpq-dev")
-    }
 }
 
 #--------------------------------------------------
@@ -23,7 +18,6 @@ unix {
 
 unix {
     LIBS += -lcurl
-    message("Используется системный curl")
 }
 
 #--------------------------------------------------
@@ -35,7 +29,6 @@ LIBPQXX_INSTALL_DIR =  /home/andreyonkhonov/clone/exchangeRate_cbr/lib/libpqxx-i
 exists($$LIBPQXX_INSTALL_DIR) {
     INCLUDEPATH += $$LIBPQXX_INSTALL_DIR/include
     LIBS += -L$$LIBPQXX_INSTALL_DIR/lib -lpqxx
-    message("Подключен libpqxx из: $$LIBPQXX_INSTALL_DIR")
 } else {
     error("Директория libpqxx не найдена: $$LIBPQXX_INSTALL_DIR")
 }
@@ -60,7 +53,6 @@ unix:!android {
         platforms.path = $$target.path/platforms
         platforms.files = $$platformPlugin.file
         INSTALLS += target platforms
-        message("Плагин платформы: $$platformPlugin.file")
     } else {
         warning("Плагин libqxcb.so не найден! Проверьте путь: $$QT_PLUGINS_DIR/platforms/")
     }
@@ -73,7 +65,6 @@ unix:!android {
 unix {
     # Проверяем наличие системной библиотеки
     exists(/usr/local/lib/libiconv.so) {
-        message("Используем системную libiconv из /usr/local/lib")
         LIBS += -L/usr/local/lib -liconv
         INCLUDEPATH += /usr/local/include
     }

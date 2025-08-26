@@ -21,8 +21,11 @@ public:
 
     static QVector<Currence> conn_cbRussian(const QString& dateUser);
 
+    static QByteArray GetAByteArray();
+
 private:
 
+            static QByteArray xmlData;
     static size_t WriteCallback(void* contents, size_t size, size_t nmemb, QByteArray* output);
 };
 

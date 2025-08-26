@@ -10,6 +10,7 @@
 #include <QMessageBox>
 #include "writefile.h"
 #include "dialogprogress.h"
+#include "container.h"
 
 
 second_window::second_window(QWidget *parent, const QString &date) :
@@ -99,3 +100,18 @@ void second_window::on_graph_clicked()
     Graph = new CustomGraph(currenceDataForSecondWindow, nullptr);
     Graph->exec();
 }
+
+void second_window::on_writeXML_clicked()
+{
+
+    QByteArray xmlDATA = ConnectionBank::GetAByteArray();
+
+    if (xmlDATA.isEmpty()) {
+        QMessageBox::warning(this, "Ошибка", "Нет XML данных для сохранения");
+        return;
+    }
+
+    WriteFile::saveXML(xmlDATA, "XML");
+
+}
+

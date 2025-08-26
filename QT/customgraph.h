@@ -28,6 +28,7 @@ public:
 private:
     Ui::CustomGraph *ui;
 
+
     QVector<QCPItemText*> textLabels;
     QVector<double> xValues, yValues;
     QVector<Currence> currenceData; // Вектор данных

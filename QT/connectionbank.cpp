@@ -4,6 +4,16 @@
 #include <curl/curl.h>
 #include <QDebug>
 #include "progresbar.h"
+#include "container.h"
+
+
+    QByteArray ConnectionBank::xmlData;
+
+    QByteArray ConnectionBank::GetAByteArray()
+    {
+        return xmlData;
+    }
+
 
     size_t ConnectionBank::WriteCallback(void* contents, size_t size, size_t nmemb, QByteArray* output)
     {
@@ -15,7 +25,7 @@
 
     QVector<Currence> ConnectionBank::conn_cbRussian(const QString& dateUser)
     {
-        QByteArray xmlData;
+        Currence writeData;
         QVector<Currence> dataCurr;
         const QString full_url = "https://www.cbr.ru/scripts/XML_daily.asp?date_req=" + dateUser;
 
@@ -43,6 +53,7 @@
 
         // Парсинг XML
         ConfigParser::SubstrCurrensiFromXML(xmlData, dataCurr, dateUser);
+        writeData.xmlData = xmlData;
 
         try {
             DataBaseConfig::ConnectedBD(dataCurr);

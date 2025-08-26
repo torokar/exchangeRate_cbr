@@ -26,6 +26,7 @@ public:
 private slots:
     void on_write_clicked();
     void on_graph_clicked();
+    void on_writeXML_clicked();
 
 private:
     Ui::second_window *ui;
@@ -34,6 +35,7 @@ private:
     QVector<Currence> currenceDataForSecondWindow;
     QString date;
     CustomGraph *Graph = nullptr;
+    QByteArray xmlDataForSecond;
 };
 
 #endif // SECOND_WINDOW_H
