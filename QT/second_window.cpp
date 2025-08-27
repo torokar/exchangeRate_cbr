@@ -75,6 +75,12 @@ second_window::~second_window()
 
 void second_window::on_write_clicked()
 {
+    DialogProgress progressCon;
+    int progressValue = 0;
+    if (!progressCon.Progress(progressValue, "Запись в текстовый файл...")) {
+        return;
+    }
+
     WriteFile::WriteToFile(currenceDataForSecondWindow);
 }
 
@@ -95,7 +101,9 @@ void second_window::on_graph_clicked()
 
     DialogProgress progressCon;
     int progressValue = 0;
-    progressCon.Progress(progressValue, "Создание графиков...");
+    if (!progressCon.Progress(progressValue, "Создание графиков...")) {
+        return;
+    }
 
     Graph = new CustomGraph(currenceDataForSecondWindow, nullptr);
     Graph->exec();
@@ -110,6 +118,14 @@ void second_window::on_writeXML_clicked()
         QMessageBox::warning(this, "Ошибка", "Нет XML данных для сохранения");
         return;
     }
+
+    DialogProgress progressCon;
+    int progressValue = 0;
+    if (!progressCon.Progress(progressValue, "Запись в текстовый файл...")) {
+        return;
+    }
+
+
 
     WriteFile::saveXML(xmlDATA, "XML");
 

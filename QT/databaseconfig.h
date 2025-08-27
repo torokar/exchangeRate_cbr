@@ -4,11 +4,9 @@
 #include <iconv.h>
 #include <cerrno>
 #include <cstring>
-#include <convertCP1251.h>
-#include "container.h"
 #include <QVector>
 #include <QMessageBox>
-
+#include "container.h"
 
 class DataBaseConfig
 {

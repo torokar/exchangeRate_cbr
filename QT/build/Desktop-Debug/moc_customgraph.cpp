@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../../customgraph.h"
+#include "../../../../../1/exchangeRate_cbr/QT/customgraph.h"
 #include <QtGui/qtextcursor.h>
 #include <QScreen>
 #include <QtCore/qmetatype.h>

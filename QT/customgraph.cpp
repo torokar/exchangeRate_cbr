@@ -8,6 +8,7 @@ CustomGraph::CustomGraph(const QVector<Currence> &data, QWidget *parent)
     , currenceData(data)
 {
     ui->setupUi(this);
+    this->setFixedSize(this->size());
 
     for (int i = 0; i < data.size(); ++i) {
         xValues.push_back(i);

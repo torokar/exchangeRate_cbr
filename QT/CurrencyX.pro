@@ -86,6 +86,7 @@ SOURCES += \
     dialogprogress.cpp \
     main.cpp \
     mainwindow.cpp \
+    qlineeditforusers.cpp \
     second_window.cpp \
     writefile.cpp
 
@@ -99,6 +100,7 @@ HEADERS += \
     databaseconfig.h \
     dialogprogress.h \
     mainwindow.h \
+    qlineeditforusers.h \
     second_window.h \
     writefile.h
 
@@ -107,6 +109,7 @@ FORMS += \
     customgraph.ui \
     dialogprogress.ui \
     mainwindow.ui \
+    qlineeditforusers.ui \
     second_window.ui
 
 target.path = /opt/$${TARGET}/bin
@@ -116,6 +119,7 @@ RESOURCES += \
     image.qrc
 
 DISTFILES += \
+    ../../../Загрузки/ex140_01.rar \
     image/Без названия.png
 
 unix:!symbian {

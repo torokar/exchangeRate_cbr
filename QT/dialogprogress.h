@@ -14,7 +14,7 @@ class DialogProgress : public QDialog
 public:
     explicit DialogProgress(QWidget *parent = nullptr);
     ~DialogProgress();
-        void Progress(int &value, const QString &text);
+    bool Progress(int &value, const QString &text);
 private:
     Ui::DialogProgress *ui;
 

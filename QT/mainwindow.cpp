@@ -72,7 +72,9 @@ void MainWindow::on_pushButton_clicked()
 
     DialogProgress progressCon;
     int progressValue = 0;
-    progressCon.Progress(progressValue, "Загрузка данных...");
+    if (!progressCon.Progress(progressValue, "Загрузка данных...")) {
+        return;
+    }
 
 
     QString forDay = QString("%1").arg(day, 2, 10, QChar('0'));

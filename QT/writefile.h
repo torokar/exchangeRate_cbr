@@ -9,7 +9,6 @@
 #include <QMessageBox>
 #include <QTimer>
 
-
 class WriteFile
 {
 public:
