@@ -13,6 +13,8 @@
 #include <curl/curl.h>
 #include <QDebug>
 
+//1
+
 class ConnectionBank
 {
 public:
