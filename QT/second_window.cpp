@@ -22,8 +22,6 @@ second_window::second_window(QWidget *parent, const QString &date) :
     ui->setupUi(this);
     this->setFixedSize(this->size());
 
-
-
     model->setColumnCount(4);
     model->setHorizontalHeaderLabels({"Код", "Валюта", "Курс", "Дата"});
 
@@ -125,9 +123,6 @@ void second_window::on_writeXML_clicked()
         return;
     }
 
-
-
     WriteFile::saveXML(xmlDATA, "XML");
 
 }
-

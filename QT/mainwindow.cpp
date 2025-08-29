@@ -27,6 +27,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
+
     int month = ui->spinMonth->value();
     int day = ui->spinDay->value();
     QString year = ui->InputYear->text();

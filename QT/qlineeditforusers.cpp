@@ -11,7 +11,7 @@ QLineEditForUsers::QLineEditForUsers(QWidget *parent)
     ,pathUsers("")
 {
     ui->setupUi(this);
-
+    this->setFixedSize(this->size());
 }
 
 QString QLineEditForUsers::pathUser()

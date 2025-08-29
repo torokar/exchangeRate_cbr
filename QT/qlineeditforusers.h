@@ -18,7 +18,6 @@ public:
 
 private slots:
     void on_pushButtonPath_clicked();
-
     void on_pushButtonPath_2_clicked();
 
 private:

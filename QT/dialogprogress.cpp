@@ -28,8 +28,6 @@ bool DialogProgress::Progress(int &value, const QString &text)
     int y = (screen.height() - progressBar.height()) / 2;
     progressBar.move(x, y);
 
-
-
     progressBar.setValue(value);
     QThread::msleep(80);
     for (; value <= 100 ; ++value) {
@@ -48,8 +46,6 @@ bool DialogProgress::Progress(int &value, const QString &text)
         qApp->processEvents();
 
     }
-
-
 
     if (!progressBar.wasCanceled()) {
         progressBar.setValue(100);

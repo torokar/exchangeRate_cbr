@@ -156,6 +156,5 @@ void WriteFile::WriteToFile(const QVector<Currence>& data)
     }
 
     file.close();
-
 }
 
