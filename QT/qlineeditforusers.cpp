@@ -31,6 +31,10 @@ void QLineEditForUsers::on_pushButtonPath_clicked()
     accept();
 }
 
+void QLineEditForUsers::setPathText(const QString &text)
+{
+    ui->Path->setText(text); // Устанавливаем текст в QLineEdit
+}
 
 void QLineEditForUsers::on_pushButtonPath_2_clicked()
 {

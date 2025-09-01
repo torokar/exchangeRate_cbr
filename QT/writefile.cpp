@@ -35,23 +35,35 @@ QByteArray convertWindows1251ToUtf8(const QByteArray& windows1251Data)
 
 void WriteFile::saveXML(QByteArray& xmlData, const QString& fileName)
 {
-
     QMessageBox::information(nullptr, "Внимание!", "Введите путь сохранения вручную");
 
     QLineEditForUsers line;
-
-    QString LineDir = line.pathUser();
-    if (line.exec() != QDialog::Accepted) { // Проверяем результат диалога
+    line.setPathText(QDir::homePath()); // Установить путь по умолчанию
+    if (line.exec() != QDialog::Accepted) {
         QMessageBox::information(nullptr, "Отмена", "Сохранение файла отменено.");
         return;
     }
 
-    QDir dir(LineDir + "/XMLdata");
+    QString LineDir = QDir::cleanPath(line.pathUser());
+    qDebug() << "Введенный путь: " << LineDir;
 
+    if (LineDir.isEmpty()) {
+        QMessageBox::critical(nullptr, "Ошибка", "Путь не указан!");
+        return;
+    }
+
+    QFileInfo parentDirInfo(LineDir);
+    if (!parentDirInfo.exists() || !parentDirInfo.isWritable()) {
+        QMessageBox::critical(nullptr, "Ошибка",
+                              QString("Нет прав на запись в директорию: %1").arg(LineDir));
+        return;
+    }
+
+    QDir dir(LineDir + "/XMLdata");
     if (!dir.exists()) {
-        if (!dir.mkpath(".")) {
+        if (!dir.mkpath(LineDir + "/XMLdata")) {
             QMessageBox::critical(nullptr, "Ошибка",
-                                  "Ошибка создания директории! Проверьте права доступа");
+                                  QString("Ошибка создания директории %1! Проверьте права доступа").arg(LineDir + "/XMLdata"));
             return;
         }
     }
@@ -66,11 +78,9 @@ void WriteFile::saveXML(QByteArray& xmlData, const QString& fileName)
     }
 
     QByteArray utf8Data = convertWindows1251ToUtf8(xmlData);
-
     if (utf8Data.contains("windows-1251")) {
         utf8Data.replace("windows-1251", "UTF-8");
     } else if (!utf8Data.contains("UTF-8")) {
-        // Если кодировка не указана, добавляем UTF-8 в заголовок
         utf8Data.replace("<?xml version=\"1.0\"?>",
                          "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
     }
@@ -87,74 +97,71 @@ void WriteFile::saveXML(QByteArray& xmlData, const QString& fileName)
     }
 }
 
-
-
 void WriteFile::WriteToFile(const QVector<Currence>& data)
 {
-    //Получения пути к директории
-
     QMessageBox::information(nullptr, "Внимание!", "Введите путь сохранения вручную");
 
     QLineEditForUsers line;
-
-    QString LineDir = line.pathUser();
-    if (line.exec() != QDialog::Accepted) { // Проверяем результат диалога
+    line.setPathText(QDir::homePath());
+    if (line.exec() != QDialog::Accepted) {
         QMessageBox::information(nullptr, "Отмена", "Сохранение файла отменено.");
         return;
     }
-    //Создания подпапки
+
+    QString LineDir = QDir::cleanPath(line.pathUser());
+    qDebug() << "Введенный путь: " << LineDir;
+
+    if (LineDir.isEmpty()) {
+        QMessageBox::critical(nullptr, "Ошибка", "Путь не указан!");
+        return;
+    }
+
+    QFileInfo parentDirInfo(LineDir);
+    if (!parentDirInfo.exists() || !parentDirInfo.isWritable()) {
+        QMessageBox::critical(nullptr, "Ошибка",
+                              QString("Нет прав на запись в директорию: %1").arg(LineDir));
+        return;
+    }
+
     QDir dir(LineDir + "/data");
     if (!dir.exists()) {
-        if (!dir.mkpath(".")) {
-            QMessageBox::critical(nullptr, "Ошибка","Ошибка создания директории! Проверте права доступа.");
+        if (!dir.mkpath(LineDir + "/data")) {
+            QMessageBox::critical(nullptr, "Ошибка",
+                                  QString("Ошибка создания директории %1! Проверьте права доступа").arg(LineDir + "/data"));
             return;
         }
     }
 
     QString filePath = dir.filePath("currency_data.txt");
-
     QFile file(filePath);
-
-    QTextStream out(&file);
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qDebug() << "Ошибка открытия файла:" << file.errorString();
+        QMessageBox::critical(nullptr, "Ошибка",
+                              QString("Ошибка открытия файла: %1").arg(file.errorString()));
         return;
     }
 
+    QTextStream out(&file);
     out << "|======================================================================|\n";
     out << "|      Code      |      Name       |      Value      |     Date        |\n";
     out << "|======================================================================|\n";
 
     for (const auto &text : data) {
-        // Ее краткое названия
         out << "|" << LengthCheck(text.CharCode).leftJustified(13) << " | ";
-
-        //Названия валюты
         out << LengthCheck(text.Name_currence).leftJustified(13) << " | ";
-
-        //Значение
         QString valueStr = QString::number(text.Value, 'f', 3);
         out << LengthCheck(valueStr).leftJustified(13) << " | ";
-
-        //Дата
         out << LengthCheck(text.Date).leftJustified(13) << " | \n";
-
         out << "|----------------------------------------------------------------------|\n";
-
     }
 
-    if(out.status() != QTextStream::Ok){
+    if (out.status() != QTextStream::Ok) {
         qCritical() << "Ошибка записи в файл!";
-    }
-    else{
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("Информация");
-        msgBox.setText("Данные записаны в файл");
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.exec();
+        QMessageBox::critical(nullptr, "Ошибка", "Ошибка записи в файл!");
+    } else {
+        QMessageBox::information(nullptr, "Информация", "Данные записаны в файл");
     }
 
     file.close();
 }
-

@@ -15,6 +15,7 @@ public:
     explicit QLineEditForUsers(QWidget *parent = nullptr);
     ~QLineEditForUsers();
     QString pathUser();
+    void setPathText(const QString &text);
 
 private slots:
     void on_pushButtonPath_clicked();
