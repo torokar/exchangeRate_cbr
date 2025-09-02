@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QtConcurrent/QtConcurrent>
 #include <QThread>
+#include <QProgressBar>
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,5 +27,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QProgressBar *progress;
+    QLabel *progressLabel;
+
 };
 #endif // MAINWINDOW_H

@@ -41,10 +41,10 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>-20</x>
-      <y>170</y>
+      <x>-10</x>
+      <y>162</y>
       <width>241</width>
-      <height>23</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
@@ -84,9 +84,9 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>60</x>
+      <x>57</x>
       <y>50</y>
-      <width>48</width>
+      <width>51</width>
       <height>96</height>
      </rect>
     </property>
@@ -113,38 +113,6 @@
       </widget>
      </item>
     </layout>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>-30</x>
-      <y>150</y>
-      <width>251</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="image.qrc">:/image/Без названия.png</pixmap>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_6">
-    <property name="geometry">
-     <rect>
-      <x>-10</x>
-      <y>30</y>
-      <width>251</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="image.qrc">:/image/Без названия.png</pixmap>
-    </property>
    </widget>
   </widget>
  </widget>

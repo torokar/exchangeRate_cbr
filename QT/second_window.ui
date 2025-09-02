@@ -39,12 +39,12 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>500</y>
-     <width>222</width>
+     <width>561</width>
      <height>25</height>
     </rect>
    </property>
@@ -52,7 +52,14 @@
     <item>
      <widget class="QPushButton" name="write">
       <property name="text">
-       <string>Записать в файл</string>
+       <string>Сохранить в текстовом файле</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="writeXML">
+      <property name="text">
+       <string>Сохранить XML</string>
       </property>
      </widget>
     </item>

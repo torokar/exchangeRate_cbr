@@ -2,6 +2,7 @@
 #define CONTAINER_H
 #pragma once
 #include <QString>
+#include <QByteArray>
 
 struct Currence
 {
@@ -9,5 +10,6 @@ struct Currence
     QString Name_currence;
     double Value;
     QString Date;
+    QByteArray xmlData;
 };
 #endif // CONTAINER_H

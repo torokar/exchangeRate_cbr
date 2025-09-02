@@ -3,10 +3,15 @@
 #include <QStandardItemModel>
 #include <pqxx/pqxx>
 #include <QDebug>
-#include "connection_cb.h"
-#include <QTextCodec>
-#include <convertCP1251.h>
+#include <QStringConverter>
+#include <convert1251.h>
 #include "customgraph.h"
+#include <connectionbank.h>
+#include <QMessageBox>
+#include "writefile.h"
+#include "dialogprogress.h"
+#include "container.h"
+
 
 second_window::second_window(QWidget *parent, const QString &date) :
     QDialog(parent),
@@ -38,7 +43,7 @@ void second_window::setDate(const QString &newDate)
 //Вставка данных в таблицу
 void second_window::loadDataFromWebCB()
 {
-    currenceDataForSecondWindow = conn_cbRussian(date);
+    currenceDataForSecondWindow = ConnectionBank::conn_cbRussian(date);
 
     model->removeRows(0, model->rowCount());
 
@@ -68,13 +73,56 @@ second_window::~second_window()
 
 void second_window::on_write_clicked()
 {
-    WriteFile(currenceDataForSecondWindow);
+    DialogProgress progressCon;
+    int progressValue = 0;
+    if (!progressCon.Progress(progressValue, "Запись в текстовый файл...")) {
+        return;
+    }
+
+    WriteFile::WriteToFile(currenceDataForSecondWindow);
 }
 
 
 void second_window::on_graph_clicked()
 {
-    CustomGraph *graphWindow = new CustomGraph(this);
-    graphWindow->show();
+    if (currenceDataForSecondWindow.isEmpty()) {
+        QMessageBox::warning(this, "Ошибка", "Нет данных для построения графика");
+        return;
+    }
+
+    //Если Graph существует сначала удаляем
+    if (Graph) {
+        delete Graph;
+        Graph = nullptr;
+    }
+
+
+    DialogProgress progressCon;
+    int progressValue = 0;
+    if (!progressCon.Progress(progressValue, "Создание графиков...")) {
+        return;
+    }
+
+    Graph = new CustomGraph(currenceDataForSecondWindow, nullptr);
+    Graph->exec();
 }
 
+void second_window::on_writeXML_clicked()
+{
+
+    QByteArray xmlDATA = ConnectionBank::GetAByteArray();
+
+    if (xmlDATA.isEmpty()) {
+        QMessageBox::warning(this, "Ошибка", "Нет XML данных для сохранения");
+        return;
+    }
+
+    DialogProgress progressCon;
+    int progressValue = 0;
+    if (!progressCon.Progress(progressValue, "Запись в текстовый файл...")) {
+        return;
+    }
+
+    WriteFile::saveXML(xmlDATA, "XML");
+
+}

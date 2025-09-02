@@ -6,28 +6,57 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      PG_LOCALE: en_US.UTF-8  # Set UTF-8 locale for PostgreSQL
-      LC_ALL: C.UTF-8         # Set UTF-8 locale for application
+      PG_LOCALE: en_US.UTF-8
+      LC_ALL: C.UTF-8
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - name: Install dependencies
+    - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y g++ libcurl4-openssl-dev libpqxx-dev pkg-config postgresql locales 
-        sudo locale-gen en_US.UTF-8  # Generate UTF-8 locale
+        sudo apt-get install -y \
+          g++ \
+          cmake \
+          make \
+          pkg-config \
+          libcurl4-openssl-dev \
+          libpqxx-dev \
+          postgresql \
+          locales
 
-    - name: Configure PostgreSQL
+    - name: Install Qt dependencies
       run: |
-        # Configure UTF-8 encoding
+        sudo apt-get install -y \
+          libgl1-mesa-dev \
+          libxkbcommon-x11-0 \
+          libssl-dev \
+          libvulkan-dev
+
+    - name: Install Qt6
+      run: |
+        sudo apt-cache search qt6-base | head -5
+        sudo apt-cache search qt6 | grep dev | head -10
+        
+        # Пробуем установить то, что есть в репозиториях
+        sudo apt-get install -y \
+          qt6-base-dev \
+          qt6-tools-dev \
+          qt6-declarative-dev \
+          || echo "Qt6 packages not available, trying alternatives..."
+
+    - name: Generate locale
+      run: |
+        sudo locale-gen en_US.UTF-8
+
+    - name: Configure Postgresql
+      run: |
         echo "lc_messages = 'en_US.UTF-8'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
         echo "lc_monetary = 'en_US.UTF-8'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
         echo "lc_numeric = 'en_US.UTF-8'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
         echo "lc_time = 'en_US.UTF-8'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
         
-        # Allow all connections
         echo "host all all 0.0.0.0/0 trust" | sudo tee -a /etc/postgresql/*/main/pg_hba.conf
         echo "listen_addresses = '*'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
         
@@ -41,6 +70,11 @@ jobs:
         sudo -u postgres psql -d mydb -c "GRANT ALL ON SCHEMA public TO service;"
         sudo -u postgres psql -d mydb -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO service;"
 
+    - name: QCustomGraph
+      run: |
+        cp ./lib/qcustomplot/qcustomplot.h QT/
+        cp ./lib/qcustomplot/qcustomplot.cpp QT/
+
     - name: Build
       run: |
         mkdir build
@@ -48,7 +82,6 @@ jobs:
         cmake -DCMAKE_BUILD_TYPE=Release ..
         make
 
-    # Сохраняем артефакт сборки
     - name: Upload application artifact
       uses: actions/upload-artifact@v4
       with:
@@ -56,19 +89,12 @@ jobs:
         path: build/ExchangeRateCbr
         if-no-files-found: error
 
-    - name: Run executable
-      run: |
-        cd build
-        ./ExchangeRateCbr
-
-    - name: Inspect database content
-      if: always()  # Run even if previous step fails
+    - name: View database
+      if: always()
       run: |
         echo "Database structure:"
         sudo -u postgres psql -d mydb -c "\d"
-        
         echo "Table structure (exdc):"
         sudo -u postgres psql -d mydb -c "\d exdc"
-        
         echo "Data in exdc table:"
         sudo -u postgres psql -d mydb -c "SELECT * FROM exdc;"

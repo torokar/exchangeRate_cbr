@@ -4,9 +4,8 @@
 #include "container.h"
 #include <QXmlStreamReader>
 #include <QDebug>
+#include <QLatin1String>
 
-//Парсинг данных с сайта
-//Проверка на дубликаты
 inline bool CheckForDuplicates(const QVector<Currence>& data, const QString& name,
                                const double& value, const QString& charcode)
 {
@@ -28,26 +27,25 @@ inline void SubstrCurrensiFromXML(const QByteArray& xmlData, QVector<Currence>& 
     while (!xml.atEnd() && !xml.hasError()) {
         xml.readNext();
 
-        // Получаем дату из атрибута ValCurs
-        if (xml.isStartElement() && xml.name() == "ValCurs") {
+        if (xml.isStartElement() && xml.name() == QLatin1String("ValCurs")) {
             current.Date = xml.attributes().value("Date").toString();
             hasDate = true;
         }
 
-        if (xml.isStartElement() && xml.name() == "Valute") {
+        if (xml.isStartElement() && xml.name() == QLatin1String("Valute")) {
             current = Currence();
             if (hasDate) {
                 current.Date = date;
             }
         }
         else if (xml.isStartElement()) {
-            if (xml.name() == "CharCode") {
+            if (xml.name() == QLatin1String("CharCode")) {
                 current.CharCode = xml.readElementText();
             }
-            else if (xml.name() == "Name") {
+            else if (xml.name() == QLatin1String("Name")) {
                 current.Name_currence = xml.readElementText();
             }
-            else if (xml.name() == "Value") {
+            else if (xml.name() == QLatin1String("Value")) {
                 QString valueStr = xml.readElementText();
                 valueStr.replace(',','.');
 
@@ -62,7 +60,7 @@ inline void SubstrCurrensiFromXML(const QByteArray& xmlData, QVector<Currence>& 
                 }
             }
         }
-        else if (xml.isEndElement() && xml.name() == "Valute") {
+        else if (xml.isEndElement() && xml.name() == QLatin1String("Valute")) {
             if (!current.CharCode.isEmpty()) {
                 if (!CheckForDuplicates(result, current.Name_currence, current.Value, current.CharCode)) {
                     result.append(current);

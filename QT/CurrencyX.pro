@@ -5,11 +5,18 @@ TARGET = Currence
 
 
 #--------------------------------------------------
-# Тестовые файлы
+# CURL
 #--------------------------------------------------
-TESTSOURCES += tst_Graphics2DHistogrammTest.cpp
-TESTHEADERS += TestGraph.h
 
+unix {
+    # Используем pkg-config для автоматического определения путей
+    CONFIG += link_pkgconfig
+    PKGCONFIG += libcurl
+
+    # Добавляем стандартные пути для совместимости
+    INCLUDEPATH += /usr/include/x86_64-linux-gnu
+    INCLUDEPATH += /usr/include
+}
 
 #--------------------------------------------------
 # PostgresSQL
@@ -18,23 +25,15 @@ TESTHEADERS += TestGraph.h
 unix {
     LIBS += -L/usr/lib/x86_64-linux-gnu -lpq
     INCLUDEPATH += /usr/include/postgresql
-
-    # Проверка наличия libpq
-    !exists(/usr/lib/x86_64-linux-gnu/libpq.so) {
-        error("libpq не найден! Установите: sudo apt install libpq-dev")
-    }
 }
 
 #--------------------------------------------------
 # CURL
 #--------------------------------------------------
 
-CURL_INSTALL_DIR = /home/andreyonkhonov/clone/exchangeRate_cbr/lib
-
-INCLUDEPATH += $$CURL_INSTALL_DIR/include
-INCLUDEPATH += ../lib/qcustomplot
-
-LIBS += -L$$CURL_INSTALL_DIR/lib -lcurl
+unix {
+    LIBS += -lcurl
+}
 
 #--------------------------------------------------
 # libpqxx
@@ -42,10 +41,9 @@ LIBS += -L$$CURL_INSTALL_DIR/lib -lcurl
 
 # Пути к libpqxx
 LIBPQXX_INSTALL_DIR =  /home/andreyonkhonov/clone/exchangeRate_cbr/lib/libpqxx-install
-exists($$LIBPQXX_INSTALL_DIR) {`
+exists($$LIBPQXX_INSTALL_DIR) {
     INCLUDEPATH += $$LIBPQXX_INSTALL_DIR/include
     LIBS += -L$$LIBPQXX_INSTALL_DIR/lib -lpqxx
-    message("Подключен libpqxx из: $$LIBPQXX_INSTALL_DIR")
 } else {
     error("Директория libpqxx не найдена: $$LIBPQXX_INSTALL_DIR")
 }
@@ -70,7 +68,6 @@ unix:!android {
         platforms.path = $$target.path/platforms
         platforms.files = $$platformPlugin.file
         INSTALLS += target platforms
-        message("Плагин платформы: $$platformPlugin.file")
     } else {
         warning("Плагин libqxcb.so не найден! Проверьте путь: $$QT_PLUGINS_DIR/platforms/")
     }
@@ -83,7 +80,6 @@ unix:!android {
 unix {
     # Проверяем наличие системной библиотеки
     exists(/usr/local/lib/libiconv.so) {
-        message("Используем системную libiconv из /usr/local/lib")
         LIBS += -L/usr/local/lib -liconv
         INCLUDEPATH += /usr/local/include
     }
@@ -97,34 +93,38 @@ unix {
 
 SOURCES += \
     ../lib/qcustomplot/qcustomplot.cpp \
-    GraphicsDataItem.cpp \
-    GraphicsPlotItem.cpp \
-    GraphicsPlotLegend.cpp \
+    configparser.cpp \
+    connectionbank.cpp \
+    convert1251.cpp \
     customgraph.cpp \
+    databaseconfig.cpp \
+    dialogprogress.cpp \
     main.cpp \
     mainwindow.cpp \
-    second_window.cpp
+    qlineeditforusers.cpp \
+    second_window.cpp \
+    writefile.cpp
 
 HEADERS += \
     ../lib/qcustomplot/qcustomplot.h \
-    DATABASE.h \
-    Global.h \
-    GraphicsDataItem.h \
-    GraphicsPlotItem.h \
-    GraphicsPlotLegend.h \
-    config_parser.h \
-    connection_cb.h \
+    configparser.h \
+    connectionbank.h \
     container.h \
-    convertCP1251.h \
+    convert1251.h \
     customgraph.h \
+    databaseconfig.h \
+    dialogprogress.h \
     mainwindow.h \
+    qlineeditforusers.h \
     second_window.h \
-    write_to_file.h
+    writefile.h
 
 
 FORMS += \
     customgraph.ui \
+    dialogprogress.ui \
     mainwindow.ui \
+    qlineeditforusers.ui \
     second_window.ui
 
 target.path = /opt/$${TARGET}/bin
@@ -134,6 +134,7 @@ RESOURCES += \
     image.qrc
 
 DISTFILES += \
+    ../../../Загрузки/ex140_01.rar \
     image/Без названия.png
 
 unix:!symbian {
