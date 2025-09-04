@@ -23,6 +23,7 @@ jobs:
           libcurl4-openssl-dev \
           libpqxx-dev \
           postgresql \
+          postgresql-contrib \
           locales
 
     - name: Install Qt6
@@ -37,20 +38,37 @@ jobs:
     - name: Generate locale
       run: |
         sudo locale-gen en_US.UTF-8
+        sudo update-locale LANG=en_US.UTF-8
 
-    - name: Configure Postgresql
+    - name: Start and configure PostgreSQL
       run: |
-        sudo pg_ctlcluster 14 main start
-        echo "lc_messages = 'en_US.UTF-8'" | sudo tee -a /etc/postgresql/14/main/postgresql.conf
-        echo "host all all 0.0.0.0/0 trust" | sudo tee -a /etc/postgresql/14/main/pg_hba.conf
-        echo "listen_addresses = '*'" | sudo tee -a /etc/postgresql/14/main/postgresql.conf
+        # Start PostgreSQL service
+        sudo systemctl start postgresql
+        
+        # Get PostgreSQL version
+        PG_VERSION=$(psql --version | grep -oE '[0-9]+\.[0-9]+' | head -1)
+        echo "PostgreSQL version: $PG_VERSION"
+        
+        # Configure PostgreSQL to accept connections
+        sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/$PG_VERSION/main/postgresql.conf
+        echo "host all all 0.0.0.0/0 trust" | sudo tee -a /etc/postgresql/$PG_VERSION/main/pg_hba.conf
+        
+        # Restart PostgreSQL
         sudo systemctl restart postgresql
 
     - name: Create and configure database
       run: |
-        sudo -u postgres psql -c "CREATE DATABASE mydb WITH ENCODING 'UTF8' LC_COLLATE 'en_US.UTF-8' LC_CTYPE 'en_US.UTF-8' TEMPLATE template0;"
+        # Get PostgreSQL version
+        PG_VERSION=$(psql --version | grep -oE '[0-9]+\.[0-9]+' | head -1)
+        
+        # Create database and user
+        sudo -u postgres psql -c "CREATE DATABASE mydb WITH ENCODING 'UTF8' TEMPLATE template0;"
         sudo -u postgres psql -c "CREATE USER service WITH PASSWORD '11111111';"
         sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mydb TO service;"
+        
+        # Set permissions
+        echo "local all service trust" | sudo tee -a /etc/postgresql/$PG_VERSION/main/pg_hba.conf
+        sudo systemctl restart postgresql
 
     - name: Prepare QCustomPlot
       run: |
@@ -71,3 +89,7 @@ jobs:
         name: ExchangeRateCbr-app
         path: build/ExchangeRateCbr
         if-no-files-found: error
+
+    - name: Test database connection
+      run: |
+        PGPASSWORD=11111111 psql -h localhost -U service -d mydb -c "SELECT version();"
