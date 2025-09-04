@@ -36,35 +36,28 @@ jobs:
         sudo locale-gen en_US.UTF-8
         sudo update-locale LANG=en_US.UTF-8
 
-    #- name: Start and configure PostgreSQL
-    #  run: |
-    #    # Start PostgreSQL service
-    #    sudo systemctl start postgresql
-    #    
-    #    # Get PostgreSQL version
-    #    PG_VERSION=$(psql --version | grep -oE '[0-9]+\.[0-9]+' | head -1)
-    #    echo "PostgreSQL version: $PG_VERSION"
-    #    
-    #    # Configure PostgreSQL to accept connections
-    #    sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/$PG_VERSION/main/postgresql.conf
-    #    echo "host all all 0.0.0.0/0 trust" | sudo tee -a /etc/postgresql/$PG_VERSION/main/pg_hba.conf
-    #    
-    #    # Restart PostgreSQL
-    #    sudo systemctl restart postgresql
-    #
-    #- name: Create and configure database
-    #  run: |
-    #    # Get PostgreSQL version
-    #    PG_VERSION=$(psql --version | grep -oE '[0-9]+\.[0-9]+' | head -1)
-    #    
-    #    # Create database and user
-    #    sudo -u postgres psql -c "CREATE DATABASE mydb WITH ENCODING 'UTF8' TEMPLATE template0;"
-    #    sudo -u postgres psql -c "CREATE USER service WITH PASSWORD '11111111';"
-    #    sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mydb TO service;"
-    #    
-    #    # Set permissions
-    #    echo "local all service trust" | sudo tee -a /etc/postgresql/$PG_VERSION/main/pg_hba.conf
-    #    sudo systemctl restart postgresql
+    - name: Start and configure PostgreSQL
+      run: |
+        # Запускаем PostgreSQL
+        sudo systemctl start postgresql
+        
+        # Получаем основную версию PostgreSQL
+        PG_MAJOR_VERSION=$(psql --version | grep -oE '^psql.*[0-9]+' | grep -oE '[0-9]+' | head -1)
+        echo "PostgreSQL major version: $PG_MAJOR_VERSION"
+        
+        # Настраиваем PostgreSQL для приема подключений
+        sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/$PG_MAJOR_VERSION/main/postgresql.conf
+        echo "host all all 0.0.0.0/0 trust" | sudo tee -a /etc/postgresql/$PG_MAJOR_VERSION/main/pg_hba.conf
+        
+        # Перезапускаем PostgreSQL
+        sudo systemctl restart postgresql
+
+    - name: Create and configure database
+      run: |
+        # Создаем базу данных и пользователя
+        sudo -u postgres psql -c "CREATE DATABASE mydb WITH ENCODING 'UTF8' TEMPLATE template0;"
+        sudo -u postgres psql -c "CREATE USER service WITH PASSWORD '11111111';"
+        sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mydb TO service;"
 
     - name: Prepare QCustomPlot
       run: |
@@ -88,4 +81,6 @@ jobs:
 
     - name: Test database connection
       run: |
+        # Тестируем подключение к базе данных
         PGPASSWORD=11111111 psql -h localhost -U service -d mydb -c "SELECT version();"
+
