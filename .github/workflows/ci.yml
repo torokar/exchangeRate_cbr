@@ -34,7 +34,8 @@ jobs:
           libqt6core6 \
           libqt6gui6 \
           libqt6widgets6 \
-          libqt6printsupport6
+          libqt6printsupport6-dev \
+          qttools6-dev-tools
 
     - name: Generate locale
       run: |
