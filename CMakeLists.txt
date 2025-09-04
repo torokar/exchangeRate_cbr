@@ -6,8 +6,6 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/QT
 )
 
-include_directories(${CMAKE_SOURCE_DIR}/lib/qcustomplot)
-
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -28,9 +26,9 @@ find_package(Iconv REQUIRED)
 
 # Исходные файлы
 file(GLOB SOURCES "QT/*.cpp")
-list(REMOVE_ITEM SOURCES "QT/Progress.cpp")
 file(GLOB HEADERS "QT/*.h")
 file(GLOB FORMS "QT/*.ui")
+list(REMOVE_ITEM SOURCES "QT/Progress.cpp")
 
 # Создание исполняемого файла
 add_executable(ExchangeRateCbr ${SOURCES} ${HEADERS} ${FORMS})
