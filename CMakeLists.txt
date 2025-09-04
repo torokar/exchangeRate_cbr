@@ -45,6 +45,7 @@ target_link_libraries(ExchangeRateCbr PRIVATE
     Qt6::Core
     Qt6::Gui
     Qt6::Widgets
+    Qt6::PrintSupport
     CURL::libcurl 
     ${PQXX_LIBRARIES}
     ${Iconv_LIBRARIES}
