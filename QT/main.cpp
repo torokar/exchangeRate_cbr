@@ -5,11 +5,8 @@
 #include <pqxx/pqxx>
 #include <QScreen>
 
-int main() {
-
-    int c = 1;
-    char** v = (char**)("Currence");
-    QApplication a(c, v);
+int main(int argc, char *argv[]) {
+    QApplication a(argc, argv);
 
     // Запускаем главное окно
     MainWindow w;

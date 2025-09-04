@@ -75,11 +75,15 @@ jobs:
         cp ./lib/qcustomplot/qcustomplot.h QT/
         cp ./lib/qcustomplot/qcustomplot.cpp QT/
 
+    - name: Configure with CMake
+      run: |
+        cmake -B build -S .
+
     - name: Build
       run: |
         mkdir build
         cd build
-        cmake -DCMAKE_BUILD_TYPE=Release ..
+        cmake --build build --parallel 4 -DCMAKE_BUILD_TYPE=Release
         make
 
     - name: Upload application artifact

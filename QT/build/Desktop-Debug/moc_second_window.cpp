@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../../second_window.h"
+#include "../../../../../Версии Проектов/exchangeRate_cbr/QT/second_window.h"
 #include <QtGui/qtextcursor.h>
 #include <QScreen>
 #include <QtCore/qmetatype.h>

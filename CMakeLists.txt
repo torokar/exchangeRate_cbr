@@ -16,6 +16,8 @@ set(CMAKE_AUTORCC ON)
 # Поиск Qt6
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
+
 # Используем pkg-config для поиска libpqxx
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(PQXX REQUIRED libpqxx)

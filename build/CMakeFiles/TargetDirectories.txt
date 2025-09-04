@@ -1,5 +1,0 @@
-/home/andreyonkhonov/clone/exchangeRate_cbr/build/CMakeFiles/ExchangeRateCbr.dir
-/home/andreyonkhonov/clone/exchangeRate_cbr/build/CMakeFiles/edit_cache.dir
-/home/andreyonkhonov/clone/exchangeRate_cbr/build/CMakeFiles/rebuild_cache.dir
-/home/andreyonkhonov/clone/exchangeRate_cbr/build/CMakeFiles/ExchangeRateCbr_autogen_timestamp_deps.dir
-/home/andreyonkhonov/clone/exchangeRate_cbr/build/CMakeFiles/ExchangeRateCbr_autogen.dir

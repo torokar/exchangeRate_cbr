@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../../qlineeditforusers.h"
+#include "../../../../../Версии Проектов/exchangeRate_cbr/QT/qlineeditforusers.h"
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'qlineeditforusers.h' doesn't include <QObject>."

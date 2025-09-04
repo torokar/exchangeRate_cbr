@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../../dialogprogress.h"
+#include "../../../../../Версии Проектов/exchangeRate_cbr/QT/dialogprogress.h"
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'dialogprogress.h' doesn't include <QObject>."
