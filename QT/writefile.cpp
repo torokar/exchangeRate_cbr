@@ -45,7 +45,6 @@ void WriteFile::saveXML(QByteArray& xmlData, const QString& fileName)
     }
 
     QString LineDir = QDir::cleanPath(line.pathUser());
-    qDebug() << "Введенный путь: " << LineDir;
 
     if (LineDir.isEmpty()) {
         QMessageBox::critical(nullptr, "Ошибка", "Путь не указан!");
@@ -109,7 +108,6 @@ void WriteFile::WriteToFile(const QVector<Currence>& data)
     }
 
     QString LineDir = QDir::cleanPath(line.pathUser());
-    qDebug() << "Введенный путь: " << LineDir;
 
     if (LineDir.isEmpty()) {
         QMessageBox::critical(nullptr, "Ошибка", "Путь не указан!");
