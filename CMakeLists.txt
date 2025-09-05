@@ -6,6 +6,8 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/QT
 )
 
+include_directories(${CMAKE_SOURCE_DIR}/lib/qcustomplot)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -14,9 +16,22 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 # Поиск Qt6
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets PrintSupport)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
+# Проверка, что все компоненты Qt6 найдены
+if(NOT Qt6_FOUND)
+    message(FATAL_ERROR "Qt6 not found!")
+endif()
+
+if(NOT Qt6PrintSupport_FOUND)
+    message(WARNING "Qt6 PrintSupport not found! Trying alternative approach...")
+    find_library(QT6_PRINTSUPPORT_LIBRARY NAMES Qt6PrintSupport PATHS /usr/lib/x86_64-linux-gnu)
+    if(QT6_PRINTSUPPORT_LIBRARY)
+        message(STATUS "Found Qt6PrintSupport: ${QT6_PRINTSUPPORT_LIBRARY}")
+    else()
+        message(FATAL_ERROR "Qt6PrintSupport library not found")
+    endif()
+endif()
 
 # Используем pkg-config для поиска libpqxx
 find_package(PkgConfig REQUIRED)
@@ -28,9 +43,9 @@ find_package(Iconv REQUIRED)
 
 # Исходные файлы
 file(GLOB SOURCES "QT/*.cpp")
+list(REMOVE_ITEM SOURCES "QT/Progress.cpp")
 file(GLOB HEADERS "QT/*.h")
 file(GLOB FORMS "QT/*.ui")
-list(REMOVE_ITEM SOURCES "QT/Progress.cpp")
 
 # Создание исполняемого файла
 add_executable(ExchangeRateCbr ${SOURCES} ${HEADERS} ${FORMS})
@@ -50,6 +65,13 @@ target_link_libraries(ExchangeRateCbr PRIVATE
     ${Iconv_LIBRARIES}
     pq
 )
+
+# Добавляем Qt6PrintSupport, если найден
+if(Qt6PrintSupport_FOUND)
+    target_link_libraries(ExchangeRateCbr PRIVATE Qt6::PrintSupport)
+elseif(QT6_PRINTSUPPORT_LIBRARY)
+    target_link_libraries(ExchangeRateCbr PRIVATE ${QT6_PRINTSUPPORT_LIBRARY})
+endif()
 
 # Добавляем пути к заголовкам
 target_include_directories(ExchangeRateCbr PRIVATE 

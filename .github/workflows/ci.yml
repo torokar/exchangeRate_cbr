@@ -6,8 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      PG_LOCALE: en_US.UTF-8
-      LC_ALL: C.UTF-8
+      LC_ALL: en_US.UTF-8
 
     steps:
     - name: Checkout code
@@ -24,67 +23,54 @@ jobs:
           libcurl4-openssl-dev \
           libpqxx-dev \
           postgresql \
+          postgresql-contrib \
           locales
 
-    - name: Install Qt dependencies
-      run: |
-        sudo apt-get install -y \
-          libgl1-mesa-dev \
-          libxkbcommon-x11-0 \
-          libssl-dev \
-          libvulkan-dev
-
-    - name: Install Qt6
-      run: |
-        sudo apt-cache search qt6-base | head -5
-        sudo apt-cache search qt6 | grep dev | head -10
-        
-        # Пробуем установить то, что есть в репозиториях
-        sudo apt-get install -y \
-          qt6-base-dev \
-          qt6-tools-dev \
-          qt6-declarative-dev \
-          || echo "Qt6 packages not available, trying alternatives..."
+    - name: Install Qt and dependencies
+      uses: jurplel/install-qt-action@v2
+      with:
+        version: '6.5.0'  
 
     - name: Generate locale
       run: |
         sudo locale-gen en_US.UTF-8
+        sudo update-locale LANG=en_US.UTF-8
 
-    - name: Configure Postgresql
+    - name: Start and configure PostgreSQL
       run: |
-        echo "lc_messages = 'en_US.UTF-8'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
-        echo "lc_monetary = 'en_US.UTF-8'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
-        echo "lc_numeric = 'en_US.UTF-8'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
-        echo "lc_time = 'en_US.UTF-8'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
+        # Запускаем PostgreSQL
+        sudo systemctl start postgresql
         
-        echo "host all all 0.0.0.0/0 trust" | sudo tee -a /etc/postgresql/*/main/pg_hba.conf
-        echo "listen_addresses = '*'" | sudo tee -a /etc/postgresql/*/main/postgresql.conf
+        # Получаем основную версию PostgreSQL
+        PG_MAJOR_VERSION=$(psql --version | grep -oE '^psql.*[0-9]+' | grep -oE '[0-9]+' | head -1)
+        echo "PostgreSQL major version: $PG_MAJOR_VERSION"
         
+        # Настраиваем PostgreSQL для приема подключений
+        sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/g" /etc/postgresql/$PG_MAJOR_VERSION/main/postgresql.conf
+        echo "host all all 0.0.0.0/0 trust" | sudo tee -a /etc/postgresql/$PG_MAJOR_VERSION/main/pg_hba.conf
+        
+        # Перезапускаем PostgreSQL
         sudo systemctl restart postgresql
 
     - name: Create and configure database
       run: |
+        # Создаем базу данных и пользователя
         sudo -u postgres psql -c "CREATE DATABASE mydb WITH ENCODING 'UTF8' TEMPLATE template0;"
         sudo -u postgres psql -c "CREATE USER service WITH PASSWORD '11111111';"
         sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mydb TO service;"
-        sudo -u postgres psql -d mydb -c "GRANT ALL ON SCHEMA public TO service;"
-        sudo -u postgres psql -d mydb -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO service;"
 
-    - name: QCustomGraph
+    - name: Prepare QCustomPlot
       run: |
-        cp ./lib/qcustomplot/qcustomplot.h QT/
-        cp ./lib/qcustomplot/qcustomplot.cpp QT/
-
-    - name: Configure with CMake
-      run: |
-        cmake -B build -S .
+        cp -v ./lib/qcustomplot/qcustomplot.h ./QT/
+        cp -v ./lib/qcustomplot/qcustomplot.cpp ./QT/
 
     - name: Build
       run: |
+        rm -rf build
         mkdir build
         cd build
-        cmake --build build --parallel 4 -DCMAKE_BUILD_TYPE=Release
-        make
+        cmake -DCMAKE_BUILD_TYPE=Release ..
+        make -j$(nproc)
 
     - name: Upload application artifact
       uses: actions/upload-artifact@v4
@@ -93,12 +79,8 @@ jobs:
         path: build/ExchangeRateCbr
         if-no-files-found: error
 
-    - name: View database
-      if: always()
+    - name: Test database connection
       run: |
-        echo "Database structure:"
-        sudo -u postgres psql -d mydb -c "\d"
-        echo "Table structure (exdc):"
-        sudo -u postgres psql -d mydb -c "\d exdc"
-        echo "Data in exdc table:"
-        sudo -u postgres psql -d mydb -c "SELECT * FROM exdc;"
+        # Тестируем подключение к базе данных
+        PGPASSWORD=11111111 psql -h localhost -U service -d mydb -c "SELECT version();"
+
