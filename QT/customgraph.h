@@ -17,7 +17,8 @@ class CustomGraph : public QDialog
 public:
     explicit CustomGraph(const QVector<Currence> &data, QWidget *parent = nullptr);
     ~CustomGraph();
-    void setCurrenceData(const QVector<Currence> &data); //Для обновления и получения данных
+    //Для обновления и получения данных
+    void setCurrenceData(const QVector<Currence> &data);
 
     void addPoint();
     void plot();
