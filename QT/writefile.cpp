@@ -4,9 +4,11 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QCoreApplication>
-#include <QStringDecoder>
 #include <QLineEdit>
 #include "qlineeditforusers.h"
+#include <iconv.h>
+#include <cerrno>
+#include <cstring>
 
 
 QString WriteFile::LengthCheck(const QString& string)
@@ -22,15 +24,29 @@ QString WriteFile::LengthCheck(const QString& string)
 
 QByteArray convertWindows1251ToUtf8(const QByteArray& windows1251Data)
 {
-    QStringDecoder decoder("Windows-1251");
-    QString text = decoder.decode(windows1251Data);
-
-    if (decoder.hasError()) {
-        qCritical() << "Ошибка декодирования Windows-1251!";
+    iconv_t cd = iconv_open("UTF-8", "WINDOWS-1251");
+    if (cd == (iconv_t)-1) {
+        qCritical() << "Ошибка iconv_open:" << strerror(errno);
         return windows1251Data;
     }
 
-    return text.toUtf8();
+    size_t inbytesleft = windows1251Data.size();
+    char* inbuf = const_cast<char*>(windows1251Data.data());
+
+    // UTF-8 может быть до 4x больше
+    size_t outbytesleft = inbytesleft * 4;
+    QByteArray result(outbytesleft, '\0');
+    char* outbuf = result.data();
+
+    if (iconv(cd, &inbuf, &inbytesleft, &outbuf, &outbytesleft) == (size_t)-1) {
+        qCritical() << "Ошибка iconv:" << strerror(errno);
+        iconv_close(cd);
+        return windows1251Data;
+    }
+
+    iconv_close(cd);
+    result.resize(result.size() - outbytesleft);
+    return result;
 }
 
 void WriteFile::saveXML(QByteArray& xmlData, const QString& fileName)
