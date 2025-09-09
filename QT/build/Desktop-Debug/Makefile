@@ -40,7 +40,7 @@ DISTNAME      = Currence1.0.0
 DISTDIR = /home/andreyonkhonov/clone/exchangeRate_cbr/QT/build/Desktop-Debug/.tmp/Currence1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath-link,/usr/lib/x86_64-linux-gnu
-LIBS          = $(SUBLIBS) -L/usr/lib/x86_64-linux-gnu -L/home/andreyonkhonov/clone/exchangeRate_cbr/lib/libpqxx-install/lib -lpqxx -lpq -lcurl /usr/lib/x86_64-linux-gnu/libQt6PrintSupport.so /usr/lib/x86_64-linux-gnu/libQt6Widgets.so /usr/lib/x86_64-linux-gnu/libQt6Gui.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libQt6Sql.so /usr/lib/x86_64-linux-gnu/libQt6Xml.so /usr/lib/x86_64-linux-gnu/libQt6Concurrent.so /usr/lib/x86_64-linux-gnu/libQt6Test.so /usr/lib/x86_64-linux-gnu/libQt6Core.so -lpthread -lGLX -lOpenGL   
+LIBS          = $(SUBLIBS) -L/usr/lib/x86_64-linux-gnu -L/home/andreyonkhonov/clone/exchangeRate_cbr/lib/libpqxx-install/lib -l:libpqxx-7.7.a -lpq -lcurl /usr/lib/x86_64-linux-gnu/libQt6PrintSupport.so /usr/lib/x86_64-linux-gnu/libQt6Widgets.so /usr/lib/x86_64-linux-gnu/libQt6Gui.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libQt6Sql.so /usr/lib/x86_64-linux-gnu/libQt6Xml.so /usr/lib/x86_64-linux-gnu/libQt6Concurrent.so /usr/lib/x86_64-linux-gnu/libQt6Test.so /usr/lib/x86_64-linux-gnu/libQt6Core.so -lpthread -lGLX -lOpenGL   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -165,7 +165,6 @@ DIST          = /home/andreyonkhonov/Загрузки/ex140_01.rar \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf \
-		../../.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf \
@@ -295,7 +294,6 @@ Makefile: ../../CurrencyX.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qm
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf \
@@ -402,7 +400,6 @@ Makefile: ../../CurrencyX.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qm
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf:
@@ -538,7 +535,8 @@ compiler_uic_make_all: ui_customgraph.h ui_dialogprogress.h ui_mainwindow.h ui_q
 compiler_uic_clean:
 	-$(DEL_FILE) ui_customgraph.h ui_dialogprogress.h ui_mainwindow.h ui_qlineeditforusers.h ui_second_window.h
 ui_customgraph.h: ../../customgraph.ui \
-		/usr/lib/qt6/libexec/uic
+		/usr/lib/qt6/libexec/uic \
+		../../../lib/qcustomplot/qcustomplot.h
 	/usr/lib/qt6/libexec/uic ../../customgraph.ui -o ui_customgraph.h
 
 ui_dialogprogress.h: ../../dialogprogress.ui \
@@ -575,63 +573,10 @@ configparser.o: ../../configparser.cpp ../../configparser.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o configparser.o ../../configparser.cpp
 
 connectionbank.o: ../../connectionbank.cpp ../../connectionbank.h \
-		../../../lib/libpqxx-install/include/pqxx/pqxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/header-pre.hxx \
-		../../../lib/libpqxx-install/include/pqxx/config-public-compiler.h \
-		../../../lib/libpqxx-install/include/pqxx/array.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/encoding_group.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/encodings.hxx \
-		../../../lib/libpqxx-install/include/pqxx/binarystring.hxx \
-		../../../lib/libpqxx-install/include/pqxx/result.hxx \
-		../../../lib/libpqxx-install/include/pqxx/except.hxx \
-		../../../lib/libpqxx-install/include/pqxx/types.hxx \
-		../../../lib/libpqxx-install/include/pqxx/util.hxx \
-		../../../lib/libpqxx-install/include/pqxx/version.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/libpq-forward.hxx \
-		../../../lib/libpqxx-install/include/pqxx/zview.hxx \
-		../../../lib/libpqxx-install/include/pqxx/strconv.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/conversions.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-pre.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-post.hxx \
-		../../../lib/libpqxx-install/include/pqxx/blob.hxx \
-		../../../lib/libpqxx-install/include/pqxx/dbtransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction_base.hxx \
-		../../../lib/libpqxx-install/include/pqxx/connection.hxx \
-		../../../lib/libpqxx-install/include/pqxx/errorhandler.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/concat.hxx \
-		../../../lib/libpqxx-install/include/pqxx/params.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/statement_parameters.hxx \
-		../../../lib/libpqxx-install/include/pqxx/separated_list.hxx \
-		../../../lib/libpqxx-install/include/pqxx/isolation.hxx \
-		../../../lib/libpqxx-install/include/pqxx/row.hxx \
-		../../../lib/libpqxx-install/include/pqxx/field.hxx \
-		../../../lib/libpqxx-install/include/pqxx/composite.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/array-composite.hxx \
-		../../../lib/libpqxx-install/include/pqxx/stream_from.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/stream_iterator.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction_focus.hxx \
-		../../../lib/libpqxx-install/include/pqxx/cursor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/sql_cursor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/largeobject.hxx \
-		../../../lib/libpqxx-install/include/pqxx/nontransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/notification.hxx \
-		../../../lib/libpqxx-install/include/pqxx/pipeline.hxx \
-		../../../lib/libpqxx-install/include/pqxx/prepared_statement.hxx \
-		../../../lib/libpqxx-install/include/pqxx/range.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/result_iterator.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/result_iter.hxx \
-		../../../lib/libpqxx-install/include/pqxx/robusttransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/stream_to.hxx \
-		../../../lib/libpqxx-install/include/pqxx/subtransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/time.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transactor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/header-post.hxx \
 		../../container.h \
 		../../writefile.h \
 		../../databaseconfig.h \
-		../../configparser.h \
-		../../progresbar.h
+		../../configparser.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o connectionbank.o ../../connectionbank.cpp
 
 convert1251.o: ../../convert1251.cpp ../../convert1251.h
@@ -644,58 +589,6 @@ customgraph.o: ../../customgraph.cpp ../../customgraph.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o customgraph.o ../../customgraph.cpp
 
 databaseconfig.o: ../../databaseconfig.cpp ../../databaseconfig.h \
-		../../../lib/libpqxx-install/include/pqxx/pqxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/header-pre.hxx \
-		../../../lib/libpqxx-install/include/pqxx/config-public-compiler.h \
-		../../../lib/libpqxx-install/include/pqxx/array.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/encoding_group.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/encodings.hxx \
-		../../../lib/libpqxx-install/include/pqxx/binarystring.hxx \
-		../../../lib/libpqxx-install/include/pqxx/result.hxx \
-		../../../lib/libpqxx-install/include/pqxx/except.hxx \
-		../../../lib/libpqxx-install/include/pqxx/types.hxx \
-		../../../lib/libpqxx-install/include/pqxx/util.hxx \
-		../../../lib/libpqxx-install/include/pqxx/version.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/libpq-forward.hxx \
-		../../../lib/libpqxx-install/include/pqxx/zview.hxx \
-		../../../lib/libpqxx-install/include/pqxx/strconv.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/conversions.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-pre.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-post.hxx \
-		../../../lib/libpqxx-install/include/pqxx/blob.hxx \
-		../../../lib/libpqxx-install/include/pqxx/dbtransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction_base.hxx \
-		../../../lib/libpqxx-install/include/pqxx/connection.hxx \
-		../../../lib/libpqxx-install/include/pqxx/errorhandler.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/concat.hxx \
-		../../../lib/libpqxx-install/include/pqxx/params.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/statement_parameters.hxx \
-		../../../lib/libpqxx-install/include/pqxx/separated_list.hxx \
-		../../../lib/libpqxx-install/include/pqxx/isolation.hxx \
-		../../../lib/libpqxx-install/include/pqxx/row.hxx \
-		../../../lib/libpqxx-install/include/pqxx/field.hxx \
-		../../../lib/libpqxx-install/include/pqxx/composite.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/array-composite.hxx \
-		../../../lib/libpqxx-install/include/pqxx/stream_from.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/stream_iterator.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction_focus.hxx \
-		../../../lib/libpqxx-install/include/pqxx/cursor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/sql_cursor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/largeobject.hxx \
-		../../../lib/libpqxx-install/include/pqxx/nontransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/notification.hxx \
-		../../../lib/libpqxx-install/include/pqxx/pipeline.hxx \
-		../../../lib/libpqxx-install/include/pqxx/prepared_statement.hxx \
-		../../../lib/libpqxx-install/include/pqxx/range.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/result_iterator.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/result_iter.hxx \
-		../../../lib/libpqxx-install/include/pqxx/robusttransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/stream_to.hxx \
-		../../../lib/libpqxx-install/include/pqxx/subtransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/time.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transactor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/header-post.hxx \
 		../../container.h \
 		../../convert1251.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o databaseconfig.o ../../databaseconfig.cpp
@@ -704,115 +597,11 @@ dialogprogress.o: ../../dialogprogress.cpp ../../dialogprogress.h \
 		ui_dialogprogress.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogprogress.o ../../dialogprogress.cpp
 
-main.o: ../../main.cpp ../../mainwindow.h \
-		../../../lib/libpqxx-install/include/pqxx/pqxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/header-pre.hxx \
-		../../../lib/libpqxx-install/include/pqxx/config-public-compiler.h \
-		../../../lib/libpqxx-install/include/pqxx/array.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/encoding_group.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/encodings.hxx \
-		../../../lib/libpqxx-install/include/pqxx/binarystring.hxx \
-		../../../lib/libpqxx-install/include/pqxx/result.hxx \
-		../../../lib/libpqxx-install/include/pqxx/except.hxx \
-		../../../lib/libpqxx-install/include/pqxx/types.hxx \
-		../../../lib/libpqxx-install/include/pqxx/util.hxx \
-		../../../lib/libpqxx-install/include/pqxx/version.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/libpq-forward.hxx \
-		../../../lib/libpqxx-install/include/pqxx/zview.hxx \
-		../../../lib/libpqxx-install/include/pqxx/strconv.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/conversions.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-pre.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-post.hxx \
-		../../../lib/libpqxx-install/include/pqxx/blob.hxx \
-		../../../lib/libpqxx-install/include/pqxx/dbtransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction_base.hxx \
-		../../../lib/libpqxx-install/include/pqxx/connection.hxx \
-		../../../lib/libpqxx-install/include/pqxx/errorhandler.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/concat.hxx \
-		../../../lib/libpqxx-install/include/pqxx/params.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/statement_parameters.hxx \
-		../../../lib/libpqxx-install/include/pqxx/separated_list.hxx \
-		../../../lib/libpqxx-install/include/pqxx/isolation.hxx \
-		../../../lib/libpqxx-install/include/pqxx/row.hxx \
-		../../../lib/libpqxx-install/include/pqxx/field.hxx \
-		../../../lib/libpqxx-install/include/pqxx/composite.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/array-composite.hxx \
-		../../../lib/libpqxx-install/include/pqxx/stream_from.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/stream_iterator.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction_focus.hxx \
-		../../../lib/libpqxx-install/include/pqxx/cursor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/sql_cursor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/largeobject.hxx \
-		../../../lib/libpqxx-install/include/pqxx/nontransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/notification.hxx \
-		../../../lib/libpqxx-install/include/pqxx/pipeline.hxx \
-		../../../lib/libpqxx-install/include/pqxx/prepared_statement.hxx \
-		../../../lib/libpqxx-install/include/pqxx/range.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/result_iterator.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/result_iter.hxx \
-		../../../lib/libpqxx-install/include/pqxx/robusttransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/stream_to.hxx \
-		../../../lib/libpqxx-install/include/pqxx/subtransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/time.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transactor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/header-post.hxx
+main.o: ../../main.cpp ../../mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
 
 mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		ui_mainwindow.h \
-		../../../lib/libpqxx-install/include/pqxx/pqxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/header-pre.hxx \
-		../../../lib/libpqxx-install/include/pqxx/config-public-compiler.h \
-		../../../lib/libpqxx-install/include/pqxx/array.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/encoding_group.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/encodings.hxx \
-		../../../lib/libpqxx-install/include/pqxx/binarystring.hxx \
-		../../../lib/libpqxx-install/include/pqxx/result.hxx \
-		../../../lib/libpqxx-install/include/pqxx/except.hxx \
-		../../../lib/libpqxx-install/include/pqxx/types.hxx \
-		../../../lib/libpqxx-install/include/pqxx/util.hxx \
-		../../../lib/libpqxx-install/include/pqxx/version.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/libpq-forward.hxx \
-		../../../lib/libpqxx-install/include/pqxx/zview.hxx \
-		../../../lib/libpqxx-install/include/pqxx/strconv.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/conversions.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-pre.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-post.hxx \
-		../../../lib/libpqxx-install/include/pqxx/blob.hxx \
-		../../../lib/libpqxx-install/include/pqxx/dbtransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction_base.hxx \
-		../../../lib/libpqxx-install/include/pqxx/connection.hxx \
-		../../../lib/libpqxx-install/include/pqxx/errorhandler.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/concat.hxx \
-		../../../lib/libpqxx-install/include/pqxx/params.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/statement_parameters.hxx \
-		../../../lib/libpqxx-install/include/pqxx/separated_list.hxx \
-		../../../lib/libpqxx-install/include/pqxx/isolation.hxx \
-		../../../lib/libpqxx-install/include/pqxx/row.hxx \
-		../../../lib/libpqxx-install/include/pqxx/field.hxx \
-		../../../lib/libpqxx-install/include/pqxx/composite.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/array-composite.hxx \
-		../../../lib/libpqxx-install/include/pqxx/stream_from.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/stream_iterator.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction_focus.hxx \
-		../../../lib/libpqxx-install/include/pqxx/cursor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/sql_cursor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/largeobject.hxx \
-		../../../lib/libpqxx-install/include/pqxx/nontransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/notification.hxx \
-		../../../lib/libpqxx-install/include/pqxx/pipeline.hxx \
-		../../../lib/libpqxx-install/include/pqxx/prepared_statement.hxx \
-		../../../lib/libpqxx-install/include/pqxx/range.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/result_iterator.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/result_iter.hxx \
-		../../../lib/libpqxx-install/include/pqxx/robusttransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/stream_to.hxx \
-		../../../lib/libpqxx-install/include/pqxx/subtransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/time.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transactor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/header-post.hxx \
 		../../second_window.h \
 		../../container.h \
 		../../customgraph.h \
@@ -833,58 +622,6 @@ second_window.o: ../../second_window.cpp ../../second_window.h \
 		../../customgraph.h \
 		../../../lib/qcustomplot/qcustomplot.h \
 		ui_second_window.h \
-		../../../lib/libpqxx-install/include/pqxx/pqxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/header-pre.hxx \
-		../../../lib/libpqxx-install/include/pqxx/config-public-compiler.h \
-		../../../lib/libpqxx-install/include/pqxx/array.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/encoding_group.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/encodings.hxx \
-		../../../lib/libpqxx-install/include/pqxx/binarystring.hxx \
-		../../../lib/libpqxx-install/include/pqxx/result.hxx \
-		../../../lib/libpqxx-install/include/pqxx/except.hxx \
-		../../../lib/libpqxx-install/include/pqxx/types.hxx \
-		../../../lib/libpqxx-install/include/pqxx/util.hxx \
-		../../../lib/libpqxx-install/include/pqxx/version.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/libpq-forward.hxx \
-		../../../lib/libpqxx-install/include/pqxx/zview.hxx \
-		../../../lib/libpqxx-install/include/pqxx/strconv.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/conversions.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-pre.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/ignore-deprecated-post.hxx \
-		../../../lib/libpqxx-install/include/pqxx/blob.hxx \
-		../../../lib/libpqxx-install/include/pqxx/dbtransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction_base.hxx \
-		../../../lib/libpqxx-install/include/pqxx/connection.hxx \
-		../../../lib/libpqxx-install/include/pqxx/errorhandler.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/concat.hxx \
-		../../../lib/libpqxx-install/include/pqxx/params.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/statement_parameters.hxx \
-		../../../lib/libpqxx-install/include/pqxx/separated_list.hxx \
-		../../../lib/libpqxx-install/include/pqxx/isolation.hxx \
-		../../../lib/libpqxx-install/include/pqxx/row.hxx \
-		../../../lib/libpqxx-install/include/pqxx/field.hxx \
-		../../../lib/libpqxx-install/include/pqxx/composite.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/array-composite.hxx \
-		../../../lib/libpqxx-install/include/pqxx/stream_from.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/stream_iterator.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction_focus.hxx \
-		../../../lib/libpqxx-install/include/pqxx/cursor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/sql_cursor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/largeobject.hxx \
-		../../../lib/libpqxx-install/include/pqxx/nontransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/notification.hxx \
-		../../../lib/libpqxx-install/include/pqxx/pipeline.hxx \
-		../../../lib/libpqxx-install/include/pqxx/prepared_statement.hxx \
-		../../../lib/libpqxx-install/include/pqxx/range.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/result_iterator.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/result_iter.hxx \
-		../../../lib/libpqxx-install/include/pqxx/robusttransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/stream_to.hxx \
-		../../../lib/libpqxx-install/include/pqxx/subtransaction.hxx \
-		../../../lib/libpqxx-install/include/pqxx/time.hxx \
-		../../../lib/libpqxx-install/include/pqxx/transactor.hxx \
-		../../../lib/libpqxx-install/include/pqxx/internal/header-post.hxx \
 		../../convert1251.h \
 		../../connectionbank.h \
 		../../writefile.h \

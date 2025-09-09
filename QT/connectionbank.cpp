@@ -3,7 +3,6 @@
 #include "databaseconfig.h"
 #include <curl/curl.h>
 #include <QDebug>
-#include "progresbar.h"
 #include "container.h"
 
 

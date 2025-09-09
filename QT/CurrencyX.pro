@@ -39,14 +39,16 @@ unix {
 # libpqxx
 #--------------------------------------------------
 
-# Пути к libpqxx
-LIBPQXX_INSTALL_DIR =  /home/andreyonkhonov/clone/exchangeRate_cbr/lib/libpqxx-install
-exists($$LIBPQXX_INSTALL_DIR) {
-    INCLUDEPATH += $$LIBPQXX_INSTALL_DIR/include
-    LIBS += -L$$LIBPQXX_INSTALL_DIR/lib -lpqxx
+LIBPQXX_INSTALL_DIR = /home/andreyonkhonov/clone/exchangeRate_cbr/lib/libpqxx-install
+INCLUDEPATH += $$LIBPQXX_INSTALL_DIR/include
+
+LIBS += -L$$LIBPQXX_INSTALL_DIR/lib -l:libpqxx-7.7.a -lpq
+exists($$LIBPQXX_INSTALL_DIR/lib/libpqxx-7.7.a) {
+    message("Статическая библиотека libpqxx-7.7.a найдена")
 } else {
-    error("Директория libpqxx не найдена: $$LIBPQXX_INSTALL_DIR")
+    error("libpqxx-7.7.a не найдена в $$LIBPQXX_INSTALL_DIR/lib")
 }
+
 
 # Подключение PostgreSQL
 unix: LIBS += -lpq
