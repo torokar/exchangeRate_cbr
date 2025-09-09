@@ -3,7 +3,6 @@
 #include <QStandardItemModel>
 #include <pqxx/pqxx>
 #include <QDebug>
-#include <QStringConverter>
 #include <convert1251.h>
 #include "customgraph.h"
 #include <connectionbank.h>

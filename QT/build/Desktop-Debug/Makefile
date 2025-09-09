@@ -165,7 +165,6 @@ DIST          = /home/andreyonkhonov/Загрузки/ex140_01.rar \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf \
-		../../.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf \
@@ -295,7 +294,6 @@ Makefile: ../../CurrencyX.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qm
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf \
@@ -402,7 +400,6 @@ Makefile: ../../CurrencyX.pro /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qm
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt6/mkspecs/features/default_pre.prf:
@@ -538,7 +535,8 @@ compiler_uic_make_all: ui_customgraph.h ui_dialogprogress.h ui_mainwindow.h ui_q
 compiler_uic_clean:
 	-$(DEL_FILE) ui_customgraph.h ui_dialogprogress.h ui_mainwindow.h ui_qlineeditforusers.h ui_second_window.h
 ui_customgraph.h: ../../customgraph.ui \
-		/usr/lib/qt6/libexec/uic
+		/usr/lib/qt6/libexec/uic \
+		../../../lib/qcustomplot/qcustomplot.h
 	/usr/lib/qt6/libexec/uic ../../customgraph.ui -o ui_customgraph.h
 
 ui_dialogprogress.h: ../../dialogprogress.ui \
