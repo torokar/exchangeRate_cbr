@@ -96,6 +96,6 @@ sudo apt install qtbase5-dev qt5-qmake libcurl4-openssl-dev \
 
 Андрей Онхонов - https://github.com/torokar
 
-Давид Скакодуь - https://github.com/D-SKills
+Давид Скакодуб - https://github.com/D-SKills
 
 
