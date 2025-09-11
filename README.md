@@ -95,6 +95,4 @@ sudo apt install qtbase5-dev qt5-qmake libcurl4-openssl-dev libpqxx-dev libpq-de
 
 Андрей Онхонов - https://github.com/torokar
 
-Давид Скакодуб - https://github.com/D-SKills
-
 
