@@ -43,8 +43,7 @@
 #### Ubuntu/Debian
 ```bash
 sudo apt update
-sudo apt install qtbase5-dev qt5-qmake libcurl4-openssl-dev \
-    libpqxx-dev libpq-dev libiconv-hook-dev
+sudo apt install qtbase5-dev qt5-qmake libcurl4-openssl-dev libpqxx-dev libpq-dev libiconv-hook-dev
 ```
 
 ## 🛢️ PostreSQL Настройка 
