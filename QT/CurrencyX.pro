@@ -40,32 +40,13 @@ unix {
 #--------------------------------------------------
 
 
-LIBPQXX_INSTALL_DIR = $$PWD/../lib/libpqxx-install
-exists($$LIBPQXX_INSTALL_DIR/lib/libpqxx.a) {
-    message("Using unified libpqxx library")
-    LIBS += -L$$LIBPQXX_INSTALL_DIR/lib -lpqxx -lpq
-}
-else:exists($$LIBPQXX_INSTALL_DIR/lib/libpqxx-7.8.a) {
-    message("Using libpqxx version 7.8")
-    LIBS += -L$$LIBPQXX_INSTALL_DIR/lib -l:libpqxx-7.8.a -lpq
-}
-else:exists($$LIBPQXX_INSTALL_DIR/lib/libpqxx-7.7.a) {
-    message("Using libpqxx version 7.7")
-    LIBS += -L$$LIBPQXX_INSTALL_DIR/lib -l:libpqxx-7.7.a -lpq
-}
-else {
-    libpqxx_files = $$files($$LIBPQXX_INSTALL_DIR/lib/libpqxx*.a)
-    isEmpty(libpqxx_files) {
-        error("libpqxx library not found in $$LIBPQXX_INSTALL_DIR/lib")
-    } else {
-        libpqxx_file = $$first(libpqxx_files)
-        libpqxx_name = $$basename(libpqxx_file)
-        message("Using libpqxx library: $$libpqxx_name")
-        LIBS += -L$$LIBPQXX_INSTALL_DIR/lib -l:$$libpqxx_name -lpq
-    }
-}
+CONFIG += link_pkgconfig
+PKGCONFIG += libpqxx
+
 
 INCLUDEPATH += $$LIBPQXX_INSTALL_DIR/include
+
+LIBS += -lpqxx -lpq
 
 # Подключение PostgreSQL
 unix: LIBS += -lpq
