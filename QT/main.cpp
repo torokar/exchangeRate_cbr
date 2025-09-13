@@ -7,10 +7,9 @@
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-
     // Запускаем главное окно
     MainWindow w;
-    w.setWindowTitle("Currence"); //Названия окна
+    w.setWindowTitle("Currency"); //Названия окна
     w.resize(600,600);
 
     //Получения размера экрана

@@ -1,5 +1,4 @@
 #include "writefile.h"
-#include "dialogprogress.h"
 #include <QTextStream>
 #include <QMessageBox>
 #include <QDir>
@@ -10,9 +9,8 @@
 #include <cerrno>
 #include <cstring>
 
+QString WriteFile::LengthCheck(const QString& string){
 
-QString WriteFile::LengthCheck(const QString& string)
-{
     const int maxlen = 15;
     if (string.length() > maxlen) {
         return string.left(maxlen - 3) + "...";
@@ -22,8 +20,8 @@ QString WriteFile::LengthCheck(const QString& string)
     }
 }
 
-QByteArray convertWindows1251ToUtf8(const QByteArray& windows1251Data)
-{
+QByteArray convertWindows1251ToUtf8(const QByteArray& windows1251Data){
+
     iconv_t cd = iconv_open("UTF-8", "WINDOWS-1251");
     if (cd == (iconv_t)-1) {
         qCritical() << "Ошибка iconv_open:" << strerror(errno);
@@ -49,8 +47,8 @@ QByteArray convertWindows1251ToUtf8(const QByteArray& windows1251Data)
     return result;
 }
 
-void WriteFile::saveXML(QByteArray& xmlData, const QString& fileName)
-{
+void WriteFile::saveXML(QByteArray& xmlData, const QString& fileName){
+
     QMessageBox::information(nullptr, "Внимание!", "Введите путь сохранения вручную");
 
     QLineEditForUsers line;
@@ -61,7 +59,6 @@ void WriteFile::saveXML(QByteArray& xmlData, const QString& fileName)
     }
 
     QString LineDir = QDir::cleanPath(line.pathUser());
-
     if (LineDir.isEmpty()) {
         QMessageBox::critical(nullptr, "Ошибка", "Путь не указан!");
         return;
@@ -85,7 +82,6 @@ void WriteFile::saveXML(QByteArray& xmlData, const QString& fileName)
 
     QString filePath = dir.filePath(fileName + ".xml");
     QFile file(filePath);
-
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QMessageBox::critical(nullptr, "Ошибка",
                               "Ошибка открытия файла: " + file.errorString());
@@ -112,8 +108,8 @@ void WriteFile::saveXML(QByteArray& xmlData, const QString& fileName)
     }
 }
 
-void WriteFile::WriteToFile(const QVector<Currence>& data)
-{
+void WriteFile::writeToFile(const QVector<Currence>& data){
+
     QMessageBox::information(nullptr, "Внимание!", "Введите путь сохранения вручную");
 
     QLineEditForUsers line;
@@ -163,7 +159,7 @@ void WriteFile::WriteToFile(const QVector<Currence>& data)
 
     for (const auto &text : data) {
         out << "|" << LengthCheck(text.CharCode).leftJustified(13) << " | ";
-        out << LengthCheck(text.Name_currence).leftJustified(13) << " | ";
+        out << LengthCheck(text.NameCurrency).leftJustified(13) << " | ";
         QString valueStr = QString::number(text.Value, 'f', 3);
         out << LengthCheck(valueStr).leftJustified(13) << " | ";
         out << LengthCheck(text.Date).leftJustified(13) << " | \n";

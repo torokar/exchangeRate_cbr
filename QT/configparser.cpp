@@ -1,17 +1,17 @@
 #include "configparser.h"
 
-bool ConfigParser::CheckForDuplicates(const QVector<Currence>& data, const QString& name,
+bool ConfigParser::checkForDuplicates(const QVector<Currence>& data, const QString& name,
                                       const double& value, const QString& charcode)
 {
     for (const auto& item : data) {
-        if (item.Name_currence == name || item.Value == value || item.CharCode == charcode) {
+        if (item.NameCurrency == name || item.Value == value || item.CharCode == charcode) {
             return true;
         }
     }
     return false;
 }
 
-void ConfigParser::SubstrCurrensiFromXML(const QByteArray &xmlData, QVector<Currence> &result, const QString &date)
+void ConfigParser::substrCurrensiFromXML(const QByteArray &xmlData, QVector<Currence> &result, const QString &date)
 {
     QXmlStreamReader xml(xmlData);
     Currence current;
@@ -19,7 +19,6 @@ void ConfigParser::SubstrCurrensiFromXML(const QByteArray &xmlData, QVector<Curr
 
     while (!xml.atEnd() && !xml.hasError()) {
         xml.readNext();
-
         if (xml.isStartElement() && xml.name() == QLatin1String("ValCurs")) {
             current.Date = xml.attributes().value("Date").toString();
             hasDate = true;
@@ -36,7 +35,7 @@ void ConfigParser::SubstrCurrensiFromXML(const QByteArray &xmlData, QVector<Curr
                 current.CharCode = xml.readElementText();
             }
             else if (xml.name() == QLatin1String("Name")) {
-                current.Name_currence = xml.readElementText();
+                current.NameCurrency = xml.readElementText();
             }
             else if (xml.name() == QLatin1String("Value")) {
                 QString valueStr = xml.readElementText();
@@ -55,7 +54,7 @@ void ConfigParser::SubstrCurrensiFromXML(const QByteArray &xmlData, QVector<Curr
         }
         else if (xml.isEndElement() && xml.name() == QLatin1String("Valute")) {
             if (!current.CharCode.isEmpty()) {
-                if (!CheckForDuplicates(result, current.Name_currence, current.Value, current.CharCode)) {
+                if (!checkForDuplicates(result, current.NameCurrency, current.Value, current.CharCode)) {
                     result.append(current);
                 }
             }

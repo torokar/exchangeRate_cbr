@@ -13,15 +13,10 @@ class WriteFile
 {
 public:
     WriteFile() = default;
-
-    static void WriteToFile(const QVector<Currence>& data);
+    static void writeToFile(const QVector<Currence>& data);
     static void saveXML (QByteArray& xmlData, const QString& fileName);
 private:
-
     static QString LengthCheck(const QString& string);
-
-
-
 };
 
 #endif // WRITEFILE_H

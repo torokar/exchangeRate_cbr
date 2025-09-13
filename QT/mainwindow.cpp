@@ -8,9 +8,7 @@
 #include <QString>
 #include <QMessageBox>
 #include <second_window.h>
-#include "connectionbank.h"
 #include "dialogprogress.h"
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,46 +18,36 @@ MainWindow::MainWindow(QWidget *parent)
     this->setFixedSize(this->size());
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow(){
     delete ui;
 }
 
 void MainWindow::on_pushButton_clicked()
 {
-
     int month = ui->spinMonth->value();
     int day = ui->spinDay->value();
     QString year = ui->InputYear->text();
 
     //Проверка корректности месяца
-    if(month < 1 || month > 12)
-    {
+    if(month < 1 || month > 12)    {
         QMessageBox::critical(this, "Error", "Месяц должен быть от 1 до 12.");
         return;
     }
 
-
     //Проверка корректности дня
-
-    if(day <= 0 || day > 31)
-    {
+    if(day <= 0 || day > 31)    {
         QMessageBox::critical(this, "Error", "День должен быть от 1 до 31 (для выбранного месяца).");
         return;
     }
 
-    if((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)
-    {
+    if((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)    {
         QMessageBox::critical(this, "Error", "В этом месяце не может быть больше 30 дней!");
         return;
     }
 
-
     //Проверка на февраль
-    if(month == 2)
-    {
-        if(day > 28)
-        {
+    if(month == 2)    {
+        if(day > 28)        {
             QMessageBox::critical(this, "Error", "Февраль не имеет больше 28 дней");
             return;
         }
@@ -77,21 +65,18 @@ void MainWindow::on_pushButton_clicked()
         return;
     }
 
-
     QString forDay = QString("%1").arg(day, 2, 10, QChar('0'));
     QString forMont = QString("%1").arg(month, 2, 10, QChar('0'));
     QString forYear = year;
 
     QString date = forDay + "/" + forMont + "/" + forYear;
 
-
     //Фоновый вызов с передачей даты в поток
     QtConcurrent::run([this, date]()
                       { QMetaObject::invokeMethod(this, "handData", Qt::QueuedConnection, Q_ARG(QString, date)); });
 }
 
-void MainWindow::handData(const QString &date)
-{
+void MainWindow::handData(const QString &date){
     second_window window(nullptr, date);
     window.setModal(true);
     window.exec();

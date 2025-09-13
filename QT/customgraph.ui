@@ -11,10 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Currence</string>
+   <string>Currency</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="appointment-new"/>
+   <iconset theme="appointment-new">
+    <normaloff>.</normaloff>.</iconset>
   </property>
   <widget class="QCustomPlot" name="widget" native="true">
    <property name="geometry">

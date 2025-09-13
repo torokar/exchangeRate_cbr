@@ -15,8 +15,7 @@ DialogProgress::DialogProgress(QWidget *parent)
     ui->setupUi(this);
 }
 
-bool DialogProgress::Progress(int &value, const QString &text)
-{
+bool DialogProgress::Progress(int &value, const QString &text){
     QProgressDialog progressBar(text, "Отмена", 0, 100, this);
 
     progressBar.setWindowTitle("Обработка");
@@ -31,8 +30,6 @@ bool DialogProgress::Progress(int &value, const QString &text)
     progressBar.setValue(value);
     QThread::msleep(80);
     for (; value <= 100 ; ++value) {
-
-
         if (progressBar.wasCanceled()) {
           return false;
         }
@@ -41,10 +38,8 @@ bool DialogProgress::Progress(int &value, const QString &text)
         if (randomZeroOne == 1) {
             QThread::msleep(70);
         }
-
         progressBar.setValue(value);
         qApp->processEvents();
-
     }
 
     if (!progressBar.wasCanceled()) {
@@ -54,7 +49,6 @@ bool DialogProgress::Progress(int &value, const QString &text)
     return true;
 }
 
-DialogProgress::~DialogProgress()
-{
+DialogProgress::~DialogProgress(){
     delete ui;
 }
