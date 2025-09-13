@@ -7,7 +7,7 @@
 struct Currence
 {
     QString CharCode;
-    QString Name_currence;
+    QString NameCurrency;
     double Value;
     QString Date;
     QByteArray xmlData;

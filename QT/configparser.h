@@ -5,18 +5,16 @@
 #include <QDebug>
 #include <QLatin1String>
 
-
 class ConfigParser
 {
 public:
     ConfigParser() = default;
 
-    static void SubstrCurrensiFromXML(const QByteArray& xmlData, QVector<Currence>& result,
+    static void substrCurrensiFromXML(const QByteArray& xmlData, QVector<Currence>& result,
                                       const QString& date);
 
 private:
-    //функции
-    static bool CheckForDuplicates(const QVector<Currence>& data, const QString& name,
+    static bool checkForDuplicates(const QVector<Currence>& data, const QString& name,
                                    const double& value, const QString& charcode);
 };
 

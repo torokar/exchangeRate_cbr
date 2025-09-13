@@ -4,8 +4,6 @@
 #include <iconv.h>
 #include <cerrno>
 #include <cstring>
-#include <iostream>
-
 
 class Convert1251
 {

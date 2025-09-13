@@ -1,6 +1,5 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
 #include <QMainWindow>
 #include <QtConcurrent/QtConcurrent>
 #include <QThread>
@@ -16,19 +15,15 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
 private slots:
     void on_pushButton_clicked();
     void handData(const QString &date);
-
 private:
     Ui::MainWindow *ui;
     QProgressBar *progress;
     QLabel *progressLabel;
-
 };
 #endif // MAINWINDOW_H

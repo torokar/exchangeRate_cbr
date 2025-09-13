@@ -12,8 +12,7 @@ class DataBaseConfig
 {
 public:
     DataBaseConfig() = default;
-    static void ConnectedBD(const QVector<Currence>& Data);
-
+    static void connectedDb(const QVector<Currence>& Data);
 };
 
 #endif // DATABASECONFIG_H

@@ -1,4 +1,5 @@
 #include "convert1251.h"
+#include <iostream>
 
 // Функция преобразования CP1251 -> UTF-8
 std::string Convert1251::ConvertCP1251ToUTF8(const std::string& cp1251Str) {

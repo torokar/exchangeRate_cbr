@@ -1,10 +1,9 @@
 #include "databaseconfig.h"
 #include <pqxx/pqxx>
 #include <QMessageBox>
-#include "convert1251.h"
+#include <iostream>
 
-void DataBaseConfig::ConnectedBD(const QVector<Currence>& Data) {
-
+void DataBaseConfig::connectedDb(const QVector<Currence>& Data) {
     try {
         //Подключение к базе
         pqxx::connection conn(
@@ -16,16 +15,13 @@ void DataBaseConfig::ConnectedBD(const QVector<Currence>& Data) {
             "connect_timeout=2 "
             "options='-c client_encoding=UTF8'"
             );
-
         if (!conn.is_open()) {
             QMessageBox::warning(nullptr, "Warning", "База данных недоступна.");
             return; // Прекращаем выполнение функции, если нет подключения
         }
 
-
         pqxx::work txn(conn);
         txn.exec("SET client_encoding TO 'UTF8'");
-
 
         try {
             //Создания табли если она не существует
@@ -40,13 +36,11 @@ void DataBaseConfig::ConnectedBD(const QVector<Currence>& Data) {
                 );
         }
         catch (const pqxx::sql_error&e) {
-            if(std::string(e.what()).find("already exists") != std::string::npos)
-            {
+            if(std::string(e.what()).find("already exists") != std::string::npos)            {
                 std::cout << "Table already exists " << std::endl;
                 txn.abort();
             }
-            else
-            {
+            else            {
                 throw;
             }
         }
@@ -57,7 +51,7 @@ void DataBaseConfig::ConnectedBD(const QVector<Currence>& Data) {
                 "VALUES ($1, $2, $3, $4)"
                 "ON CONFLICT (Date, CharCode) DO NOTHING",
                 currency.CharCode.toStdString(),
-                currency.Name_currence.toStdString(),
+                currency.NameCurrency.toStdString(),
                 currency.Value,
                 currency.Date.toStdString()
                 );

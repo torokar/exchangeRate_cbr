@@ -14,13 +14,10 @@ CustomGraph::CustomGraph(const QVector<Currence> &data, QWidget *parent)
         xValues.push_back(i);
         yValues.push_back(data[i].Value);
     }
-
     ui->widget->xAxis->setRange(0, currenceData.size());
     ui->widget->yAxis->setRange(0, 100);
 
     viewGraph();
-
-
 }
 
 CustomGraph::~CustomGraph()
@@ -42,11 +39,9 @@ void CustomGraph::clearPoints()
 void CustomGraph::addPoint()
 {
     clearPoints();
-
     //Настройка отображения точек
     for (int i = 0; i < currenceData.size(); ++i) {
         const Currence &cur = currenceData[i];
-
         QCPItemText *textPoint = new QCPItemText(ui->widget);
         textPoint->setPositionAlignment(Qt::AlignCenter | Qt::AlignBottom);
         textPoint->position->setType(QCPItemPosition::ptPlotCoords);
@@ -59,15 +54,12 @@ void CustomGraph::addPoint()
 
         textLabels.append(textPoint);
     }
-
 }
 
 void CustomGraph::plotDrawting()
 {
     ui->widget->replot();
     ui->widget->update();
-
-
 }
 
 void CustomGraph::viewGraph()
@@ -87,19 +79,13 @@ void CustomGraph::viewGraph()
     ui->widget->setInteraction(QCP::iRangeDrag, true);
     ui->widget->setInteraction(QCP::iRangeZoom, true);
 
-    //Добавления точки
     addPoint();
-    //Настройка осей
     QSharedPointer<QCPAxisTickerText> textTicker(new QCPAxisTickerText);
 
     for (int i = 0; i < currenceData.size(); ++i) {
-
         const Currence &cur = currenceData[i];
-
         QString str = cur.CharCode;
-
         textTicker->addTick(i, str);
-
     }
 
     ui->widget->xAxis->setTicker(textTicker);

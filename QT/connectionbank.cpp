@@ -8,13 +8,13 @@
 
     QByteArray ConnectionBank::xmlData;
 
-    QByteArray ConnectionBank::GetAByteArray()
+    QByteArray ConnectionBank::getAByteArray()
     {
         return xmlData;
     }
 
 
-    size_t ConnectionBank::WriteCallback(void* contents, size_t size, size_t nmemb, QByteArray* output)
+    size_t ConnectionBank::writeCallBack(void* contents, size_t size, size_t nmemb, QByteArray* output)
     {
         const size_t total_size = size * nmemb;
         output->append(static_cast<char*>(contents), total_size);
@@ -22,11 +22,11 @@
     }
 
 
-    QVector<Currence> ConnectionBank::conn_cbRussian(const QString& dateUser)
+    QVector<Currence> ConnectionBank::connCbRussian(const QString& dateUser)
     {
         Currence writeData;
         QVector<Currence> dataCurr;
-        const QString full_url = "https://www.cbr.ru/scripts/XML_daily.asp?date_req=" + dateUser;
+        const QString fullUrl = "https://www.cbr.ru/scripts/XML_daily.asp?date_req=" + dateUser;
 
         CURL* curl = curl_easy_init();
         if (!curl) {
@@ -35,8 +35,8 @@
         }
 
         // Настройка CURL
-        curl_easy_setopt(curl, CURLOPT_URL, full_url.toStdString().c_str());
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_URL, fullUrl.toStdString().c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallBack);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &xmlData);
         curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/5.0");
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
@@ -51,11 +51,11 @@
         }
 
         // Парсинг XML
-        ConfigParser::SubstrCurrensiFromXML(xmlData, dataCurr, dateUser);
+        ConfigParser::substrCurrensiFromXML(xmlData, dataCurr, dateUser);
         writeData.xmlData = xmlData;
 
         try {
-            DataBaseConfig::ConnectedBD(dataCurr);
+            DataBaseConfig::connectedDb(dataCurr);
         } catch (const std::exception& e) {
             qCritical() << "Database operation in conn_cbRussian failed:" << e.what();
         }

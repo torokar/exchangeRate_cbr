@@ -31,18 +31,17 @@ second_window::second_window(QWidget *parent, const QString &date) :
     ui->tableView->verticalHeader()->setVisible(false);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
-    loadDataFromWebCB();
+    loadDataFromWebCb();
 }
 
-void second_window::setDate(const QString &newDate)
-{
+void second_window::setDate(const QString &newDate){
     date = newDate;
 }
 
 //Вставка данных в таблицу
-void second_window::loadDataFromWebCB()
+void second_window::loadDataFromWebCb()
 {
-    currenceDataForSecondWindow = ConnectionBank::conn_cbRussian(date);
+    currenceDataForSecondWindow = ConnectionBank::connCbRussian(date);
 
     model->removeRows(0, model->rowCount());
 
@@ -50,8 +49,7 @@ void second_window::loadDataFromWebCB()
         QList<QStandardItem*> rowItems;
 
         rowItems << new QStandardItem(cur.CharCode);
-        rowItems << new QStandardItem(cur.Name_currence);
-
+        rowItems << new QStandardItem(cur.NameCurrency);
 
         //Числовой элемент в таблице для корректной работы сортировки в таблице
         QStandardItem* valueItem = new QStandardItem();
@@ -70,20 +68,16 @@ second_window::~second_window()
     delete ui;
 }
 
-void second_window::on_write_clicked()
-{
+void second_window::on_write_clicked(){
     DialogProgress progressCon;
     int progressValue = 0;
     if (!progressCon.Progress(progressValue, "Запись в текстовый файл...")) {
         return;
     }
-
-    WriteFile::WriteToFile(currenceDataForSecondWindow);
+    WriteFile::writeToFile(currenceDataForSecondWindow);
 }
 
-
-void second_window::on_graph_clicked()
-{
+void second_window::on_graph_clicked(){
     if (currenceDataForSecondWindow.isEmpty()) {
         QMessageBox::warning(this, "Ошибка", "Нет данных для построения графика");
         return;
@@ -95,7 +89,6 @@ void second_window::on_graph_clicked()
         Graph = nullptr;
     }
 
-
     DialogProgress progressCon;
     int progressValue = 0;
     if (!progressCon.Progress(progressValue, "Создание графиков...")) {
@@ -106,10 +99,8 @@ void second_window::on_graph_clicked()
     Graph->exec();
 }
 
-void second_window::on_writeXML_clicked()
-{
-
-    QByteArray xmlDATA = ConnectionBank::GetAByteArray();
+void second_window::on_writeXML_clicked(){
+    QByteArray xmlDATA = ConnectionBank::getAByteArray();
 
     if (xmlDATA.isEmpty()) {
         QMessageBox::warning(this, "Ошибка", "Нет XML данных для сохранения");
@@ -123,5 +114,4 @@ void second_window::on_writeXML_clicked()
     }
 
     WriteFile::saveXML(xmlDATA, "XML");
-
 }

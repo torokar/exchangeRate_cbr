@@ -13,22 +13,20 @@
 #include <curl/curl.h>
 #include <QDebug>
 
-//1
-
 class ConnectionBank
 {
 public:
 
     ConnectionBank(QObject *parent = nullptr);
 
-    static QVector<Currence> conn_cbRussian(const QString& dateUser);
+    static QVector<Currence> connCbRussian(const QString& dateUser);
 
-    static QByteArray GetAByteArray();
+    static QByteArray getAByteArray();
 
 private:
 
             static QByteArray xmlData;
-    static size_t WriteCallback(void* contents, size_t size, size_t nmemb, QByteArray* output);
+    static size_t writeCallBack(void* contents, size_t size, size_t nmemb, QByteArray* output);
 };
 
 #endif // CONNECTIONBANK_H
