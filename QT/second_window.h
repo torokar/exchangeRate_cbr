@@ -27,7 +27,7 @@ private:
     Ui::second_window *ui;
     QStandardItemModel *model;
     void loadDataFromWebCb();
-    QVector<Currence> currenceDataForSecondWindow;
+    QVector<Currency> currenceDataForSecondWindow;
     QString date;
     CustomGraph *Graph = nullptr;
     QByteArray xmlDataForSecond;

@@ -1,6 +1,6 @@
 #include "configparser.h"
 
-bool ConfigParser::checkForDuplicates(const QVector<Currence>& data, const QString& name,
+bool ConfigParser::checkForDuplicates(const QVector<Currency>& data, const QString& name,
                                       const double& value, const QString& charcode)
 {
     for (const auto& item : data) {
@@ -11,10 +11,10 @@ bool ConfigParser::checkForDuplicates(const QVector<Currence>& data, const QStri
     return false;
 }
 
-void ConfigParser::substrCurrensiFromXML(const QByteArray &xmlData, QVector<Currence> &result, const QString &date)
+void ConfigParser::substrCurrensiFromXML(const QByteArray &xmlData, QVector<Currency> &result, const QString &date)
 {
     QXmlStreamReader xml(xmlData);
-    Currence current;
+    Currency current;
     bool hasDate = false;
 
     while (!xml.atEnd() && !xml.hasError()) {
@@ -25,7 +25,7 @@ void ConfigParser::substrCurrensiFromXML(const QByteArray &xmlData, QVector<Curr
         }
 
         if (xml.isStartElement() && xml.name() == QLatin1String("Valute")) {
-            current = Currence();
+            current = Currency();
             if (hasDate) {
                 current.Date = date;
             }

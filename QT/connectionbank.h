@@ -19,7 +19,7 @@ public:
 
     ConnectionBank(QObject *parent = nullptr);
 
-    static QVector<Currence> connCbRussian(const QString& dateUser);
+    static QVector<Currency> connCbRussian(const QString& dateUser);
 
     static QByteArray getAByteArray();
 

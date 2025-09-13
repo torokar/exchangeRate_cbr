@@ -108,7 +108,8 @@ void WriteFile::saveXML(QByteArray& xmlData, const QString& fileName){
     }
 }
 
-void WriteFile::writeToFile(const QVector<Currence>& data){
+void WriteFile::writeToFile(const QVector<Currency
+                                          >& data){
 
     QMessageBox::information(nullptr, "Внимание!", "Введите путь сохранения вручную");
 

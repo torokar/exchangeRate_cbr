@@ -3,7 +3,7 @@
 #include <QMessageBox>
 #include <iostream>
 
-void DataBaseConfig::connectedDb(const QVector<Currence>& Data) {
+void DataBaseConfig::connectedDb(const QVector<Currency>& Data) {
     try {
         //Подключение к базе
         pqxx::connection conn(

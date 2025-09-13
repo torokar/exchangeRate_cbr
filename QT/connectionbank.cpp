@@ -22,10 +22,10 @@
     }
 
 
-    QVector<Currence> ConnectionBank::connCbRussian(const QString& dateUser)
+    QVector<Currency> ConnectionBank::connCbRussian(const QString& dateUser)
     {
-        Currence writeData;
-        QVector<Currence> dataCurr;
+        Currency writeData;
+        QVector<Currency> dataCurr;
         const QString fullUrl = "https://www.cbr.ru/scripts/XML_daily.asp?date_req=" + dateUser;
 
         CURL* curl = curl_easy_init();

@@ -14,10 +14,10 @@ class CustomGraph : public QDialog
 {
     Q_OBJECT
 public:
-    explicit CustomGraph(const QVector<Currence> &data, QWidget *parent = nullptr);
+    explicit CustomGraph(const QVector<Currency> &data, QWidget *parent = nullptr);
     ~CustomGraph();
     //Для обновления и получения данных
-    void setCurrenceData(const QVector<Currence> &data);
+    void setCurrenceData(const QVector<Currency> &data);
     void addPoint();
     void clearPoints();
     void plotDrawting();
@@ -26,7 +26,7 @@ private:
     Ui::CustomGraph *ui;
     QVector<QCPItemText*> textLabels;
     QVector<double> xValues, yValues;
-    QVector<Currence> currenceData; // Вектор данных
+    QVector<Currency> currenceData; // Вектор данных
 };
 
 #endif // CUSTOMGRAPH_H

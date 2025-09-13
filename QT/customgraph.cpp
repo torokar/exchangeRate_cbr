@@ -2,7 +2,7 @@
 #include "ui_customgraph.h"
 #include <QDebug>
 
-CustomGraph::CustomGraph(const QVector<Currence> &data, QWidget *parent)
+CustomGraph::CustomGraph(const QVector<Currency> &data, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::CustomGraph)
     , currenceData(data)
@@ -41,7 +41,7 @@ void CustomGraph::addPoint()
     clearPoints();
     //Настройка отображения точек
     for (int i = 0; i < currenceData.size(); ++i) {
-        const Currence &cur = currenceData[i];
+        const Currency &cur = currenceData[i];
         QCPItemText *textPoint = new QCPItemText(ui->widget);
         textPoint->setPositionAlignment(Qt::AlignCenter | Qt::AlignBottom);
         textPoint->position->setType(QCPItemPosition::ptPlotCoords);
@@ -83,7 +83,7 @@ void CustomGraph::viewGraph()
     QSharedPointer<QCPAxisTickerText> textTicker(new QCPAxisTickerText);
 
     for (int i = 0; i < currenceData.size(); ++i) {
-        const Currence &cur = currenceData[i];
+        const Currency &cur = currenceData[i];
         QString str = cur.CharCode;
         textTicker->addTick(i, str);
     }

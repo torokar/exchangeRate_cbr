@@ -4,7 +4,7 @@
 #include <QString>
 #include <QByteArray>
 
-struct Currence
+struct Currency
 {
     QString CharCode;
     QString NameCurrency;

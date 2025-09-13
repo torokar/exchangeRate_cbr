@@ -10,11 +10,11 @@ class ConfigParser
 public:
     ConfigParser() = default;
 
-    static void substrCurrensiFromXML(const QByteArray& xmlData, QVector<Currence>& result,
+    static void substrCurrensiFromXML(const QByteArray& xmlData, QVector<Currency>& result,
                                       const QString& date);
 
 private:
-    static bool checkForDuplicates(const QVector<Currence>& data, const QString& name,
+    static bool checkForDuplicates(const QVector<Currency>& data, const QString& name,
                                    const double& value, const QString& charcode);
 };
 
