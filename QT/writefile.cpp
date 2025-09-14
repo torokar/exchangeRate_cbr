@@ -1,5 +1,4 @@
 #include "writefile.h"
-#include <QTextStream>
 #include <QMessageBox>
 #include <QDir>
 #include <QCoreApplication>
@@ -8,8 +7,10 @@
 #include <iconv.h>
 #include <cerrno>
 #include <cstring>
+#include <QFile>
+#include <QDebug>
 
-QString WriteFile::LengthCheck(const QString& string){
+QString WriteFile::lengthCheck(const QString& string){
 
     const int maxlen = 15;
     if (string.length() > maxlen) {
@@ -47,7 +48,7 @@ QByteArray convertWindows1251ToUtf8(const QByteArray& windows1251Data){
     return result;
 }
 
-void WriteFile::saveXML(QByteArray& xmlData, const QString& fileName){
+void WriteFile::saveXml(QByteArray& xmlData, const QString& fileName){
 
     QMessageBox::information(nullptr, "Внимание!", "Введите путь сохранения вручную");
 
@@ -159,11 +160,11 @@ void WriteFile::writeToFile(const QVector<Currency
     out << "|======================================================================|\n";
 
     for (const auto &text : data) {
-        out << "|" << LengthCheck(text.CharCode).leftJustified(13) << " | ";
-        out << LengthCheck(text.NameCurrency).leftJustified(13) << " | ";
+        out << "|" << lengthCheck(text.CharCode).leftJustified(13) << " | ";
+        out << lengthCheck(text.NameCurrency).leftJustified(13) << " | ";
         QString valueStr = QString::number(text.Value, 'f', 3);
-        out << LengthCheck(valueStr).leftJustified(13) << " | ";
-        out << LengthCheck(text.Date).leftJustified(13) << " | \n";
+        out << lengthCheck(valueStr).leftJustified(13) << " | ";
+        out << lengthCheck(text.Date).leftJustified(13) << " | \n";
         out << "|----------------------------------------------------------------------|\n";
     }
 

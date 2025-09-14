@@ -1,8 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QMainWindow>
-#include <QtConcurrent/QtConcurrent>
-#include <QThread>
 #include <QProgressBar>
 #include <QLabel>
 

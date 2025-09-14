@@ -1,6 +1,5 @@
 #ifndef CONTAINER_H
 #define CONTAINER_H
-#pragma once
 #include <QString>
 #include <QByteArray>
 

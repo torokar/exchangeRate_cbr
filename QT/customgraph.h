@@ -1,6 +1,5 @@
 #ifndef CUSTOMGRAPH_H
 #define CUSTOMGRAPH_H
-
 #include <QDialog>
 #include <QVector>
 #include "container.h"

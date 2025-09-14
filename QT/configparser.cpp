@@ -1,4 +1,6 @@
 #include "configparser.h"
+#include <QXmlStreamReader>
+#include <QDebug>
 
 bool ConfigParser::checkForDuplicates(const QVector<Currency>& data, const QString& name,
                                       const double& value, const QString& charcode)

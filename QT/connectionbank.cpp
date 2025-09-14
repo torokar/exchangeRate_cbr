@@ -4,7 +4,9 @@
 #include <curl/curl.h>
 #include <QDebug>
 #include "container.h"
-
+#include <QtConcurrent/QtConcurrent>
+#include <writefile.h>
+#include <QString>
 
     QByteArray ConnectionBank::xmlData;
 
@@ -34,7 +36,6 @@
             return {};
         }
 
-        // Настройка CURL
         curl_easy_setopt(curl, CURLOPT_URL, fullUrl.toStdString().c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallBack);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &xmlData);
@@ -50,7 +51,6 @@
             return {};
         }
 
-        // Парсинг XML
         ConfigParser::substrCurrensiFromXML(xmlData, dataCurr, dateUser);
         writeData.xmlData = xmlData;
 

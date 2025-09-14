@@ -1,16 +1,10 @@
 #include "second_window.h"
 #include "ui_second_window.h"
-#include <QStandardItemModel>
-#include <pqxx/pqxx>
-#include <QDebug>
-#include <convert1251.h>
 #include "customgraph.h"
 #include <connectionbank.h>
 #include <QMessageBox>
 #include "writefile.h"
 #include "dialogprogress.h"
-#include "container.h"
-
 
 second_window::second_window(QWidget *parent, const QString &date) :
     QDialog(parent),
@@ -84,9 +78,9 @@ void second_window::on_graph_clicked(){
     }
 
     //Если Graph существует сначала удаляем
-    if (Graph) {
-        delete Graph;
-        Graph = nullptr;
+    if (graph) {
+        delete graph;
+        graph = nullptr;
     }
 
     DialogProgress progressCon;
@@ -95,8 +89,8 @@ void second_window::on_graph_clicked(){
         return;
     }
 
-    Graph = new CustomGraph(currenceDataForSecondWindow, nullptr);
-    Graph->exec();
+    graph = new CustomGraph(currenceDataForSecondWindow, nullptr);
+    graph->exec();
 }
 
 void second_window::on_writeXML_clicked(){
@@ -113,5 +107,5 @@ void second_window::on_writeXML_clicked(){
         return;
     }
 
-    WriteFile::saveXML(xmlDATA, "XML");
+    WriteFile::saveXml(xmlDATA, "XML");
 }

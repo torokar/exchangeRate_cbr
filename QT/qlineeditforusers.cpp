@@ -3,7 +3,6 @@
 #include <QDialog>
 #include <QGridLayout>
 #include <QLineEdit>
-#include <QLabel>
 
 QLineEditForUsers::QLineEditForUsers(QWidget *parent)
     : QDialog(parent)

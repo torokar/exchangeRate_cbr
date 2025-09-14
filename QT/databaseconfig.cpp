@@ -2,6 +2,10 @@
 #include <pqxx/pqxx>
 #include <QMessageBox>
 #include <iostream>
+#include <iconv.h>
+#include <cerrno>
+#include <cstring>
+#include <QVector>
 
 void DataBaseConfig::connectedDb(const QVector<Currency>& Data) {
     try {

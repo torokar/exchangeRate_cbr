@@ -1,6 +1,10 @@
 #include "customgraph.h"
 #include "ui_customgraph.h"
 #include <QDebug>
+#include <QDialog>
+#include <QVector>
+#include "container.h"
+#include "../lib/qcustomplot/qcustomplot.h"
 
 CustomGraph::CustomGraph(const QVector<Currency> &data, QWidget *parent)
     : QDialog(parent)

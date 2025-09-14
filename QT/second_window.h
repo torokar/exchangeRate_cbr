@@ -29,7 +29,7 @@ private:
     void loadDataFromWebCb();
     QVector<Currency> currenceDataForSecondWindow;
     QString date;
-    CustomGraph *Graph = nullptr;
+    CustomGraph *graph = nullptr;
     QByteArray xmlDataForSecond;
 };
 

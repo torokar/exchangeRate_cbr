@@ -1,9 +1,7 @@
 #ifndef CONFIGPARSER_H
 #define CONFIGPARSER_H
-#include "container.h"
-#include <QXmlStreamReader>
-#include <QDebug>
 #include <QLatin1String>
+#include "container.h"
 
 class ConfigParser
 {

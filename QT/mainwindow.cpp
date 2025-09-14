@@ -1,13 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "mainwindow.h"
-#include <QApplication>
-#include <pqxx/pqxx>
-#include <QDebug>
-#include <curl/curl.h>
 #include <QString>
 #include <QMessageBox>
 #include <second_window.h>
+#include <QtConcurrent>
 #include "dialogprogress.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -53,7 +50,6 @@ void MainWindow::on_pushButton_clicked()
         }
     }
 
-
     if (year.toInt() < 1993) {
         QMessageBox::critical(this, "Error", "Нет данных по годам меньше '1993' годов. Введите данные начиная с 1992 по нынешный год.");
         return;
@@ -68,7 +64,6 @@ void MainWindow::on_pushButton_clicked()
     QString forDay = QString("%1").arg(day, 2, 10, QChar('0'));
     QString forMont = QString("%1").arg(month, 2, 10, QChar('0'));
     QString forYear = year;
-
     QString date = forDay + "/" + forMont + "/" + forYear;
 
     //Фоновый вызов с передачей даты в поток
